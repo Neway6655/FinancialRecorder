@@ -14,7 +14,17 @@
 	<packaging>war</packaging>
 	<name>Financial :: Tools :: Recorder server</name>
 
-	<!-- 项目属性 -->
+	<repositories>
+	    <repository>
+	          <id>org.springframework.maven.milestone</id>
+	           <name>Spring Maven Milestone Repository</name>
+	           <url>http://maven.springframework.org/milestone</url>
+	           <snapshots>
+	                   <enabled>false</enabled>
+	           </snapshots>
+	    </repository>
+	</repositories>
+	
 	<properties>
 		<jdbc.driver.groupId>com.h2database</jdbc.driver.groupId>
 		<jdbc.driver.artifactId>h2</jdbc.driver.artifactId>
@@ -36,6 +46,10 @@
 		<!-- SPRING begin -->
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 		</dependency>
 		<dependency>
@@ -55,12 +69,27 @@
 			<artifactId>spring-web</artifactId>
 		</dependency>
 		<!-- SPRING end -->
+		
+		<!-- CLOUD begin -->
+		<dependency>
+	        <groupId>org.cloudfoundry</groupId>
+	        <artifactId>cloudfoundry-runtime</artifactId>
+	        <version>0.8.1</version>
+	    </dependency>
+		<!-- CLOUD end -->
 
 		<!-- PERSISTENCE begin -->
-		<!-- mybatis -->
+		<!-- jpa -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
 
 		<!-- spring jdbc -->
-
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
 		<!-- dbcp -->
 
 		<!-- jdbc driver -->
