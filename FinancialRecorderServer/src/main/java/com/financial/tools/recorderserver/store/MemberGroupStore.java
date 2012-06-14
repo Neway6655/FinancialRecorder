@@ -16,6 +16,10 @@ public class MemberGroupStore {
 		return entityManager.find(MemberGroup.class, name);
 	}
 
+	public void saveMemberGroup(MemberGroup memberGroup) {
+		entityManager.persist(memberGroup);
+	}
+
 	@PersistenceContext
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:cloud="http://schema.cloudfoundry.org/spring"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cloud="http://schema.cloudfoundry.org/spring"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
@@ -12,71 +13,69 @@
 	default-lazy-init="true">
 
 	<description>Spring Configuration</description>
-	
-	<context:annotation-config/>
-	
+
+	<context:annotation-config />
+
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+		
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-	
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
-	
+
 	<!-- Jpa Entity Manager -->
-	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> 
-		<property name="dataSource" ref="dataSource"/> 
-		<property name="persistenceUnitName" value="defaultPU"/>
-		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
-		<property name="persistenceXmlLocation" value="classpath*:META-INF/jpa_persistence.xml"/>
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="defaultPU" />
+		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
+		<property name="persistenceXmlLocation" value="classpath*:META-INF/jpa_persistence.xml" />
 	</bean>
-	
-	<bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+
+	<bean id="hibernateJpaVendorAdapter"
+		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="databasePlatform">
-			<bean factory-method="getDialect" class="com.financial.tools.recorderserver.store.util.HibernateUtils">
-				<constructor-arg ref="dataSource"/>
+			<bean factory-method="getDialect"
+				class="com.financial.tools.recorderserver.store.util.HibernateUtils">
+				<constructor-arg ref="dataSource" />
 			</bean>
 		</property>
 	</bean>
-	
-	<bean id="memberGroupStore" class="com.financial.tools.recorderserver.store.MemberGroupStore"/>
 
-	<bean id="cashinService" class="com.financial.tools.recorderserver.service.CashinService"/>
-	
- 	<beans profile="production">
-		<context:property-placeholder ignore-resource-not-found="true"
+	<bean id="memberGroupStore"
+		class="com.financial.tools.recorderserver.store.MemberGroupStore" />
+
+	<bean id="cashinService"
+		class="com.financial.tools.recorderserver.service.CashinService" />
+
+	<beans profile="cloud">
+		<context:property-placeholder
+			ignore-resource-not-found="true"
 			location="classpath*:/application.properties,
-          			  classpath*:/application.local.properties" />
-          			
-        <cloud:data-source id="dataSource"/>  
-        <!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-			<property name="driverClass" value="${jdbc.driver}" />
-			<property name="url" value="${jdbc.url}" />
-			<property name="username" value="${jdbc.username}" />
-			<property name="password" value="${jdbc.password}" />
-		</bean> -->
-		
-		<jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
+	          			  classpath*:/application.local.properties" />
+	          			  
+	    <cloud:data-source id="dataSource" />
+	    
+		<jdbc:initialize-database data-source="dataSource"
+			ignore-failures="ALL">
 			<jdbc:script location="classpath:sql/mysql/schema.sql" />
 		</jdbc:initialize-database>
-		
-		<bean class="com.financial.tools.recorderserver.tools.util.DataInitializer" lazy-init="false">	
-			<property name="dataSource" ref="dataSource"/>
-			<property name="dataFile" value="/data/sample-data.xml" />
-		</bean>
 	</beans>
-	
+
 	<beans profile="test,development">
-		<context:property-placeholder ignore-resource-not-found="true"
+		<context:property-placeholder
+			ignore-resource-not-found="true"
 			location="classpath*:/application.properties,
-          			  classpath*:/application.test.properties" />			
-	
+          			  classpath*:/application.test.properties" />
+
 		<jdbc:embedded-database id="dataSource" type="H2">
 			<jdbc:script location="classpath:sql/h2/schema.sql" />
 		</jdbc:embedded-database>
-		
-		<bean class="com.financial.tools.recorderserver.tools.util.DataInitializer" lazy-init="false">	
-			<property name="dataSource" ref="dataSource"/>
+
+		<bean class="com.financial.tools.recorderserver.tools.util.DataInitializer"
+			lazy-init="false">
+			<property name="dataSource" ref="dataSource" />
 			<property name="dataFile" value="/data/sample-data.xml" />
 		</bean>
 	</beans>
-	
+
 </beans>

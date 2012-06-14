@@ -1,4 +1,4 @@
-package com.financial.tools.recorderserver.store.util;
+package com.financial.tools.recorderserver.util;
 
 import java.sql.Connection;
 import java.sql.SQLException;

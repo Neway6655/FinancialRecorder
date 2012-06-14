@@ -30,9 +30,13 @@ public class CashinService {
 	@Path("/activityinfo")
 	public String getActivityInfo(@QueryParam("userid") String userId) {
 		System.out.println(userId);
-		MemberGroup memberGroup = memberGroupStore.getMemberGroup("Club");
-		if (memberGroup != null) {
+		MemberGroup memberGroup = new MemberGroup("HelloWorld");
+		memberGroupStore.saveMemberGroup(memberGroup);
+		MemberGroup result = memberGroupStore.getMemberGroup("HelloWorld");
+		if (result != null) {
 			System.out.println("member group name: " + memberGroup.getName());
+		} else {
+			System.out.println("member group not found.");
 		}
 		return "";
 	}

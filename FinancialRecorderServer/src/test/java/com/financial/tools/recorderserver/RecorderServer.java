@@ -16,7 +16,7 @@ public class RecorderServer {
 				"classpath:/application.test-local.properties");
 		String baseUrl = propertiesLoader.getProperty("baseUrl");
 
-		System.setProperty("spring.profiles.active", "production");
+		System.setProperty("spring.profiles.active", "development");
 		Server jettyServer = JettyFactory.createServer(new URL(baseUrl).getPort(), CONTEXT, "src/main/webapp");
 		try {
 			jettyServer.start();
