@@ -1,24 +1,33 @@
 package com.financial.tools.recorderserver.payload;
 
-
 public class CashinRequest {
 
-	private String userId;
+	private long userId;
+
+	private long amount;
 
 	public CashinRequest() {
 	}
 
-	public CashinRequest(String userId) {
-		super();
+	public CashinRequest(long userId, long amount) {
 		this.userId = userId;
+		this.amount = amount;
 	}
 
-	public String getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
+	}
+
+	public long getAmount() {
+		return amount;
+	}
+
+	public void setAmount(long amount) {
+		this.amount = amount;
 	}
 
 }

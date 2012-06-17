@@ -35,17 +35,26 @@
 		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="databasePlatform">
 			<bean factory-method="getDialect"
-				class="com.financial.tools.recorderserver.store.util.HibernateUtils">
+				class="com.financial.tools.recorderserver.util.HibernateUtils">
 				<constructor-arg ref="dataSource" />
 			</bean>
 		</property>
 	</bean>
 
-	<bean id="memberGroupStore"
-		class="com.financial.tools.recorderserver.store.MemberGroupStore" />
+	<bean id="groupStore"
+		class="com.financial.tools.recorderserver.store.impl.GroupStoreJpaImpl" />
+		
+	<bean id="userStore"
+		class="com.financial.tools.recorderserver.store.impl.UserStoreJpaImpl" />
+		
+	<bean id="financialRecordStore"
+		class="com.financial.tools.recorderserver.store.impl.FinancialRecordStoreJpaImpl" />
+		
+	<bean id="financialManager"
+		class="com.financial.tools.recorderserver.business.FinancialManager" />
 
-	<bean id="cashinService"
-		class="com.financial.tools.recorderserver.service.CashinService" />
+	<bean id="financialService"
+		class="com.financial.tools.recorderserver.service.FinancialService" />
 
 	<beans profile="cloud">
 		<context:property-placeholder
@@ -61,7 +70,7 @@
 		</jdbc:initialize-database>
 	</beans>
 
-	<beans profile="test,development">
+	<beans profile="ct,development">
 		<context:property-placeholder
 			ignore-resource-not-found="true"
 			location="classpath*:/application.properties,

@@ -12,7 +12,7 @@
 
 	<jaxrs:server id="serviceContainer" address="/">
 		<jaxrs:serviceBeans>
-			<ref bean="cashinService" />
+			<ref bean="financialService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />

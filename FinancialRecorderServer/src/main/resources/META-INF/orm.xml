@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm/orm_1_0.xsd" version="1.0">
-	
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm/orm_1_0.xsd"
+	version="1.0">
+
 	<package>com.financial.tools.recorderserver.entity</package>
 
-	<!-- Named Query end-->
-	    
-    <!-- Entity define begin-->
-	<entity class="MemberGroup" access="FIELD">
-		<table name="member_group" />
+	<!-- Named Query end -->
+
+	<!-- Entity define begin -->
+	<entity class="User" access="FIELD">
+		<table name="fr_user" />
 		<attributes>
-			<id name="name">
-				<column name="name"/>
+			<id name="id">
+				<generated-value strategy="TABLE" />
 			</id>
+			<basic name="name">
+				<column name="NAME"/>
+			</basic>
+			<basic name="name">
+				<column name="NAME"/>
+			</basic>
+			<basic name="name">
+				<column name="NAME"/>
+			</basic>
 		</attributes>
 	</entity>
 </entity-mappings>
