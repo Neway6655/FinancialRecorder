@@ -10,8 +10,8 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.business.FinancialManager;
-import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.payload.CashinRequest;
+import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 
 @Path("/finance")
@@ -24,16 +24,16 @@ public class FinancialService {
 	@Path("/cashin")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String cashin(CashinRequest request) {
-		financialManager.updateUserBalance(request.getUserId(), request.getAmount());
-		return "";
+		long balance = financialManager.updateUserBalance(request.getUserId(), request.getAmount());
+		return String.valueOf(balance);
 	}
 
 	@POST
 	@Path("/create")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String createFinancialRecord(FinancialRecord financialRecord) {
-		financialManager.createFinancialRecord(financialRecord);
-		return "";
+	public String createFinancialRecord(FinancialRecordRequest financialRecordRequest) {
+		long financialRecordId = financialManager.createFinancialRecord(financialRecordRequest);
+		return String.valueOf(financialRecordId);
 	}
 
 	@GET

@@ -14,8 +14,9 @@ public class FinancialRecordStoreJpaImpl implements FinancialRecordStore {
 	private EntityManager entityManager;
 
 	@Override
-	public void createFinancialRecord(FinancialRecord financialRecord) {
+	public long createFinancialRecord(FinancialRecord financialRecord) {
 		entityManager.persist(financialRecord);
+		return financialRecord.getId();
 	}
 
 	@Override

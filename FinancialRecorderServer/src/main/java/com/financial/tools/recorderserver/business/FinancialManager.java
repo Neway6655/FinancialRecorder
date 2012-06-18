@@ -6,23 +6,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.entity.User;
+import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.financial.tools.recorderserver.store.FinancialRecordStore;
 import com.financial.tools.recorderserver.store.UserStore;
+import com.google.common.collect.Lists;
 
 public class FinancialManager {
 
 	private UserStore userStore;
 	private FinancialRecordStore financialRecordStore;
 
-	public void updateUserBalance(long userId, long amount) {
+	public long updateUserBalance(long userId, long amount) {
 		User user = userStore.getUser(userId);
-		long currentBalance = user.getBalance();
-		userStore.updateBalance(user.getId(), currentBalance + amount);
+		long balance = user.getBalance() + amount;
+		userStore.updateBalance(user.getId(), balance);
+		return balance;
 	}
 
-	public void createFinancialRecord(FinancialRecord financialRecord) {
-		financialRecordStore.createFinancialRecord(financialRecord);
+	public long createFinancialRecord(FinancialRecordRequest financialRecordRequest) {
+		List<User> userList = Lists.newArrayList();
+		for (Long userId : financialRecordRequest.getUserIdList()) {
+			userList.add(userStore.getUser(userId));
+		}
+
+		FinancialRecord financialRecord = new FinancialRecord();
+		financialRecord.setName(financialRecordRequest.getName());
+		financialRecord.setTotalFee(financialRecordRequest.getTotalFee());
+		financialRecord.setUserList(userList);
+
+		return financialRecordStore.createFinancialRecord(financialRecord);
 	}
 
 	public void updateFinance(long financialRecordId) {

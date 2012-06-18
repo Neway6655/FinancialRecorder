@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-  <user name="Club"/>
+  <fr_user id="1" name="Neway" password="123456" balance="100"/>
+  <fr_user id="2" name="Fred" password="123456" balance="100"/>
 </dataset>

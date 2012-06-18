@@ -1,7 +1,5 @@
 package com.financial.tools.recorderserver.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,16 +19,12 @@ public class Group {
 	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "USERS")
-	private List<User> users;
-
 	public Group() {
 	}
 
-	public Group(long id, String name, List<User> users) {
+	public Group(long id, String name) {
 		this.id = id;
 		this.name = name;
-		this.users = users;
 	}
 
 	public long getId() {
@@ -47,14 +41,6 @@ public class Group {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
 	}
 
 }

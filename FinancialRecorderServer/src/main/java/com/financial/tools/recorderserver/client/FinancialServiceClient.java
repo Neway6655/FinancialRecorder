@@ -2,8 +2,8 @@ package com.financial.tools.recorderserver.client;
 
 import javax.ws.rs.core.MediaType;
 
-import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.payload.CashinRequest;
+import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 
 public class FinancialServiceClient extends AbstractFinancialClient {
@@ -17,13 +17,13 @@ public class FinancialServiceClient extends AbstractFinancialClient {
 		return post(client, request, String.class);
 	}
 
-	public String createFinancialRecord(FinancialRecord financialRecord) {
+	public String createFinancialRecord(FinancialRecordRequest financialRecordRequest) {
 		client.path("/finance/create").type(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN);
-		return post(client, financialRecord, String.class);
+		return post(client, financialRecordRequest, String.class);
 	}
 
 	public String updateFinance(String financialRecordId) {
-		client.path("finance/update/{financialRecordId}", financialRecordId).accept(MediaType.APPLICATION_JSON);
+		client.path("finance/update/{financialRecordId}", financialRecordId).accept(MediaType.TEXT_PLAIN);
 		return get(client, String.class);
 	}
 
