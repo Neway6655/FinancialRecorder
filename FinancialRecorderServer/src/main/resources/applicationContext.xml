@@ -54,6 +54,8 @@
 
 	<bean id="financialService"
 		class="com.financial.tools.recorderserver.service.FinancialService" />
+	
+	<bean id="userService" class="com.financial.tools.recorderserver.service.UserService"/>
 
 	<beans profile="cloud">
 		<context:property-placeholder

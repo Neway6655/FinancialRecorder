@@ -1,7 +1,35 @@
-
-    drop table if exists member_group;
-
-    create table member_group (
-        name varchar(255) not null unique,
-        primary key (name)
-    );
+	DROP TABLE IF EXISTS FR_USER;
+	DROP TABLE IF EXISTS FR_FINANCIAL_RECORD;
+	DROP TABLE IF EXISTS FR_RECORD_USER;
+	DROP TABLE IF EXISTS FR_GROUP;
+    
+	CREATE TABLE FR_USER (
+    	ID BIGINT NOT NULL AUTO_INCREMENT,
+        NAME VARCHAR(255) NOT NULL,
+        PASSWORD VARCHAR(64) NOT NULL,
+        BALANCE NUMBER,
+        PRIMARY KEY (ID)
+    ) ;
+    
+    CREATE TABLE FR_FINANCIAL_RECORD (
+    	ID BIGINT NOT NULL AUTO_INCREMENT,
+        NAME VARCHAR(255) NOT NULL,
+        TOTAL_FEE NUMBER NOT NULL,
+        PRIMARY KEY (ID)
+    ) ;
+    
+    CREATE TABLE FR_GROUP (
+    	ID BIGINT NOT NULL AUTO_INCREMENT,
+        NAME VARCHAR(255) NOT NULL,
+        PRIMARY KEY (ID)
+    ) ;
+    
+    CREATE TABLE FR_RECORD_USER (
+        RECORD_ID BIGINT NOT NULL,
+        USER_ID BIGINT NOT NULL,
+     	PRIMARY KEY(RECORD_ID,USER_ID),
+        FOREIGN KEY(USER_ID) REFERENCES FR_USER(ID),
+        FOREIGN KEY(RECORD_ID) REFERENCES FR_FINANCIAL_RECORD(ID)
+    ) ;
+    
+    insert into FR_USER values('Neway','123456',100);

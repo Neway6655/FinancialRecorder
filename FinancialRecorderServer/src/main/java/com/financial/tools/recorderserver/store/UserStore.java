@@ -7,4 +7,6 @@ public interface UserStore {
 	public User getUser(long userId);
 
 	public void updateBalance(long userId, long balance);
+
+	public long saveUser(User user);
 }

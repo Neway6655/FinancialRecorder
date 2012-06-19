@@ -13,6 +13,7 @@
 	<jaxrs:server id="serviceContainer" address="/">
 		<jaxrs:serviceBeans>
 			<ref bean="financialService" />
+			<ref bean="userService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />

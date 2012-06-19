@@ -19,6 +19,12 @@ public class UserStoreJpaImpl implements UserStore {
 	}
 
 	@Override
+	public long saveUser(User user) {
+		entityManager.persist(user);
+		return user.getId();
+	}
+
+	@Override
 	public void updateBalance(long userId, long balance) {
 		User user = entityManager.find(User.class, userId);
 		user.setBalance(balance);
