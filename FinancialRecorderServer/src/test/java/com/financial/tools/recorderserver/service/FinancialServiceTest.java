@@ -5,7 +5,6 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -39,6 +38,7 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest();
 		financialRecordRequest.setName("Test");
 		financialRecordRequest.setTotalFee(100L);
+		financialRecordRequest.setUserIdList(Lists.newArrayList(1L, 2L));
 
 		System.out.println(mapper.writeValueAsString(financialRecordRequest));
 	}
@@ -57,7 +57,6 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 		Assert.assertEquals(100L, userFinancialInfo.getBalance());
 	}
 
-	@Ignore("Need clarify is H2 transaction issue or not.")
 	@Test
 	public void testFinancialCalculateForUser() throws Exception {
 		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ball", 20, Lists.newArrayList(1L,

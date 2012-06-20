@@ -12,6 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 @Table(name = "FR_FINANCIAL_RECORD")
 public class FinancialRecord {
@@ -28,6 +31,7 @@ public class FinancialRecord {
 
 	@OneToMany
 	@JoinTable(name = "FR_RECORD_USER", joinColumns = { @JoinColumn(name = "RECORD_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
+	@Fetch(FetchMode.JOIN)
 	private List<User> userList;
 
 	public FinancialRecord() {

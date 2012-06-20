@@ -2,6 +2,7 @@ package com.financial.tools.recorderserver.store.impl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +27,10 @@ public class UserStoreJpaImpl implements UserStore {
 
 	@Override
 	public void updateBalance(long userId, long balance) {
-		User user = entityManager.find(User.class, userId);
-		user.setBalance(balance);
-		entityManager.merge(user);
+		Query query = entityManager.createNativeQuery("UPDATE FR_USER SET BALANCE=" + balance + " WHERE ID=?",
+				User.class);
+		query.setParameter(1, userId);
+		query.executeUpdate();
 	}
 
 	@PersistenceContext
