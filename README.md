@@ -2,7 +2,7 @@ FinancialRecorder
 =================
 This is a financial tools which can be used to record down the financial infomation for some group activities.
 
-Feature List:
+---------------------------------------------Feature List---------------------------------------------
 1. User Registration.
 2. User can create a activity group, and point at one person as CFO
 3. As a user, I can join the group and be a member of this group.
@@ -15,12 +15,12 @@ Feature List:
 8. As a user, I want to be notified when my account has little money.
 9. To be continued...
 
-Enhanced Feature List:
+---------------------------------------------Enhanced Feature List---------------------------------------------
 1. Multiple group support, one person can join multiple groups, and share one account.
 2. To be continued...
 
 
-Design
+---------------------------------------------Design---------------------------------------------
 1. Application design/framework, portal + server:
      - portal: need to support different device: PC browser, like chrome app(QS)...and ios/android app.
      - server: restful api.
@@ -51,18 +51,17 @@ Design
      - such as: only the CFO can cash in for each member and fill in the activity cost. normal member can only see his own account, and so on...
 
 
-Plan
-1. build up the project first, github.[X]
-2. framework: spring, cxf, hibernate, database service on cloud. (QS)[X]
-3. entity design, version 0.1[X]
+---------------------------------------------Plan---------------------------------------------
+1. build up the project first, github. (done)
+2. framework: spring, cxf, hibernate, database service on cloud. (QS) (done)
+3. entity design, version 0.1 (done)
      - User
-     - Group
      - FinancialRecord
-4. persistence, Dao.[X]
-5. business logic, implement the back-end server restful interface.[X]
+4. persistence, Dao. (done)
+5. business logic, implement the back-end server restful interface. (done)
      - simply implement it, user and financialRecord
      - can cashin, auto-calculate the fee per user according to the financial record.
-6. Portal
+6. Portal (not start)
      - build a simple mobile application, to have those above functions
      - UI
      - communication between application and server. (data)
