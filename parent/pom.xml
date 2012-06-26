@@ -9,43 +9,25 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<!-- 主要依赖库的版本定义 -->
-		<springside.version>4.0.0.RC4-SNAPSHOT</springside.version>
 		<spring.version>3.1.1.RELEASE</spring.version>
 		<hibernate.version>4.1.3.Final</hibernate.version>
-		<mybatis.version>3.1.1</mybatis.version>
 		<spring-data-jpa.version>1.1.0.RELEASE</spring-data-jpa.version>
 		<cxf.version>2.6.0</cxf.version>
-		<jersey.version>1.12</jersey.version>
-		<shiro.version>1.2.0</shiro.version>
-		<activemq.version>5.5.1</activemq.version>
-		<quartz.version>2.1.5</quartz.version>
-		<ehcache.version>2.5.2</ehcache.version>
 		<hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
 		<jackson.version>2.0.2</jackson.version>
-		<spymemcached.version>2.8.1</spymemcached.version>
-		<jolokia.version>1.0.3</jolokia.version>
 		<guava.version>12.0</guava.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
-		<commons-io.version>2.3</commons-io.version>
 		<joda-time.version>2.1</joda-time.version>
-		<dozer.version>5.3.2</dozer.version>
-		<freemarker.version>2.3.19</freemarker.version>
-		<poi.version>3.8</poi.version>
 		<slf4j.version>1.6.4</slf4j.version>
 		<jetty.version>7.6.3.v20120416</jetty.version>
 		<h2.version>1.3.166</h2.version>
 		<junit.version>4.10</junit.version>
 		<mockito.version>1.9.0</mockito.version>
-		<powermock.version>1.4.12</powermock.version>
-		<selenium.version>2.21.0</selenium.version>
 
-		<!-- Plugin的属性定义 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.6</jdk.version>
 	</properties>
 
-	<!-- 设定除中央仓库(repo1.maven.org/maven2/)外的其他仓库,按设定顺序进行查找. -->
 	<repositories>
 		<!-- 如有Nexus私服, 取消注释并指向正确的服务器地址.
 		<repository>
@@ -54,15 +36,6 @@
 			<url>http://localhost:8081/nexus/content/groups/public</url> 
 		</repository>
 		-->
-		
-		<repository>
-			<id>springside-googlecode</id>
-			<name>SpringSide Additional Repository at google</name>
-			<url>http://springside.googlecode.com/svn/springside4-repository/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
 		
 		<!-- backup additional repository at github
 		<repository>
@@ -92,26 +65,6 @@
 	<!-- 预定义依赖项的version,scope与exclusions,子项目中只需定义groupId 和 artifactId 即可 -->
 	<dependencyManagement>
 		<dependencies>
-			<!-- SPRINGSIDE MODULES begin -->
-			<dependency>
-				<groupId>org.springside</groupId>
-				<artifactId>springside-core</artifactId>
-				<version>${springside.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springside</groupId>
-				<artifactId>springside-extension</artifactId>
-				<version>${springside.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springside</groupId>
-				<artifactId>springside-test</artifactId>
-				<version>${springside.version}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<!-- SPRINGSIDE MODULES end -->
-
 			<!-- SPRING begin -->
 			<!-- spring basic -->
 			<dependency>
@@ -138,6 +91,13 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context-support</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			
+			<!-- spring web-->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
 
@@ -204,18 +164,6 @@
 				<version>${spring-data-jpa.version}</version>
         	</dependency>
 			
-			<!-- mybatis -->
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis</artifactId>
-				<version>${mybatis.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis-spring</artifactId>
-				<version>1.1.1</version>
-			</dependency>
-
 			<!-- spring orm -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -240,123 +188,6 @@
 				<version>1.6</version>
 			</dependency>
 			<!-- PERSISTENCE end -->
-
-			<!-- WEB begin -->
-			<!-- spring mvc -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-web</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-webmvc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-
-			<!-- sitemesh -->
-			<dependency>
-				<groupId>opensymphony</groupId>
-				<artifactId>sitemesh</artifactId>
-				<version>2.4.2</version>
-			</dependency>
-
-			<!-- j2ee web spec -->
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>2.5</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>jstl</artifactId>
-				<version>1.2</version>
-			</dependency>
-			<!-- WEB end -->
-
-			<!-- SOAP begin -->
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-core</artifactId>
-				<version>${cxf.version}</version>
-				<exclusions>
-					<!-- use javax.mail.mail instead -->
-					<exclusion>
-						<groupId>org.apache.geronimo.specs</groupId>
-						<artifactId>geronimo-javamail_1.4_spec</artifactId>
-					</exclusion>
-					<!-- use javax.activation.activation instead -->
-					<exclusion>
-						<groupId>org.apache.geronimo.specs</groupId>
-						<artifactId>geronimo-activation_1.1_spec</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-frontend-jaxws</artifactId>
-				<version>${cxf.version}</version>
-				<exclusions>
-					<!-- see above -->
-					<exclusion>
-						<groupId>org.apache.geronimo.specs</groupId>
-						<artifactId>geronimo-javamail_1.4_spec</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.apache.geronimo.specs</groupId>
-						<artifactId>geronimo-activation_1.1_spec</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-transports-http</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-			<!-- SOAP end -->
-
-			<!-- REST begin -->
-			<dependency>
-				<groupId>com.sun.jersey</groupId>
-				<artifactId>jersey-server</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.jersey</groupId>
-				<artifactId>jersey-servlet</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.jersey</groupId>
-				<artifactId>jersey-client</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.jersey.contribs</groupId>
-				<artifactId>jersey-spring</artifactId>
-				<version>${jersey.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.sun.jersey</groupId>
-						<artifactId>jersey-grizzly2</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.sun.jersey</groupId>
-						<artifactId>jersey-servlet</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>com.sun.jersey.contribs</groupId>
-				<artifactId>jersey-multipart</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
-			<!-- REST end -->
 			
 			<!-- CXF begin -->
 			<dependency>
@@ -394,73 +225,6 @@
 				<version>${shiro.version}</version>
 			</dependency>
 			<!-- SECURITY end -->
-
-			<!-- JMS begin -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-jms</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.activemq</groupId>
-				<artifactId>activemq-core</artifactId>
-				<version>${activemq.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.apache.activemq.protobuf</groupId>
-						<artifactId>activemq-protobuf</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework.osgi</groupId>
-						<artifactId>spring-osgi-core</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.osgi</groupId>
-						<artifactId>org.osgi.core</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<!-- JMS end -->
-
-			<!-- TIMER -->
-			<dependency>
-				<groupId>org.quartz-scheduler</groupId>
-				<artifactId>quartz</artifactId>
-				<version>${quartz.version}</version>
-			</dependency>
-
-			<!-- CACHE begin -->
-			<!-- memcached -->
-			<!-- sysmemcached is provided by springside repository -->
-			<dependency>
-				<groupId>spy</groupId>
-				<artifactId>spymemcached</artifactId>
-				<version>${spymemcached.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.thimbleware.jmemcached</groupId>
-				<artifactId>jmemcached-core</artifactId>
-				<version>1.0.0</version>
-				<scope>test</scope>
-			</dependency>
-			
-			<!-- ehcache -->
-			<dependency>
-				<groupId>net.sf.ehcache</groupId>
-				<artifactId>ehcache-core</artifactId>
-				<version>${ehcache.version}</version>
-			</dependency>
-			<!-- CACHE end -->
-
-			<!-- jolokia Restful JMX begin -->
-			<dependency>
-				<groupId>org.jolokia</groupId>
-				<artifactId>jolokia-core</artifactId>
-				<version>${jolokia.version}</version>
-			</dependency>
-			<!-- jolokia end-->
 			
 			<!-- LOGGING begin -->
 			<!-- slf4j -->
@@ -499,56 +263,6 @@
 				<version>1.2</version>
 			</dependency>
 			<!-- LOGGING end -->
-
-			<!-- XML begin -->
-			<dependency>
-				<groupId>dom4j</groupId>
-				<artifactId>dom4j</artifactId>
-				<version>1.6.1</version>
-				<exclusions>
-					<exclusion>
-						<groupId>xml-apis</groupId>
-						<artifactId>xml-apis</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<!-- 重新定义Java XPath Engine, exclude不必要的依赖 -->
-			<dependency>
-				<groupId>jaxen</groupId>
-				<artifactId>jaxen</artifactId>
-				<version>1.1.3</version>
-				<exclusions>
-					<exclusion>
-						<groupId>xerces</groupId>
-						<artifactId>xercesImpl</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>xml-apis</groupId>
-						<artifactId>xml-apis</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>dom4j</groupId>
-						<artifactId>dom4j</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>jdom</groupId>
-						<artifactId>jdom</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>xom</groupId>
-						<artifactId>xom</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>maven-plugins</groupId>
-						<artifactId>maven-cobertura-plugin</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>maven-plugins</groupId>
-						<artifactId>maven-findbugs-plugin</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
 			
 			<!-- jaxb -->
 			<dependency>
@@ -598,11 +312,6 @@
 				<version>${commons-lang3.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>${commons-io.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>commons-collections</groupId>
 				<artifactId>commons-collections</artifactId>
 				<version>3.2.1</version>
@@ -639,40 +348,12 @@
 			</dependency>
 			<!-- GENERAL UTILS end -->
 
-			<!-- OTHER UTILS begin -->
-			<!-- pojo copy -->
-			<dependency>
-				<groupId>net.sf.dozer</groupId>
-				<artifactId>dozer</artifactId>
-				<version>${dozer.version}</version>
-			</dependency>
-
-			<!-- excel -->
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi</artifactId>
-				<version>${poi.version}</version>
-			</dependency>
-
-			<!-- validator -->
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>${hibernate-validator.version}</version>
-			</dependency>
-			
+			<!-- OTHER UTILS begin -->			
 			<!-- httpclient -->
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
 				<version>4.2-beta1</version>
-			</dependency>
-
-			<!-- template engine -->
-			<dependency>
-				<groupId>org.freemarker</groupId>
-				<artifactId>freemarker</artifactId>
-				<version>${freemarker.version}</version>
 			</dependency>
 
 			<!-- email -->
@@ -685,13 +366,6 @@
 				<groupId>javax.activation</groupId>
 				<artifactId>activation</artifactId>
 				<version>1.1.1</version>
-			</dependency>
-
-			<!-- international component for Unicode -->
-			<dependency>
-				<groupId>com.ibm.icu</groupId>
-				<artifactId>icu4j</artifactId>
-				<version>4.8.1.1</version>
 			</dependency>
 			<!-- OTHER UTILS end -->
 	
@@ -710,25 +384,6 @@
 				<version>${mockito.version}</version>
 				<scope>test</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.powermock</groupId>
-				<artifactId>powermock-module-junit4</artifactId>
-				<version>${powermock.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.powermock</groupId>
-				<artifactId>powermock-api-mockito</artifactId>
-				<version>${powermock.version}</version>
-				<scope>test</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>org.mockito</groupId>
-						<artifactId>mockito-all</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
 			<!-- spring -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -750,36 +405,6 @@
 				<version>${jetty.version}</version>
 				<scope>test</scope>
 			</dependency>
-			
-			<!-- selenium 2.0 -->
-			<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-java</artifactId>
-				<version>${selenium.version}</version>
-				<scope>test</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>org.seleniumhq.selenium</groupId>
-						<artifactId>selenium-android-driver</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.seleniumhq.selenium</groupId>
-						<artifactId>selenium-iphone-driver</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-remote-driver</artifactId>
-				<version>${selenium.version}</version>
-				<scope>test</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>cglib</groupId>
-						<artifactId>cglib-nodep</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
 
 			<dependency>
 				<groupId>org.dbunit</groupId>
@@ -792,13 +417,6 @@
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
 				<version>${h2.version}</version>
-				<scope>test</scope>
-			</dependency>
-			
-			<dependency>
-				<groupId>com.icegreen</groupId>
-				<artifactId>greenmail</artifactId>
-				<version>1.3.1b</version>
 				<scope>test</scope>
 			</dependency>
 			<!-- TEST end -->
@@ -964,60 +582,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
-	<profiles>
-		<!-- 仅执行smoke test-->
-		<profile>
-			<id>smoke-test</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<groups>org.springside.modules.test.category.Smoke</groups>
-							<includes>
-								<include>**/*IT.java</include>
-							</includes>
-						</configuration>
-					</plugin>		
-				</plugins>
-			</build>
-		</profile>
-	
-		<!-- 执行所有functional test-->
-		<profile>
-			<id>functional-test</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<includes>
-								<include>**/*IT.java</include>
-							</includes>
-						</configuration>
-					</plugin>	
-				</plugins>
-			</build>
-		</profile>
-
-		<!-- 忽略所有@Category(UnStable.class)的TestCase -->
-		<profile>
-			<id>skip-unstable</id>
-			<build>
-				<plugins>
-					<!-- test plugin, exclude unstable case -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<excludedGroups>org.springside.modules.test.category.UnStable</excludedGroups>
-						</configuration>
-					</plugin>				
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>

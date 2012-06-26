@@ -2,36 +2,41 @@ FinancialRecorder
 =================
 This is a financial tools which can be used to record down the financial infomation for some group activities.
 
-----------------------------Features(High)---------------------------------
+Feature List:
 1. User Registration.
-2. User can create a activity group, and this person is the CEO of this group, and point at one person as CFO(can be the same person)
+2. User can create a activity group, and point at one person as CFO
 3. As a user, I can join the group and be a member of this group.
-4. As a CEO, I can send an activity request to the group members.
-5. As a user, I can accept the activity request.
-6. As a CFO, I can manage the group's financial:
+4. As a group member, I can initial an activity and notify the others in my group.(if he/she has more than one group, then he/she can choose which group may be notified.)
+5. As a group member, I can accept this activity, which will be notified back to the initial person.
+6. After this activity has finished, as a CFO, I can manage the group's financial:
      - cash in for a member.
-     - fill in the cost of each activity. (system will calculate: cost per head = total fee/total participate members). (可能要考虑支持member的权重，比如夫妻两个人的费用算到一个人头上)
+     - fill in the cost of the activity. (system will calculate: cost per head = total fee/total participate members). (可能要考虑支持member的权重，比如夫妻两个人的费用算到一个人头上)
 7. As a user, I can see my account information, and cost of each activity.
 8. As a user, I want to be notified when my account has little money.
 9. To be continued...
 
-----------------------------Features(Later)----------------------------------
-1. one person can join multiple groups, and share one account.
+Enhanced Feature List:
+1. Multiple group support, one person can join multiple groups, and share one account.
 2. To be continued...
 
 
--------------------------------Design--------------------------------------
+Design
 1. Application design/framework, portal + server:
      - portal: need to support different device: PC browser, like chrome app(QS)...and ios/android app.
      - server: restful api.
 2. DB design:
      - entity model:
+          User: id, name, password, balance.
+          Group: name, CFO(user id), CEO(user id), group member(user).
+          Activity: name, place, description, start time, holding time, end time, participated member.
      ...
      - simple implementation first, no cache, no non-sql.
 3. API design, server's API:
-     - cash in: group CFO cash in for the group member.(maybe later on it is cashed in by admin, if need to support share account between groups feature.)
-     - view group's financial records(per activity).
-     - fill in the cost per activity.
+     - cash in: group CFO cash in for the group member.(maybe later on it is cashed in by admin, if need to support share account between           groups feature.)
+     - create activity: group CEO can create a activity, and it will be sent out to each group member.
+     - accept activity: group member can accept the activity.
+     - view activity: activity participator can view activity's info, including the fee.
+     - finish activity: group CFO fill in the total cost.(and may need to check if that one has participated.)
 4. Test desgin/framework:
      ...
 5. Deployment:
@@ -45,11 +50,24 @@ This is a financial tools which can be used to record down the financial infomat
 6. Permission control
      - such as: only the CFO can cash in for each member and fill in the activity cost. normal member can only see his own account, and so on...
 
--------------------------------Plan----------------------------------------
-1. build up the project first, github.
-2. framework: spring, cxf, hibernate?, database service on cloud?.(QS)
-2. entity design.
-3. persistence.
-4. business logic, implement the back-end server restful interface.
-     - create group directly, dummy user data.
-	 - ...
+
+Plan
+1. build up the project first, github.[X]
+2. framework: spring, cxf, hibernate, database service on cloud. (QS)[X]
+3. entity design, version 0.1[X]
+     - User
+     - Group
+     - FinancialRecord
+4. persistence, Dao.[X]
+5. business logic, implement the back-end server restful interface.[X]
+     - simply implement it, user and financialRecord
+     - can cashin, auto-calculate the fee per user according to the financial record.
+6. Portal
+     - build a simple mobile application, to have those above functions
+     - UI
+     - communication between application and server. (data)
+     - notify to the mobile user.
+
+
+
+
