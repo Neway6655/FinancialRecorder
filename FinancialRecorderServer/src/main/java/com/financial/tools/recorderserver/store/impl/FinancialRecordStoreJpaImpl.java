@@ -1,7 +1,10 @@
 package com.financial.tools.recorderserver.store.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +27,16 @@ public class FinancialRecordStoreJpaImpl implements FinancialRecordStore {
 		return entityManager.find(FinancialRecord.class, financialRecordId);
 	}
 
+	@Override
+	public List<FinancialRecord> listFinancialRecords() {
+		Query query = entityManager.createQuery("SELECT f FROM FinancialRecord f", FinancialRecord.class);
+		query.setMaxResults(10);
+		return query.getResultList();
+	}
+
 	@PersistenceContext
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
+
 }

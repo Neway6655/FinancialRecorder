@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.entity.User;
+import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.financial.tools.recorderserver.store.FinancialRecordStore;
@@ -36,6 +37,25 @@ public class FinancialManager {
 		financialRecord.setUserList(userList);
 
 		return financialRecordStore.createFinancialRecord(financialRecord);
+	}
+
+	public List<FinancialRecordListResponse> listFinancialRecords() {
+		List<FinancialRecordListResponse> recordList = Lists.newArrayList();
+		List<FinancialRecord> financialRecordList = financialRecordStore.listFinancialRecords();
+		for (FinancialRecord financialRecord : financialRecordList) {
+			FinancialRecordListResponse record = new FinancialRecordListResponse();
+			record.setName(financialRecord.getName());
+			record.setTotalFee(financialRecord.getTotalFee());
+
+			List<String> userNameList = Lists.newArrayList();
+			for (User user : financialRecord.getUserList()) {
+				userNameList.add(user.getName());
+			}
+
+			record.setUserNameList(userNameList);
+			recordList.add(record);
+		}
+		return recordList;
 	}
 
 	public void updateFinance(long financialRecordId) {

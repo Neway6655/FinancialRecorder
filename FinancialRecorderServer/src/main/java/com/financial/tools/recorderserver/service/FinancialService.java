@@ -1,5 +1,7 @@
 package com.financial.tools.recorderserver.service;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.business.FinancialManager;
 import com.financial.tools.recorderserver.payload.CashinRequest;
+import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 
@@ -34,6 +37,12 @@ public class FinancialService {
 	public String createFinancialRecord(FinancialRecordRequest financialRecordRequest) {
 		long financialRecordId = financialManager.createFinancialRecord(financialRecordRequest);
 		return String.valueOf(financialRecordId);
+	}
+
+	@GET
+	@Path("/list")
+	public List<FinancialRecordListResponse> listFinancialRecords() {
+		return financialManager.listFinancialRecords();
 	}
 
 	@GET
