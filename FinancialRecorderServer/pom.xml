@@ -9,7 +9,7 @@
 		<relativePath>../parent/</relativePath>
 	</parent>
 	<groupId>com.financial.tools</groupId>
-	<artifactId>financial-recorder-server</artifactId>
+	<artifactId>recorder-server</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Financial :: Tools :: Recorder server</name>
@@ -99,6 +99,10 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-rs-extension-providers</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -194,25 +198,6 @@
 					<additionalProjectnatures>
 						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
 					</additionalProjectnatures>
-				</configuration>
-			</plugin>
-
-			<!-- jetty插件, 设定context path与spring profile -->
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<configuration>
-					<systemProperties>
-						<systemProperty>
-							<name>spring.profiles.active</name>
-							<value>development</value>
-						</systemProperty>
-					</systemProperties>
-					<useTestClasspath>true</useTestClasspath>
-				
-					<webAppConfig>
-						<contextPath>/${project.artifactId}</contextPath>
-					</webAppConfig>
 				</configuration>
 			</plugin>
 		</plugins>

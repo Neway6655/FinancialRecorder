@@ -20,4 +20,24 @@
 		</jaxrs:providers>
 	</jaxrs:server>
 	
+	<jaxrs:server id="serviceJsonp" address="/jsonp">
+	    <jaxrs:serviceBeans>
+	      <ref bean="financialService" />
+	    </jaxrs:serviceBeans>
+	    
+	    <jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>  
+	
+	    <jaxrs:inInterceptors>
+	       <bean class="org.apache.cxf.jaxrs.provider.jsonp.JsonpInInterceptor">
+	       		<property name="callbackParam" value="callback"/>
+	       </bean>
+	    </jaxrs:inInterceptors>
+	    <jaxrs:outInterceptors>
+	       <bean class="org.apache.cxf.jaxrs.provider.jsonp.JsonpPreStreamInterceptor"/>
+	       <bean class="org.apache.cxf.jaxrs.provider.jsonp.JsonpPostStreamInterceptor"/>
+	    </jaxrs:outInterceptors> 
+	</jaxrs:server>
+	
 </beans>
