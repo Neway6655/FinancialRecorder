@@ -5,7 +5,7 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 
 import com.financial.tools.recorderserver.payload.CashinRequest;
-import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
+import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 
@@ -25,9 +25,9 @@ public class FinancialServiceClient extends AbstractFinancialClient {
 		return post(client, financialRecordRequest, String.class);
 	}
 
-	public List<FinancialRecordListResponse> listFinancialRecord() {
+	public List<FinancialRecordResponse> listFinancialRecord() {
 		client.path("finance/list").accept(MediaType.APPLICATION_JSON);
-		return getList(client, FinancialRecordListResponse.class);
+		return getList(client, FinancialRecordResponse.class);
 	}
 
 	public String updateFinance(String financialRecordId) {

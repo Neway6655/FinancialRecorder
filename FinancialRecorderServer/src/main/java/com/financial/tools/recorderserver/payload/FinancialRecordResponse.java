@@ -2,15 +2,15 @@ package com.financial.tools.recorderserver.payload;
 
 import java.util.List;
 
-public class FinancialRecordListResponse {
+public class FinancialRecordResponse {
 	private String name;
 	private long totalFee;
 	private List<String> userNameList;
 
-	public FinancialRecordListResponse() {
+	public FinancialRecordResponse() {
 	}
 
-	public FinancialRecordListResponse(String name, long totalFee, List<String> userNameList) {
+	public FinancialRecordResponse(String name, long totalFee, List<String> userNameList) {
 		super();
 		this.name = name;
 		this.totalFee = totalFee;

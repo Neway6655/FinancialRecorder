@@ -1,7 +1,5 @@
 package com.financial.tools.recorderserver.service;
 
-import java.util.List;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -41,8 +39,8 @@ public class FinancialService {
 
 	@GET
 	@Path("/list")
-	public List<FinancialRecordListResponse> listFinancialRecords() {
-		return financialManager.listFinancialRecords();
+	public FinancialRecordListResponse listFinancialRecords() {
+		return new FinancialRecordListResponse(financialManager.listFinancialRecords());
 	}
 
 	@GET

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.entity.User;
-import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
+import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.financial.tools.recorderserver.store.FinancialRecordStore;
@@ -39,11 +39,11 @@ public class FinancialManager {
 		return financialRecordStore.createFinancialRecord(financialRecord);
 	}
 
-	public List<FinancialRecordListResponse> listFinancialRecords() {
-		List<FinancialRecordListResponse> recordList = Lists.newArrayList();
+	public List<FinancialRecordResponse> listFinancialRecords() {
+		List<FinancialRecordResponse> recordList = Lists.newArrayList();
 		List<FinancialRecord> financialRecordList = financialRecordStore.listFinancialRecords();
 		for (FinancialRecord financialRecord : financialRecordList) {
-			FinancialRecordListResponse record = new FinancialRecordListResponse();
+			FinancialRecordResponse record = new FinancialRecordResponse();
 			record.setName(financialRecord.getName());
 			record.setTotalFee(financialRecord.getTotalFee());
 

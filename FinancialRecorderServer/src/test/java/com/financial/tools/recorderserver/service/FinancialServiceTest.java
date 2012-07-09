@@ -15,7 +15,7 @@ import com.financial.tools.recorderserver.AbstractComponentTestCase;
 import com.financial.tools.recorderserver.client.FinancialServiceClient;
 import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
-import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
+import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.google.common.collect.Lists;
@@ -82,7 +82,7 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 		financialServiceClient.createFinancialRecord(financialRecordRequest);
 
 		// replay.
-		List<FinancialRecordListResponse> listFinancialRecord = financialServiceClient.listFinancialRecord();
+		List<FinancialRecordResponse> listFinancialRecord = financialServiceClient.listFinancialRecord();
 		Assert.assertEquals(2, listFinancialRecord.size());
 	}
 
