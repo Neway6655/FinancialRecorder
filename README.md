@@ -16,7 +16,8 @@ Feature List
 - As a user, I want to be notified when my account has little money.
 - To be continued...
 
----------------------------------------------Enhanced Feature List---------------------------------------------
+Enhanced Feature List
+---------------------------------------------
 - Multiple group support, one person can join multiple groups, and share one account.
 - To be continued...
 
@@ -24,8 +25,8 @@ Feature List
 Design
 ---------------------------------------------
 - Application design/framework, portal + server:
-     -- portal: need to support different device: PC browser, like chrome app(QS)...and ios/android app.
-     -- server: restful api.
+-- portal: need to support different device: PC browser, like chrome app(QS)...and ios/android app.
+-- server: restful api.
 - DB design:
      -- entity model:
           User: id, name, password, balance.
