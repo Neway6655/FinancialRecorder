@@ -1,8 +1,7 @@
 Ext.define('FinancialRecorderApp.controller.Main', {
     extend: 'Ext.app.Controller',
 	
-	requires: [
-		'FinancialRecorderApp.view.Main',
+	requires: [		
 		'FinancialRecorderApp.view.ActivityList',
 		'FinancialRecorderApp.view.ActivityDetail'
     ],
