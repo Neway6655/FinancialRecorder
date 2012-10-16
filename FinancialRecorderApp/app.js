@@ -6,20 +6,21 @@ Ext.application({
     name: 'FinancialRecorderApp',
 		
 	requires: [
-		'FinancialRecorderApp.view.Main'		
+		'FinancialRecorderApp.view.ActivityMain'
     ],
-	config: {
-		models: ['Recorder'],
-		views: ['Main'],
-		stores: ['Recorder'],
-		controllers: ['Main'],
-	},		
+
+	models: ['Recorder'],
+	stores: ['RecorderLocal'],
+	controllers: ['Activity'],
+	views: ['ActivityMain', 'ActivityList', 'ActivityDetail', 'UserSelector'],
 	
 	launch: function() {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('FinancialRecorderApp.view.Main'));
-    }  
+        var mainView = Ext.create('FinancialRecorderApp.view.ActivityMain');
+        var activityDetailView = Ext.create('FinancialRecorderApp.view.ActivityDetail');
+        Ext.Viewport.add(mainView, activityDetailView);
+    }
 });
