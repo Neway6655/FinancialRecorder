@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.FinancialRecord;
+import com.financial.tools.recorderserver.entity.FinancialRecordStatus;
 import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
@@ -35,6 +36,7 @@ public class FinancialManager {
 		financialRecord.setName(financialRecordRequest.getName());
 		financialRecord.setTotalFee(financialRecordRequest.getTotalFee());
 		financialRecord.setUserList(userList);
+		financialRecord.setStatus(FinancialRecordStatus.NEW.getValue());
 
 		return financialRecordStore.createFinancialRecord(financialRecord);
 	}
@@ -60,11 +62,16 @@ public class FinancialManager {
 
 	public void updateFinance(long financialRecordId) {
 		FinancialRecord financialRecord = financialRecordStore.getFinancialRecord(financialRecordId);
-		long totalFee = financialRecord.getTotalFee();
-		List<User> userList = financialRecord.getUserList();
-		long feePerUser = totalFee / userList.size();
-		for (User user : userList) {
-			userStore.updateBalance(user.getId(), user.getBalance() - feePerUser);
+		if (financialRecord != null) {
+			financialRecord.setStatus(FinancialRecordStatus.UPDATED.getValue());
+			financialRecordStore.updateFinancialRecord(financialRecord);
+
+			long totalFee = financialRecord.getTotalFee();
+			List<User> userList = financialRecord.getUserList();
+			long feePerUser = totalFee / userList.size();
+			for (User user : userList) {
+				userStore.updateBalance(user.getId(), user.getBalance() - feePerUser);
+			}
 		}
 	}
 

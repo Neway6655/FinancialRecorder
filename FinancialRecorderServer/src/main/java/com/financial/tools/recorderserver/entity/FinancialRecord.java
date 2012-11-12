@@ -29,6 +29,9 @@ public class FinancialRecord {
 	@Column(name = "TOTAL_FEE")
 	private long totalFee;
 
+	@Column(name = "STATUS")
+	private int status;
+
 	@OneToMany
 	@JoinTable(name = "FR_RECORD_USER", joinColumns = { @JoinColumn(name = "RECORD_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
 	@Fetch(FetchMode.JOIN)
@@ -37,12 +40,13 @@ public class FinancialRecord {
 	public FinancialRecord() {
 	}
 
-	public FinancialRecord(long id, String name, long totalFee, List<User> userList) {
+	public FinancialRecord(long id, String name, long totalFee, FinancialRecordStatus status, List<User> userList) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.totalFee = totalFee;
 		this.userList = userList;
+		this.status = status.getValue();
 	}
 
 	public long getId() {
@@ -67,6 +71,14 @@ public class FinancialRecord {
 
 	public void setTotalFee(long totalFee) {
 		this.totalFee = totalFee;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public List<User> getUserList() {

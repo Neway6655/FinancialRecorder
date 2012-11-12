@@ -3,6 +3,7 @@ package com.financial.tools.recorderserver.store.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -24,7 +25,20 @@ public class FinancialRecordStoreJpaImpl implements FinancialRecordStore {
 
 	@Override
 	public FinancialRecord getFinancialRecord(long financialRecordId) {
-		return entityManager.find(FinancialRecord.class, financialRecordId);
+		Query query = entityManager.createQuery("SELECT f FROM FinancialRecord f where f.status = 1",
+				FinancialRecord.class);
+		try {
+			FinancialRecord result = (FinancialRecord) query.getSingleResult();
+			return result;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public void updateFinancialRecord(FinancialRecord financialRecord) {
+		entityManager.clear();
+		entityManager.merge(financialRecord);
 	}
 
 	@Override
