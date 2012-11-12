@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.entity.User;
-import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
+import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.financial.tools.recorderserver.store.FinancialRecordStore;
 import com.financial.tools.recorderserver.store.UserStore;
@@ -70,7 +70,11 @@ public class FinancialManager {
 
 	public UserFinancialInfoResponse getUserFinancialInfo(long userId) {
 		User user = userStore.getUser(userId);
-		return new UserFinancialInfoResponse(user.getName(), user.getBalance());
+		UserFinancialInfoResponse userInfo = new UserFinancialInfoResponse();
+		if (user != null) {
+			userInfo = new UserFinancialInfoResponse(user.getName(), user.getBalance());
+		}
+		return userInfo;
 	}
 
 	@Autowired

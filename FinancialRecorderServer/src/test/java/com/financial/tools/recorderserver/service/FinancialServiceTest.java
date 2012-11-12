@@ -1,6 +1,5 @@
 package com.financial.tools.recorderserver.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -8,15 +7,11 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.financial.tools.recorderserver.AbstractComponentTestCase;
 import com.financial.tools.recorderserver.client.FinancialServiceClient;
 import com.financial.tools.recorderserver.payload.CashinRequest;
-import com.financial.tools.recorderserver.payload.CreateUserRequest;
-import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
+import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.google.common.collect.Lists;
 
@@ -28,21 +23,6 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 	public void setUp() {
 		String serverAddress = baseUrl + "/api/";
 		financialServiceClient = new FinancialServiceClient(serverAddress);
-	}
-
-	@Test
-	public void test123() throws JsonGenerationException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		CreateUserRequest request = new CreateUserRequest("Neway", "123456", 100L);
-		String result = mapper.writeValueAsString(request);
-		System.out.println(result);
-
-		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest();
-		financialRecordRequest.setName("Test");
-		financialRecordRequest.setTotalFee(100L);
-		financialRecordRequest.setUserIdList(Lists.newArrayList(1L, 2L));
-
-		System.out.println(mapper.writeValueAsString(financialRecordRequest));
 	}
 
 	@Test

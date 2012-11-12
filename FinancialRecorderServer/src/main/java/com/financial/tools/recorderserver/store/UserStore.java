@@ -1,5 +1,7 @@
 package com.financial.tools.recorderserver.store;
 
+import java.util.List;
+
 import com.financial.tools.recorderserver.entity.User;
 
 public interface UserStore {
@@ -9,4 +11,6 @@ public interface UserStore {
 	public void updateBalance(long userId, long balance);
 
 	public long saveUser(User user);
+
+	public List<User> findAll();
 }

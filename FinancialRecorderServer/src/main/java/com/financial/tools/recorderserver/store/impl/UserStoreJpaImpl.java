@@ -1,5 +1,7 @@
 package com.financial.tools.recorderserver.store.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -32,6 +34,12 @@ public class UserStoreJpaImpl implements UserStore {
 		query.setParameter("id", userId);
 
 		query.executeUpdate();
+	}
+
+	@Override
+	public List<User> findAll() {
+		Query query = entityManager.createQuery("SELECT u FROM User u", User.class);
+		return query.getResultList();
 	}
 
 	@PersistenceContext
