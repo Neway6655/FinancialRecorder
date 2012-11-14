@@ -3,73 +3,88 @@ package com.financial.tools.recorderserver.transactionlog.entry;
 import java.io.Serializable;
 import java.util.List;
 
-import com.financial.tools.recorderserver.transactionlog.TransactionType;
-
 public class TransactionLogEntry implements Serializable {
 
-	private static final long serialVersionUID = -8324440347502312758L;
+	private static final Long serialVersionUID = -8324440347502312758L;
 
-	private TransactionType transactionType;
+	private TransactionResult transactionResult;
 
-	private long financialRecordId;
+	private String transactionType;
+
+	private Long financialRecordId;
 
 	private String financialRecordName;
 
-	private long amount;
+	private Long amount;
 
-	private long fee;
+	private Long fee;
 
 	private List<Long> userIdList;
 
 	public TransactionLogEntry() {
 	}
 
-	public TransactionType getTransactionType() {
+	public TransactionResult getTransactionResult() {
+		return transactionResult;
+	}
+
+	public TransactionLogEntry setTransactionResult(TransactionResult transactionResult) {
+		this.transactionResult = transactionResult;
+		return this;
+	}
+
+	public String getTransactionType() {
 		return transactionType;
 	}
 
-	public void setTransactionType(TransactionType transactionType) {
+	public TransactionLogEntry setTransactionType(String transactionType) {
 		this.transactionType = transactionType;
+		return this;
 	}
 
-	public long getFinancialRecordId() {
+	public Long getFinancialRecordId() {
 		return financialRecordId;
 	}
 
-	public void setFinancialRecordId(long financialRecordId) {
+	public TransactionLogEntry setFinancialRecordId(Long financialRecordId) {
 		this.financialRecordId = financialRecordId;
+		return this;
 	}
 
 	public String getFinancialRecordName() {
 		return financialRecordName;
 	}
 
-	public void setFinancialRecordName(String financialRecordName) {
+	public TransactionLogEntry setFinancialRecordName(String financialRecordName) {
 		this.financialRecordName = financialRecordName;
+		return this;
 	}
 
-	public long getAmount() {
+	public Long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(long amount) {
+	public TransactionLogEntry setAmount(Long amount) {
 		this.amount = amount;
+		return this;
 	}
 
-	public long getFee() {
+	public Long getFee() {
 		return fee;
 	}
 
-	public void setFee(long fee) {
+	public TransactionLogEntry setFee(Long fee) {
 		this.fee = fee;
+		return this;
 	}
 
 	public List<Long> getUserIdList() {
 		return userIdList;
 	}
 
-	public void setUserIdList(List<Long> userIdList) {
+	public TransactionLogEntry setUserIdList(List<Long> userIdList) {
 		this.userIdList = userIdList;
+		return this;
 	}
 
 }

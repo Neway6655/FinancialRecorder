@@ -14,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
 import com.financial.tools.recorderserver.store.UserStore;
+import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
+import com.financial.tools.recorderserver.transactionlog.aop.TransactionLogType;
+import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogEntry;
+import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogThreadLocalContext;
+import com.google.common.collect.Lists;
 
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,13 +30,19 @@ public class UserService {
 	@POST
 	@Path("/create")
 	@Produces(MediaType.TEXT_PLAIN)
+	@TransactionLog(type = TransactionLogType.CREATE_USER)
 	public String createUser(CreateUserRequest request) {
+		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
+
 		User user = new User();
 		user.setName(request.getName());
 		user.setPassword(request.getPassword());
-		user.setBalance(request.getBalance());
+		long balance = request.getBalance();
+		user.setBalance(balance);
 
 		long userId = userStore.saveUser(user);
+		entry.setUserIdList(Lists.newArrayList(userId)).setAmount(balance);
+
 		return String.valueOf(userId);
 	}
 
