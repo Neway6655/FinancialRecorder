@@ -58,6 +58,12 @@ Plan-1 (Backend Server, done)
     - simply implement it, user and financialRecord
     - can cashin, auto-calculate the fee per user according to the financial record.
 
+Plan-1.1 (Backend Server, ongoing)
+-----------------------------------------------------
+- update interface: add user list interface (done)
+- add transaction log (need QS how to write log file)
+
+
 Plan-2 (Application, ongoing)
 -------------------------------
 - use sencha touch 2.0, mvc structure.(done)
@@ -66,6 +72,5 @@ Plan-2 (Application, ongoing)
 - UI
 - communication between application and server. (QS done, using JSONP)
 - notify to the mobile user.(QS)
-
 
 
