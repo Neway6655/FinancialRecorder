@@ -14,6 +14,11 @@ import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
+import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
+import com.financial.tools.recorderserver.transactionlog.aop.TransactionLogType;
+import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogEntry;
+import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogThreadLocalContext;
+import com.google.common.collect.Lists;
 
 @Path("/finance")
 @Produces(MediaType.APPLICATION_JSON)
@@ -24,16 +29,29 @@ public class FinancialService {
 	@POST
 	@Path("/cashin")
 	@Produces(MediaType.TEXT_PLAIN)
+	@TransactionLog(type = TransactionLogType.CASH_IN)
 	public String cashin(CashinRequest request) {
+		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
+
 		long balance = financialManager.updateUserBalance(request.getUserId(), request.getAmount());
+
+		entry.setAmount(request.getAmount()).setUserIdList(Lists.newArrayList(request.getUserId()));
+
 		return String.valueOf(balance);
 	}
 
 	@POST
 	@Path("/create")
 	@Produces(MediaType.TEXT_PLAIN)
+	@TransactionLog(type = TransactionLogType.CREATE_FINANCIAL_RECORD)
 	public String createFinancialRecord(FinancialRecordRequest financialRecordRequest) {
+		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
+
 		long financialRecordId = financialManager.createFinancialRecord(financialRecordRequest);
+
+		entry.setFinancialRecordId(financialRecordId).setFinancialRecordName(financialRecordRequest.getName())
+				.setFee(financialRecordRequest.getTotalFee()).setUserIdList(financialRecordRequest.getUserIdList());
+
 		return String.valueOf(financialRecordId);
 	}
 
@@ -46,8 +64,14 @@ public class FinancialService {
 	@GET
 	@Path("/update/{financialRecord}")
 	@Produces(MediaType.TEXT_PLAIN)
+	@TransactionLog(type = TransactionLogType.UPDATE_FINANCIAL_RECORD)
 	public String updateFinance(@PathParam("financialRecord") String financialRecordId) {
-		financialManager.updateFinance(Long.valueOf(financialRecordId));
+		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
+
+		long financialRecordIdValue = Long.valueOf(financialRecordId);
+		financialManager.updateFinance(financialRecordIdValue);
+
+		entry.setFinancialRecordId(financialRecordIdValue);
 		return "";
 	}
 
