@@ -1,5 +1,5 @@
 Ext.define('FinancialRecorderApp.view.UserSelector', {
-	extend: 'Ext.List',
+    extend: 'Ext.List',
     alias: 'widget.userselector',
 
     config: {
@@ -7,14 +7,14 @@ Ext.define('FinancialRecorderApp.view.UserSelector', {
         allowDeselect: true,
         mode: 'MULTI',
         itemTpl: '{name}',
-        // store: Ext.create("lunch-together-app.store.FriendStore"),
+        store: Ext.create("FinancialRecorderApp.store.User"),
         listeners: {
-		    select: 'userSelected',
-		}
+            select: 'userSelected',
+        }
     },
 
-    userSelected: function (list, record, item, a, b, c) {
-		console.log("itemtap: " + record.data.name);
-		// this.fireEvent('friendSelectedEvent', record.data.name, item);
-	},
+    userSelected: function(list, record, item, a, b, c) {
+        console.log("itemtap: " + record.data.name);
+        // this.fireEvent('friendSelectedEvent', record.data.name, item);
+    },
 });

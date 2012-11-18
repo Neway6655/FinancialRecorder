@@ -8,18 +8,32 @@ Ext.define('FinancialRecorderApp.view.ActivityMain', {
 	
 	config: {
 		layout: 'fit',
-        items: [{
-        	xtype: 'titlebar',
-        	title: 'Activity List',
-        	docked: 'top',
-        	items: [{
-        		xtype: 'button',
-        		ui: 'action',
-        		text: 'New',
-        		align: 'right',
-        	}]
-        },{
-            xtype: 'activitylist'
-        }]
-    }
+    },
+
+    initialize: function() {
+        var topBar = {
+            xtype: 'titlebar',
+            title: 'Activity List',
+            docked: 'top',
+            items: [{
+                xtype: 'button',
+                ui: 'action',
+                text: 'New',
+                align: 'right',
+                handler: this.create,
+                scope: this
+            }],
+        };
+
+        var activityList = {
+            xtype: 'activitylist',
+        };
+
+        this.add(topBar, activityList);
+    },
+
+    create: function(){
+        console.log('create an new record');
+        this.fireEvent('showNewFinancialRecordEvent', this);
+    },
 });
