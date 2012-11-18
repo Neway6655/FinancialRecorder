@@ -60,5 +60,12 @@ Ext.define('FinancialRecorderApp.controller.Activity', {
         var financialRecord = activityDetail.getValues();
         console.log('name: ' + financialRecord.name);
         console.log('total fee: ' + financialRecord.totalFee);
+
+        var userIdArray = new Array();
+        var selectedUserList = this.getUserSelector().getSelection();
+        for (i=0; i < selectedUserList.length; i ++) { 
+          userIdArray[i] = selectedUserList[i].getData().id;
+          console.log('select user ' + selectedUserList[i].getData().name);
+        }
     }
 });
