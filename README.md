@@ -61,7 +61,7 @@ Plan-1 (Backend Server, done)
 Plan-1.1 (Backend Server, ongoing)
 -----------------------------------------------------
 - update interface: add user list interface (done)
-- add transaction log (need QS how to write log file)
+- add transaction log (done)
 
 
 Plan-2 (Application, ongoing)
