@@ -23,6 +23,7 @@
 	<jaxrs:server id="serviceJsonp" address="/jsonp">
 	    <jaxrs:serviceBeans>
 	      <ref bean="financialService" />
+	      <ref bean="userService" />
 	    </jaxrs:serviceBeans>
 	    
 	    <jaxrs:providers>

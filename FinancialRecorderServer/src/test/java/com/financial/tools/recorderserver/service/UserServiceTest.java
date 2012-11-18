@@ -1,7 +1,5 @@
 package com.financial.tools.recorderserver.service;
 
-import java.util.List;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -9,8 +7,8 @@ import org.junit.Test;
 
 import com.financial.tools.recorderserver.AbstractComponentTestCase;
 import com.financial.tools.recorderserver.client.UserServiceClient;
-import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
+import com.financial.tools.recorderserver.payload.UserListResponse;
 
 public class UserServiceTest extends AbstractComponentTestCase {
 
@@ -31,8 +29,8 @@ public class UserServiceTest extends AbstractComponentTestCase {
 		userServiceClient.createUser(request);
 
 		// verify.
-		List<User> userList = userServiceClient.listUsers();
-		Assert.assertEquals(3, userList.size());
+		UserListResponse response = userServiceClient.listUsers();
+		Assert.assertEquals(3, response.getUserList().size());
 	}
 
 }

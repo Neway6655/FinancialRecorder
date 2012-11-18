@@ -1,7 +1,5 @@
 package com.financial.tools.recorderserver.service;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
+import com.financial.tools.recorderserver.payload.UserListResponse;
 import com.financial.tools.recorderserver.store.UserStore;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLogType;
@@ -48,8 +47,8 @@ public class UserService {
 
 	@GET
 	@Path("/list")
-	public List<User> listUsers() {
-		return userStore.findAll();
+	public UserListResponse listUsers() {
+		return new UserListResponse(userStore.findAll());
 	}
 
 	@Autowired

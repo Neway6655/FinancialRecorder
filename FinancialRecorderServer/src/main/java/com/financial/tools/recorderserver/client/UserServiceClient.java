@@ -1,11 +1,9 @@
 package com.financial.tools.recorderserver.client;
 
-import java.util.List;
-
 import javax.ws.rs.core.MediaType;
 
-import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
+import com.financial.tools.recorderserver.payload.UserListResponse;
 
 public class UserServiceClient extends AbstractFinancialClient {
 
@@ -18,8 +16,8 @@ public class UserServiceClient extends AbstractFinancialClient {
 		return post(client, request, String.class);
 	}
 
-	public List<User> listUsers() {
+	public UserListResponse listUsers() {
 		client.path("user/list").accept(MediaType.APPLICATION_JSON);
-		return getList(client, User.class);
+		return get(client, UserListResponse.class);
 	}
 }
