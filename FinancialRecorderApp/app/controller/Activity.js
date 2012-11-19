@@ -67,5 +67,20 @@ Ext.define('FinancialRecorderApp.controller.Activity', {
           userIdArray[i] = selectedUserList[i].getData().id;
           console.log('select user ' + selectedUserList[i].getData().name);
         }
+
+        var financialRecordJson = "{'name': "+ financialRecord.name +", 'totalFee': "+ financialRecord.totalFee +", 'userIdList': "+ userIdArray +"}";
+        Ext.Ajax.request({
+          url: 'http://financialrecorder.cloudfoundry.com/api/finance/create',
+          method: 'POST',
+          jsonData: financialRecordJson,
+          success: function(response, options) {
+            console.log("Successfully create financial record.");
+            alert('Successfully');
+          },
+          failure: function(response,options){
+            console.log("Failed to create financial record.");
+            alert('Failed');
+          }
+        });
     }
 });
