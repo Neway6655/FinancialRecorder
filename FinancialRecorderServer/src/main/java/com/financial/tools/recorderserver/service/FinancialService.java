@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,7 +45,7 @@ public class FinancialService {
 	@Path("/create")
 	@Produces(MediaType.TEXT_PLAIN)
 	@TransactionLog(type = TransactionLogType.CREATE_FINANCIAL_RECORD)
-	public String createFinancialRecord(FinancialRecordRequest financialRecordRequest) {
+	public Response createFinancialRecord(FinancialRecordRequest financialRecordRequest) {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
 		long financialRecordId = financialManager.createFinancialRecord(financialRecordRequest);
@@ -52,7 +53,7 @@ public class FinancialService {
 		entry.setFinancialRecordId(financialRecordId).setFinancialRecordName(financialRecordRequest.getName())
 				.setFee(financialRecordRequest.getTotalFee()).setUserIdList(financialRecordRequest.getUserIdList());
 
-		return String.valueOf(financialRecordId);
+		return Response.ok(financialRecordId).header("Access-Control-Allow-Origin", "http://localhost:8080").build();
 	}
 
 	@GET

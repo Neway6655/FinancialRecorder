@@ -1,7 +1,5 @@
 package com.financial.tools.recorderserver.service;
 
-import java.util.List;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -10,8 +8,8 @@ import org.junit.Test;
 import com.financial.tools.recorderserver.AbstractComponentTestCase;
 import com.financial.tools.recorderserver.client.FinancialServiceClient;
 import com.financial.tools.recorderserver.payload.CashinRequest;
+import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
-import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.google.common.collect.Lists;
 
@@ -62,8 +60,8 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 		financialServiceClient.createFinancialRecord(financialRecordRequest);
 
 		// replay.
-		List<FinancialRecordResponse> listFinancialRecord = financialServiceClient.listFinancialRecord();
-		Assert.assertEquals(2, listFinancialRecord.size());
+		FinancialRecordListResponse response = financialServiceClient.listFinancialRecord();
+		Assert.assertEquals(3, response.getRecordList().size());
 	}
 
 }
