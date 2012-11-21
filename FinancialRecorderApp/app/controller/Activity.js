@@ -68,7 +68,7 @@ Ext.define('FinancialRecorderApp.controller.Activity', {
           console.log('select user ' + selectedUserList[i].getData().name);
         }
 
-        var financialRecordJson = "{'name': "+ financialRecord.name +", 'totalFee': "+ financialRecord.totalFee +", 'userIdList': "+ userIdArray +"}";
+        var financialRecordJson = '{"name": "'+ financialRecord.name +'", "totalFee": '+ financialRecord.totalFee +', "userIdList": ['+ userIdArray +']}';
         Ext.Ajax.request({
           url: 'http://financialrecorder.cloudfoundry.com/api/finance/create',
           method: 'POST',
