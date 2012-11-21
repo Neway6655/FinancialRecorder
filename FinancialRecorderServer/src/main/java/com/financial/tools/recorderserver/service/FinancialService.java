@@ -50,10 +50,12 @@ public class FinancialService {
 
 		long financialRecordId = financialManager.createFinancialRecord(financialRecordRequest);
 
+		financialManager.updateFinance(financialRecordId);
+
 		entry.setFinancialRecordId(financialRecordId).setFinancialRecordName(financialRecordRequest.getName())
 				.setFee(financialRecordRequest.getTotalFee()).setUserIdList(financialRecordRequest.getUserIdList());
 
-		return Response.ok(financialRecordId).header("Access-Control-Allow-Origin", "http://localhost:8080").build();
+		return Response.ok(financialRecordId).build();
 	}
 
 	@GET

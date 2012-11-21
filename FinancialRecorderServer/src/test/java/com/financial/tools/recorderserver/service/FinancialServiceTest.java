@@ -1,6 +1,6 @@
 package com.financial.tools.recorderserver.service;
 
-import junit.framework.Assert;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,14 +27,14 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 	public void testCashin() throws Exception {
 		CashinRequest request = new CashinRequest(1L, 100L);
 		String result = financialServiceClient.cashin(request);
-		Assert.assertEquals("200", result);
+		assertEquals("200", result);
 	}
 
 	@Test
 	public void testGetUserFinancialInfo() throws Exception {
 		UserFinancialInfoResponse userFinancialInfo = financialServiceClient.getUserFinancialInfo("2");
-		Assert.assertEquals("Fred", userFinancialInfo.getUserName());
-		Assert.assertEquals(100L, userFinancialInfo.getBalance());
+		assertEquals("Fred", userFinancialInfo.getUserName());
+		assertEquals(100L, userFinancialInfo.getBalance());
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 
 		// verify
 		UserFinancialInfoResponse userFinancialInfo = financialServiceClient.getUserFinancialInfo("2");
-		Assert.assertEquals(90L, userFinancialInfo.getBalance());
+		assertEquals(90L, userFinancialInfo.getBalance());
 	}
 
 	@Test
@@ -61,7 +61,13 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 
 		// replay.
 		FinancialRecordListResponse response = financialServiceClient.listFinancialRecord();
-		Assert.assertEquals(3, response.getRecordList().size());
+		assertEquals(2, response.getRecordList().size());
+
+		UserFinancialInfoResponse userAInfo = financialServiceClient.getUserFinancialInfo("1");
+		UserFinancialInfoResponse userBInfo = financialServiceClient.getUserFinancialInfo("2");
+
+		assertEquals(75, userAInfo.getBalance());
+		assertEquals(75, userBInfo.getBalance());
 	}
 
 }
