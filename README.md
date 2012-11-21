@@ -58,19 +58,32 @@ Plan-1 (Backend Server, done)
     - simply implement it, user and financialRecord
     - can cashin, auto-calculate the fee per user according to the financial record.
 
-Plan-1.1 (Backend Server, ongoing)
+Plan-1.1 (Backend Server, done)
 -----------------------------------------------------
 - update interface: add user list interface (done)
 - add transaction log (done)
 
 
-Plan-2 (Application, ongoing)
+Plan-2 (Application, done)
 -------------------------------
 - use sencha touch 2.0, mvc structure.(done)
 - build a basic page such as activities list, which data is loaded from backend server on cloudfoundry.(done)
-- build a simple mobile application, to have those above functions
+- build a simple mobile application, to have those above functions (done, now have create a financial recorder, and list them.)
 - UI
 - communication between application and server. (QS done, using JSONP)
-- notify to the mobile user.(QS)
+- notify to the mobile user.(put into next planning.)
 
+Plan-3 (not-started)
+-----------------------------
+- As a administrator, I can see see person's account balance.
+- As a administrator, I can cashin for some person.
+- Improvment: add created time of financial record in GUI, and show it in list view.
+- Improvment: the financial record can't be modified once it is created.
+- Improvment: split the total fee into three parts: playgound, water, balls.
+
+Plan-4 (not-started)
+-----------------------------
+- As a user, I can login with my account.
+- As a user, I can view my account balance.
+- As a user, I can view the financial record details which I have attended.
 
