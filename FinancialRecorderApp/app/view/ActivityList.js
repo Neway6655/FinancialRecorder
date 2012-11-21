@@ -11,7 +11,7 @@ Ext.define('FinancialRecorderApp.view.ActivityList', {
 				'{name}---' + 
 				'<small>TotalFee: {totalFee}</small></br>' + 
 				'<small>({userNameList})</small>',
-        store: Ext.create("FinancialRecorderApp.store.RecorderLocal"),
+        store: Ext.create("FinancialRecorderApp.store.Recorder"),
         listeners: {
             itemtap: 'activityRecordTap'
         }

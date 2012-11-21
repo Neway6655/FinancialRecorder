@@ -20,7 +20,7 @@ Ext.define('FinancialRecorderApp.view.ActivityDetail', {
 				defaults: {
 					required: true,
 					labelAlign: 'left',
-					labelWidth: '20%'
+					labelWidth: '50%'
 				},
 				items: [
 				{
@@ -58,10 +58,9 @@ Ext.define('FinancialRecorderApp.view.ActivityDetail', {
     	};
 
     	userSelectorPanel = Ext.create('Ext.Panel', {
-            width: '80%',
-            height: 200,
+            width: '100%',
+            height: '100%',
             top: 120,
-            left: 50,
             layout: {
                 type: 'fit',
             },
