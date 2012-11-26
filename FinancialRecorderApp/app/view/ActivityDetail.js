@@ -10,8 +10,24 @@ Ext.define('FinancialRecorderApp.view.ActivityDetail', {
 
     formPanel: '',
 
+    nameField: '',
+
+    totalFeeField: '',
+
 	initialize: function() {
 		console.log('init activity detail view.');
+
+		this.nameField = Ext.create('Ext.field.Text',{
+			xtype: 'textfield',
+			name : 'name',
+			label: 'Name',
+		});
+
+		this.totalFeeField =  Ext.create('Ext.field.Number',{
+			xtype: 'numberfield',
+			name : 'totalFee',
+			label: 'Total Fee',
+		});
 
 		this.formPanel = Ext.create('Ext.form.Panel',{
 			items: [{
@@ -23,16 +39,8 @@ Ext.define('FinancialRecorderApp.view.ActivityDetail', {
 					labelWidth: '50%'
 				},
 				items: [
-				{
-					xtype: 'textfield',
-					name : 'name',
-					label: 'Name',								
-				},
-				{
-					xtype: 'numberfield',
-					name : 'totalFee',
-					label: 'Total Fee',
-				}],
+					this.nameField,this.totalFeeField
+				],
 			}]
 		});
 
@@ -85,6 +93,8 @@ Ext.define('FinancialRecorderApp.view.ActivityDetail', {
 
 	loadRecord: function(record){
 		this.formPanel.setRecord(record);
+		this.nameField.setReadOnly(true);
+		this.totalFeeField.setReadOnly(true);
 	},
 
 	back: function() {

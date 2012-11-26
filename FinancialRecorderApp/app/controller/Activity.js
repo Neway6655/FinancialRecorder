@@ -23,7 +23,7 @@ Ext.define('FinancialRecorderApp.controller.Activity', {
             showNewFinancialRecordEvent: 'showNewFinancialRecord',
           },
           activityList: {
-            activityRecordTapEvent: 'onActivityRecordTap',
+            activityRecordTapEvent: 'viewFinancialRecord',
           },
           activityDetail: {
             backToActivityListEvent: 'onBackToActivityList',
@@ -43,11 +43,14 @@ Ext.define('FinancialRecorderApp.controller.Activity', {
         Ext.Viewport.animateActiveItem(this.getActivityDetail(), this.slideLeftTransition);
     },
 
-    onActivityRecordTap: function(list, record) {
+    viewFinancialRecord: function(list, record) {
         if (!this.getActivityDetail()){
           this.activityDetail = Ext.create('FinancialRecorderApp.view.ActivityDetail');
         }
     		this.getActivityDetail().loadRecord(record);
+        // for (i=0; i < record.data.userNameList.length; i++){
+        //   this.getUserSelector().select(record.data.userNameList.length[i]);
+        // }
         Ext.Viewport.animateActiveItem(this.getActivityDetail(), this.slideLeftTransition);
     },
 
