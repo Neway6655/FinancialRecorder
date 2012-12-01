@@ -78,7 +78,7 @@ Plan-3 (not-started)
 - As a administrator, I can see see person's account balance.
 - As a administrator, I can cashin for some person.
 - Improvment: add created time of financial record in GUI, and show it in list view.
-- Improvment: the financial record can't be modified once it is created.
+- Improvment: the financial record can't be modified once it is created.(done)
 - Improvment: split the total fee into three parts: playgound, water, balls.
 
 Plan-4 (not-started)
