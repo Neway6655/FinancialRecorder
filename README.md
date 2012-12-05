@@ -83,6 +83,7 @@ Plan-3 (not-started)
 
 Plan-4 (not-started)
 -----------------------------
+- As a user, I want to see my account change history(need to add transaction log table to record all money transfer history).
 - As a user, I can login with my account.
 - As a user, I can view my account balance.
 - As a user, I can view the financial record details which I have attended.
