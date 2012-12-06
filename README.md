@@ -73,16 +73,19 @@ Plan-2 (Application, done)
 - communication between application and server. (QS done, using JSONP)
 - notify to the mobile user.(put into next planning.)
 
-Plan-3 (not-started)
+Plan-3 (on-going)
 -----------------------------
-- As a administrator, I can see see person's account balance.
-- As a administrator, I can cashin for some person.
+- As a common user, I can see all the activities here and every's user account(done)
+- As a common user, I can see my account's change histroy(such as cash-in and cost for each activity)
 - Improvment: add created time of financial record in GUI, and show it in list view.
 - Improvment: the financial record can't be modified once it is created.(done)
 - Improvment: split the total fee into three parts: playgound, water, balls.
 
+
 Plan-4 (not-started)
 -----------------------------
+- As a administrator, I can see see person's account balance.
+- As a administrator, I can cashin for some person.
 - As a user, I want to see my account change history(need to add transaction log table to record all money transfer history).
 - As a user, I can login with my account.
 - As a user, I can view my account balance.
