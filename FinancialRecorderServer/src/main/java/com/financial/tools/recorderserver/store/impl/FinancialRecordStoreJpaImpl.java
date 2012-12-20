@@ -25,8 +25,9 @@ public class FinancialRecordStoreJpaImpl implements FinancialRecordStore {
 
 	@Override
 	public FinancialRecord getFinancialRecord(long financialRecordId) {
-		Query query = entityManager.createQuery("SELECT f FROM FinancialRecord f where f.status = 1",
+		Query query = entityManager.createQuery("SELECT f FROM FinancialRecord f where f.status = 1 and f.id=:id",
 				FinancialRecord.class);
+		query.setParameter("id", financialRecordId);
 		try {
 			FinancialRecord result = (FinancialRecord) query.getSingleResult();
 			return result;

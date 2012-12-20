@@ -19,7 +19,7 @@ public class TransactionLogEntry implements Serializable {
 
 	private Long fee;
 
-	private List<Long> userIdList;
+	private List<String> userNameList;
 
 	public TransactionLogEntry() {
 	}
@@ -78,13 +78,12 @@ public class TransactionLogEntry implements Serializable {
 		return this;
 	}
 
-	public List<Long> getUserIdList() {
-		return userIdList;
+	public List<String> getUserNameList() {
+		return userNameList;
 	}
 
-	public TransactionLogEntry setUserIdList(List<Long> userIdList) {
-		this.userIdList = userIdList;
-		return this;
+	public void setUserNameList(List<String> userNameList) {
+		this.userNameList = userNameList;
 	}
 
 }

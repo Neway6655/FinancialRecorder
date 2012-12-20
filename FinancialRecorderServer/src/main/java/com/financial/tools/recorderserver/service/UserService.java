@@ -40,7 +40,8 @@ public class UserService {
 		user.setBalance(balance);
 
 		long userId = userStore.saveUser(user);
-		entry.setUserIdList(Lists.newArrayList(userId)).setAmount(balance);
+		entry.setUserNameList(Lists.newArrayList(user.getName()));
+		entry.setAmount(balance);
 
 		return String.valueOf(userId);
 	}

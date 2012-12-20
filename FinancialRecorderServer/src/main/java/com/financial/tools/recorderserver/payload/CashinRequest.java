@@ -2,24 +2,24 @@ package com.financial.tools.recorderserver.payload;
 
 public class CashinRequest {
 
-	private long userId;
+	private String userName;
 
 	private long amount;
 
 	public CashinRequest() {
 	}
 
-	public CashinRequest(long userId, long amount) {
-		this.userId = userId;
+	public CashinRequest(String userName, long amount) {
+		this.userName = userName;
 		this.amount = amount;
 	}
 
-	public long getUserId() {
-		return userId;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public long getAmount() {

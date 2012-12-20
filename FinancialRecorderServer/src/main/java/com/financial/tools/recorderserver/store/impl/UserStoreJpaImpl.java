@@ -3,6 +3,7 @@ package com.financial.tools.recorderserver.store.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -19,6 +20,19 @@ public class UserStoreJpaImpl implements UserStore {
 	@Override
 	public User getUser(long userId) {
 		return entityManager.find(User.class, userId);
+	}
+
+	@Override
+	public User getUserByName(String userName) {
+		Query query = entityManager.createQuery("select U from User U where U.name=:name");
+		query.setParameter("name", userName);
+
+		try {
+			User user = (User) query.getSingleResult();
+			return user;
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	@Override

@@ -1,23 +1,19 @@
 package com.financial.tools.recorderserver.entity;
 
-import java.util.List;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "FR_FINANCIAL_RECORD")
-public class FinancialRecord {
+public class FinancialRecord implements Serializable {
+
+	private static final long serialVersionUID = 714949257350137208L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,20 +28,17 @@ public class FinancialRecord {
 	@Column(name = "STATUS")
 	private int status;
 
-	@OneToMany
-	@JoinTable(name = "FR_RECORD_USER", joinColumns = { @JoinColumn(name = "RECORD_ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
-	@Fetch(FetchMode.JOIN)
-	private List<User> userList;
+	@Column(name = "USER_NAMES")
+	private String userNames;
 
 	public FinancialRecord() {
 	}
 
-	public FinancialRecord(long id, String name, long totalFee, FinancialRecordStatus status, List<User> userList) {
+	public FinancialRecord(long id, String name, long totalFee, FinancialRecordStatus status) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.totalFee = totalFee;
-		this.userList = userList;
 		this.status = status.getValue();
 	}
 
@@ -81,12 +74,12 @@ public class FinancialRecord {
 		this.status = status;
 	}
 
-	public List<User> getUserList() {
-		return userList;
+	public String getUserNames() {
+		return userNames;
 	}
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
+	public void setUserNames(String userNames) {
+		this.userNames = userNames;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.financial.tools.recorderserver.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "FR_USER")
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = -3791821536205637003L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -65,4 +70,5 @@ public class User {
 	public void setBalance(long balance) {
 		this.balance = balance;
 	}
+
 }

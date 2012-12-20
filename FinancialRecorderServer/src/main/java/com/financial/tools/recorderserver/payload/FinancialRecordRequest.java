@@ -6,15 +6,15 @@ public class FinancialRecordRequest {
 
 	private String name;
 	private long totalFee;
-	private List<Long> userIdList;
+	private List<String> userNameList;
 
 	public FinancialRecordRequest() {
 	}
 
-	public FinancialRecordRequest(String name, long totalFee, List<Long> userIdList) {
+	public FinancialRecordRequest(String name, long totalFee, List<String> userNameList) {
 		this.name = name;
 		this.totalFee = totalFee;
-		this.userIdList = userIdList;
+		this.userNameList = userNameList;
 	}
 
 	public String getName() {
@@ -33,12 +33,12 @@ public class FinancialRecordRequest {
 		this.totalFee = totalFee;
 	}
 
-	public List<Long> getUserIdList() {
-		return userIdList;
+	public List<String> getUserNameList() {
+		return userNameList;
 	}
 
-	public void setUserIdList(List<Long> userIdList) {
-		this.userIdList = userIdList;
+	public void setUserNameList(List<String> userNameList) {
+		this.userNameList = userNameList;
 	}
 
 }

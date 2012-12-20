@@ -34,9 +34,9 @@ public class FinancialService {
 	public String cashin(CashinRequest request) {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
-		long balance = financialManager.updateUserBalance(request.getUserId(), request.getAmount());
+		long balance = financialManager.updateUserBalance(request.getUserName(), request.getAmount());
 
-		entry.setAmount(request.getAmount()).setUserIdList(Lists.newArrayList(request.getUserId()));
+		entry.setAmount(request.getAmount()).setUserNameList(Lists.newArrayList(request.getUserName()));
 
 		return String.valueOf(balance);
 	}
@@ -53,7 +53,7 @@ public class FinancialService {
 		financialManager.updateFinance(financialRecordId);
 
 		entry.setFinancialRecordId(financialRecordId).setFinancialRecordName(financialRecordRequest.getName())
-				.setFee(financialRecordRequest.getTotalFee()).setUserIdList(financialRecordRequest.getUserIdList());
+				.setFee(financialRecordRequest.getTotalFee()).setUserNameList(financialRecordRequest.getUserNameList());
 
 		return Response.ok(financialRecordId).build();
 	}

@@ -25,7 +25,7 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 
 	@Test
 	public void testCashin() throws Exception {
-		CashinRequest request = new CashinRequest(1L, 100L);
+		CashinRequest request = new CashinRequest("Neway", 100L);
 		String result = financialServiceClient.cashin(request);
 		assertEquals("200", result);
 	}
@@ -39,8 +39,8 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 
 	@Test
 	public void testFinancialCalculateForUser() throws Exception {
-		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ball", 20, Lists.newArrayList(1L,
-				2L));
+		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ball", 20, Lists.newArrayList(
+				"Neway", "Fred"));
 		String financialRecordId = financialServiceClient.createFinancialRecord(financialRecordRequest);
 		financialServiceClient.updateFinance(financialRecordId);
 
@@ -52,11 +52,11 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 	@Test
 	public void testListFinancialRecords() {
 		// prepare.
-		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ballA", 20, Lists.newArrayList(1L,
-				2L));
+		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ballA", 20, Lists.newArrayList(
+				"Neway", "Fred"));
 		financialServiceClient.createFinancialRecord(financialRecordRequest);
 
-		financialRecordRequest = new FinancialRecordRequest("ballB", 30, Lists.newArrayList(1L, 2L));
+		financialRecordRequest = new FinancialRecordRequest("ballB", 30, Lists.newArrayList("Neway", "Fred"));
 		financialServiceClient.createFinancialRecord(financialRecordRequest);
 
 		// replay.
