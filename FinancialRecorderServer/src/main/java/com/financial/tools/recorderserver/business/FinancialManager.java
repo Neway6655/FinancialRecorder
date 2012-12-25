@@ -55,6 +55,7 @@ public class FinancialManager {
 		List<FinancialRecord> financialRecordList = financialRecordStore.listFinancialRecords();
 		for (FinancialRecord financialRecord : financialRecordList) {
 			FinancialRecordResponse record = new FinancialRecordResponse();
+			record.setId(financialRecord.getId());
 			record.setName(financialRecord.getName());
 			record.setTotalFee(financialRecord.getTotalFee());
 			record.setRecordDate(financialRecord.getRecordDate());

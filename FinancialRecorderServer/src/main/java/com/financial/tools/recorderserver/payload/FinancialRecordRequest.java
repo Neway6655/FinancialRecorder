@@ -3,6 +3,9 @@ package com.financial.tools.recorderserver.payload;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.financial.tools.recorderserver.util.CustomJsonDateDeserializer;
+
 public class FinancialRecordRequest {
 
 	private String name;
@@ -48,6 +51,7 @@ public class FinancialRecordRequest {
 		return recordDate;
 	}
 
+	@JsonDeserialize(using = CustomJsonDateDeserializer.class)
 	public void setRecordDate(Date recordDate) {
 		this.recordDate = new Date(recordDate.getTime());
 	}

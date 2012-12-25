@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class FinancialRecordResponse {
+	private long id;
 	private String name;
 	private float totalFee;
 	private List<String> userNameList;
@@ -12,12 +13,21 @@ public class FinancialRecordResponse {
 	public FinancialRecordResponse() {
 	}
 
-	public FinancialRecordResponse(String name, float totalFee, List<String> userNameList, Date recordDate) {
+	public FinancialRecordResponse(long id, String name, float totalFee, List<String> userNameList, Date recordDate) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.totalFee = totalFee;
 		this.userNameList = userNameList;
 		this.recordDate = new Date(recordDate.getTime());
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getName() {
