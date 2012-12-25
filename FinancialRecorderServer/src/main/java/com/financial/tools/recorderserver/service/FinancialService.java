@@ -34,7 +34,7 @@ public class FinancialService {
 	public String cashin(CashinRequest request) {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
-		long balance = financialManager.updateUserBalance(request.getUserName(), request.getAmount());
+		float balance = financialManager.updateUserBalance(request.getUserName(), request.getAmount());
 
 		entry.setAmount(request.getAmount()).setUserNameList(Lists.newArrayList(request.getUserName()));
 

@@ -42,7 +42,7 @@ public class UserStoreJpaImpl implements UserStore {
 	}
 
 	@Override
-	public void updateBalance(long userId, long balance) {
+	public void updateBalance(long userId, float balance) {
 		Query query = entityManager.createQuery("UPDATE User T SET T.balance =:balance where T.id=:id");
 		query.setParameter("balance", balance);
 		query.setParameter("id", userId);

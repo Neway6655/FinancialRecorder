@@ -26,7 +26,7 @@ public class User implements Serializable {
 	private String password;
 
 	@Column(name = "BALANCE")
-	private long balance;
+	private float balance;
 
 	public User() {
 	}
@@ -63,11 +63,11 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public long getBalance() {
+	public float getBalance() {
 		return balance;
 	}
 
-	public void setBalance(long balance) {
+	public void setBalance(float balance) {
 		this.balance = balance;
 	}
 

@@ -2,6 +2,8 @@ package com.financial.tools.recorderserver.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,36 +29,37 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 	public void testCashin() throws Exception {
 		CashinRequest request = new CashinRequest("Neway", 100L);
 		String result = financialServiceClient.cashin(request);
-		assertEquals("200", result);
+		assertEquals("200.0", result);
 	}
 
 	@Test
 	public void testGetUserFinancialInfo() throws Exception {
 		UserFinancialInfoResponse userFinancialInfo = financialServiceClient.getUserFinancialInfo("2");
 		assertEquals("Fred", userFinancialInfo.getUserName());
-		assertEquals(100L, userFinancialInfo.getBalance());
+		assertEquals((new Float(100)).floatValue(), userFinancialInfo.getBalance(), 0.0);
 	}
 
 	@Test
 	public void testFinancialCalculateForUser() throws Exception {
 		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ball", 20, Lists.newArrayList(
-				"Neway", "Fred"));
+				"Neway", "Fred"), new Date());
 		String financialRecordId = financialServiceClient.createFinancialRecord(financialRecordRequest);
 		financialServiceClient.updateFinance(financialRecordId);
 
 		// verify
 		UserFinancialInfoResponse userFinancialInfo = financialServiceClient.getUserFinancialInfo("2");
-		assertEquals(90L, userFinancialInfo.getBalance());
+		assertEquals((new Float(90)).floatValue(), userFinancialInfo.getBalance(), 0.0);
 	}
 
 	@Test
 	public void testListFinancialRecords() {
 		// prepare.
 		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ballA", 20, Lists.newArrayList(
-				"Neway", "Fred"));
+				"Neway", "Fred"), new Date());
 		financialServiceClient.createFinancialRecord(financialRecordRequest);
 
-		financialRecordRequest = new FinancialRecordRequest("ballB", 30, Lists.newArrayList("Neway", "Fred"));
+		financialRecordRequest = new FinancialRecordRequest("ballB", 30, Lists.newArrayList("Neway", "Fred"),
+				new Date());
 		financialServiceClient.createFinancialRecord(financialRecordRequest);
 
 		// replay.

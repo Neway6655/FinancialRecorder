@@ -4,7 +4,7 @@ public class CashinRequest {
 
 	private String userName;
 
-	private long amount;
+	private float amount;
 
 	public CashinRequest() {
 	}
@@ -22,11 +22,11 @@ public class CashinRequest {
 		this.userName = userName;
 	}
 
-	public long getAmount() {
+	public float getAmount() {
 		return amount;
 	}
 
-	public void setAmount(long amount) {
+	public void setAmount(float amount) {
 		this.amount = amount;
 	}
 

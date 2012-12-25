@@ -3,12 +3,12 @@ package com.financial.tools.recorderserver.payload;
 public class UserFinancialInfoResponse {
 
 	private String userName;
-	private long balance;
+	private float balance;
 
 	public UserFinancialInfoResponse() {
 	}
 
-	public UserFinancialInfoResponse(String userName, long balance) {
+	public UserFinancialInfoResponse(String userName, float balance) {
 		super();
 		this.userName = userName;
 		this.balance = balance;
@@ -22,11 +22,11 @@ public class UserFinancialInfoResponse {
 		this.userName = userName;
 	}
 
-	public long getBalance() {
+	public float getBalance() {
 		return balance;
 	}
 
-	public void setBalance(long balance) {
+	public void setBalance(float balance) {
 		this.balance = balance;
 	}
 

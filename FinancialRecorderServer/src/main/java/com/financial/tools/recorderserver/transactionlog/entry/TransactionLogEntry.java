@@ -15,9 +15,9 @@ public class TransactionLogEntry implements Serializable {
 
 	private String financialRecordName;
 
-	private Long amount;
+	private float amount;
 
-	private Long fee;
+	private float fee;
 
 	private List<String> userNameList;
 
@@ -60,20 +60,20 @@ public class TransactionLogEntry implements Serializable {
 		return this;
 	}
 
-	public Long getAmount() {
+	public float getAmount() {
 		return amount;
 	}
 
-	public TransactionLogEntry setAmount(Long amount) {
+	public TransactionLogEntry setAmount(float amount) {
 		this.amount = amount;
 		return this;
 	}
 
-	public Long getFee() {
+	public float getFee() {
 		return fee;
 	}
 
-	public TransactionLogEntry setFee(Long fee) {
+	public TransactionLogEntry setFee(float fee) {
 		this.fee = fee;
 		return this;
 	}

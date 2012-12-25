@@ -1,20 +1,23 @@
 package com.financial.tools.recorderserver.payload;
 
+import java.util.Date;
 import java.util.List;
 
 public class FinancialRecordResponse {
 	private String name;
-	private long totalFee;
+	private float totalFee;
 	private List<String> userNameList;
+	private Date recordDate;
 
 	public FinancialRecordResponse() {
 	}
 
-	public FinancialRecordResponse(String name, long totalFee, List<String> userNameList) {
+	public FinancialRecordResponse(String name, float totalFee, List<String> userNameList, Date recordDate) {
 		super();
 		this.name = name;
 		this.totalFee = totalFee;
 		this.userNameList = userNameList;
+		this.recordDate = new Date(recordDate.getTime());
 	}
 
 	public String getName() {
@@ -25,11 +28,11 @@ public class FinancialRecordResponse {
 		this.name = name;
 	}
 
-	public long getTotalFee() {
+	public float getTotalFee() {
 		return totalFee;
 	}
 
-	public void setTotalFee(long totalFee) {
+	public void setTotalFee(float totalFee) {
 		this.totalFee = totalFee;
 	}
 
@@ -39,6 +42,14 @@ public class FinancialRecordResponse {
 
 	public void setUserNameList(List<String> userNameList) {
 		this.userNameList = userNameList;
+	}
+
+	public Date getRecordDate() {
+		return recordDate;
+	}
+
+	public void setRecordDate(Date recordDate) {
+		this.recordDate = new Date(recordDate.getTime());
 	}
 
 }

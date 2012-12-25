@@ -10,7 +10,7 @@ public interface UserStore {
 
 	public User getUserByName(String userName);
 
-	public void updateBalance(long userId, long balance);
+	public void updateBalance(long userId, float balance);
 
 	public long saveUser(User user);
 

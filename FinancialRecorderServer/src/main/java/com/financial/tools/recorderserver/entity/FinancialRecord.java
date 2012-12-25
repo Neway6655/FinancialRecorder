@@ -1,6 +1,7 @@
 package com.financial.tools.recorderserver.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +24,7 @@ public class FinancialRecord implements Serializable {
 	private String name;
 
 	@Column(name = "TOTAL_FEE")
-	private long totalFee;
+	private float totalFee;
 
 	@Column(name = "STATUS")
 	private int status;
@@ -31,15 +32,19 @@ public class FinancialRecord implements Serializable {
 	@Column(name = "USER_NAMES")
 	private String userNames;
 
+	@Column(name = "RECORD_DATE")
+	private Date recordDate;
+
 	public FinancialRecord() {
 	}
 
-	public FinancialRecord(long id, String name, long totalFee, FinancialRecordStatus status) {
+	public FinancialRecord(long id, String name, float totalFee, FinancialRecordStatus status, Date recordDate) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.totalFee = totalFee;
 		this.status = status.getValue();
+		this.recordDate = new Date(recordDate.getTime());
 	}
 
 	public long getId() {
@@ -58,11 +63,11 @@ public class FinancialRecord implements Serializable {
 		this.name = name;
 	}
 
-	public long getTotalFee() {
+	public float getTotalFee() {
 		return totalFee;
 	}
 
-	public void setTotalFee(long totalFee) {
+	public void setTotalFee(float totalFee) {
 		this.totalFee = totalFee;
 	}
 
@@ -80,6 +85,14 @@ public class FinancialRecord implements Serializable {
 
 	public void setUserNames(String userNames) {
 		this.userNames = userNames;
+	}
+
+	public Date getRecordDate() {
+		return recordDate;
+	}
+
+	public void setRecordDate(Date recordDate) {
+		this.recordDate = new Date(recordDate.getTime());
 	}
 
 }

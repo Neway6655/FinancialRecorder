@@ -1,5 +1,6 @@
 package com.financial.tools.recorderserver.business;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,10 +25,10 @@ public class FinancialManager {
 	private UserStore userStore;
 	private FinancialRecordStore financialRecordStore;
 
-	public long updateUserBalance(String userName, long amount) {
+	public float updateUserBalance(String userName, float amount) {
 		logger.debug("Update user balance, userName: {}, amount: {}.", userName, amount);
 		User user = userStore.getUserByName(userName);
-		long balance = user.getBalance() + amount;
+		float balance = user.getBalance() + amount;
 		userStore.updateBalance(user.getId(), balance);
 		return balance;
 	}
@@ -40,6 +41,8 @@ public class FinancialManager {
 		financialRecord.setName(financialRecordRequest.getName());
 		financialRecord.setTotalFee(financialRecordRequest.getTotalFee());
 		financialRecord.setStatus(FinancialRecordStatus.NEW.getValue());
+		financialRecord.setRecordDate(financialRecordRequest.getRecordDate() == null ? new Date()
+				: financialRecordRequest.getRecordDate());
 
 		String userNames = StringUtils.join(financialRecordRequest.getUserNameList(), ",");
 		financialRecord.setUserNames(userNames);
@@ -54,6 +57,7 @@ public class FinancialManager {
 			FinancialRecordResponse record = new FinancialRecordResponse();
 			record.setName(financialRecord.getName());
 			record.setTotalFee(financialRecord.getTotalFee());
+			record.setRecordDate(financialRecord.getRecordDate());
 
 			List<String> userNameList = Lists.newArrayList();
 			for (String userName : financialRecord.getUserNames().split(",")) {
@@ -73,9 +77,9 @@ public class FinancialManager {
 			financialRecord.setStatus(FinancialRecordStatus.UPDATED.getValue());
 			financialRecordStore.updateFinancialRecord(financialRecord);
 
-			long totalFee = financialRecord.getTotalFee();
+			float totalFee = financialRecord.getTotalFee();
 			String[] userNameArray = financialRecord.getUserNames().split(",");
-			long feePerUser = totalFee / userNameArray.length;
+			float feePerUser = totalFee / userNameArray.length;
 			for (String userName : userNameArray) {
 				User user = userStore.getUserByName(userName);
 				logger.debug("deduct user fee, userId: {}, fee: {}.", user.getId(), feePerUser);
