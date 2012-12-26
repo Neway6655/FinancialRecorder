@@ -19,12 +19,12 @@ public class CustomJsonDateDeserializer extends JsonDeserializer<Date> {
 
 	@Override
 	public Date deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 		String date = jp.getText();
 		try {
 			return format.parse(date);
 		} catch (ParseException e) {
-			logger.error("Failed to parse date json string value with format: dd/MM/yyyy.");
+			logger.error("Failed to parse date json string value with format: MM/dd/yyyy.");
 			throw new RuntimeException(e);
 		}
 	}
