@@ -73,21 +73,23 @@ Plan-2 (Application, done)
 - communication between application and server. (QS done, using JSONP)
 - notify to the mobile user.(put into next planning.)
 
-Plan-3 (on-going)
+Plan-3 (done)
 -----------------------------
 - As a common user, I can see all the activities here and every's user account(done)
-- As a common user, I can see my account's change histroy(such as cash-in and cost for each activity)
-- Improvment: add created time of financial record in GUI, and show it in list view.
+- As a common user, I can see my account's change histroy(such as cash-in and cost for each activity)(postpone to next planning)
+- Improvment: add created time of financial record in GUI, and show it in list view.(done)
 - Improvment: the financial record can't be modified once it is created.(done)
-- Improvment: split the total fee into three parts: playgound, water, balls.
+- Improvment: split the total fee into three parts: playgound, water, balls.(removed)
 
 
 Plan-4 (not-started)
 -----------------------------
-- As a administrator, I can see see person's account balance.
+- As a administrator, I can see see person's account balance.(done)
 - As a administrator, I can cashin for some person.
-- As a user, I want to see my account change history(need to add transaction log table to record all money transfer history).
+- As a administrator, I can create an new user.
+- As a user, I want to see my account change history(include cashin and fee cost per activity).
 - As a user, I can login with my account.
 - As a user, I can view my account balance.
 - As a user, I can view the financial record details which I have attended.
+- System should notify to the user whose account is less than 20.
 
