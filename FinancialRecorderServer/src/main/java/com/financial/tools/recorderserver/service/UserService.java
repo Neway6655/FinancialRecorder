@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
+import com.financial.tools.recorderserver.payload.LoginRequest;
+import com.financial.tools.recorderserver.payload.LoginResponse;
 import com.financial.tools.recorderserver.payload.UserListResponse;
 import com.financial.tools.recorderserver.store.UserStore;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
@@ -44,6 +46,19 @@ public class UserService {
 		entry.setAmount(balance);
 
 		return String.valueOf(userId);
+	}
+
+	@POST
+	@Path("/login")
+	public LoginResponse login(LoginRequest request) {
+		String userName = request.getUserName();
+		User user = userStore.getUserByName(userName);
+
+		if (user.getPassword().equals(request.getPassword())) {
+			return new LoginResponse(user.getName(), user.getBalance(), user.getType());
+		}
+
+		return null;
 	}
 
 	@GET

@@ -28,15 +28,19 @@ public class User implements Serializable {
 	@Column(name = "BALANCE")
 	private float balance;
 
+	@Column(name = "TYPE")
+	private int type;
+
 	public User() {
 	}
 
-	public User(long id, String name, String password, long balance) {
+	public User(long id, String name, String password, long balance, UserType type) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.balance = balance;
+		this.type = type.getValue();
 	}
 
 	public long getId() {
@@ -69,6 +73,14 @@ public class User implements Serializable {
 
 	public void setBalance(float balance) {
 		this.balance = balance;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }
