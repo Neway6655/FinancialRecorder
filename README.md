@@ -86,10 +86,13 @@ Plan-4 (not-started)
 -----------------------------
 - As a administrator, I can see see person's account balance.(done)
 - As a administrator, I can cashin for some person.
-- As a administrator, I can create an new user.
-- As a user, I want to see my account change history(include cashin and fee cost per activity).
 - As a user, I can login with my account.
+- As a user, I want to see my account change history(include cashin and fee cost per activity).
 - As a user, I can view my account balance.
 - As a user, I can view the financial record details which I have attended.
-- System should notify to the user whose account is less than 20.
 
+
+Plan-5 (backlog)
+-----------------------------
+- As a administrator, I can create an new user.
+- System should notify to the user whose account is less than 20.
