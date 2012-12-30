@@ -17,6 +17,7 @@
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+			<bean class="com.financial.tools.recorderserver.service.FinancialRecorderExceptionMapper" />
 		</jaxrs:providers>
 	</jaxrs:server>
 	

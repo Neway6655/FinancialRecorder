@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.entity.UserType;
+import com.financial.tools.recorderserver.exception.ErrorCode;
+import com.financial.tools.recorderserver.exception.FinancialRecorderException;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
 import com.financial.tools.recorderserver.payload.LoginRequest;
 import com.financial.tools.recorderserver.payload.LoginResponse;
@@ -57,12 +59,16 @@ public class UserService {
 		String userName = request.getUserName();
 		User user = userStore.getUserByName(userName);
 
+		if (user == null) {
+			throw new FinancialRecorderException(ErrorCode.LOGIN_ERROR, "User name not exists.");
+		}
+
 		String rawPassword = request.getPassword();
 		if (user.getPassword().equals(SecurityUtils.md5Digest(rawPassword))) {
 			return new LoginResponse(user.getName(), user.getBalance(), user.getType());
+		} else {
+			throw new FinancialRecorderException(ErrorCode.LOGIN_ERROR, "Password not correct.");
 		}
-
-		return null;
 	}
 
 	@POST

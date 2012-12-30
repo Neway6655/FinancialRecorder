@@ -94,12 +94,13 @@
 			ignore-failures="ALL">
 			<jdbc:script location="classpath:sql/h2/schema.sql" />
 		</jdbc:initialize-database>
-
+	</beans>
+	
+	<beans profile="ct">
 		<bean class="com.financial.tools.recorderserver.tools.util.DataInitializer"
 			lazy-init="false">
 			<property name="dataSource" ref="dataSource" />
 			<property name="dataFile" value="/data/sample-data.xml" />
 		</bean>
 	</beans>
-
 </beans>
