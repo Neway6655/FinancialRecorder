@@ -1,13 +1,18 @@
 package com.financial.tools.recorderserver.service;
 
-import junit.framework.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.financial.tools.recorderserver.AbstractComponentTestCase;
 import com.financial.tools.recorderserver.client.UserServiceClient;
+import com.financial.tools.recorderserver.entity.UserType;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
+import com.financial.tools.recorderserver.payload.LoginRequest;
+import com.financial.tools.recorderserver.payload.LoginResponse;
+import com.financial.tools.recorderserver.payload.RegistrationRequest;
 import com.financial.tools.recorderserver.payload.UserListResponse;
 
 public class UserServiceTest extends AbstractComponentTestCase {
@@ -30,7 +35,30 @@ public class UserServiceTest extends AbstractComponentTestCase {
 
 		// verify.
 		UserListResponse response = userServiceClient.listUsers();
-		Assert.assertEquals(3, response.getUserList().size());
+		assertEquals(3, response.getUserList().size());
 	}
 
+	@Test
+	public void testRegistrationAndLogin() {
+		// prepare.
+		String userName = "Kate";
+		String password = "secret";
+		RegistrationRequest registrationRequest = new RegistrationRequest(userName, password);
+
+		// replay.
+		String registerResult = userServiceClient.register(registrationRequest);
+
+		// verify.
+		assertEquals(userName, registerResult);
+
+		// test Login.
+		LoginRequest loginRequest = new LoginRequest(userName, password);
+		LoginResponse loginResponse = userServiceClient.login(loginRequest);
+
+		// verify.
+		assertNotNull(loginResponse);
+		assertEquals(userName, loginResponse.getUserName());
+		assertEquals(0.0, loginResponse.getUserBalance(), 0.0);
+		assertEquals(UserType.USER.getValue(), loginResponse.getUserType());
+	}
 }

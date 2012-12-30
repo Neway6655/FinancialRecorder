@@ -10,15 +10,18 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.User;
+import com.financial.tools.recorderserver.entity.UserType;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
 import com.financial.tools.recorderserver.payload.LoginRequest;
 import com.financial.tools.recorderserver.payload.LoginResponse;
+import com.financial.tools.recorderserver.payload.RegistrationRequest;
 import com.financial.tools.recorderserver.payload.UserListResponse;
 import com.financial.tools.recorderserver.store.UserStore;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLogType;
 import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogEntry;
 import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogThreadLocalContext;
+import com.financial.tools.recorderserver.util.SecurityUtils;
 import com.google.common.collect.Lists;
 
 @Path("/user")
@@ -37,7 +40,7 @@ public class UserService {
 
 		User user = new User();
 		user.setName(request.getName());
-		user.setPassword(request.getPassword());
+		user.setPassword(SecurityUtils.md5Digest(request.getPassword()));
 		long balance = request.getBalance();
 		user.setBalance(balance);
 
@@ -54,11 +57,28 @@ public class UserService {
 		String userName = request.getUserName();
 		User user = userStore.getUserByName(userName);
 
-		if (user.getPassword().equals(request.getPassword())) {
+		String rawPassword = request.getPassword();
+		if (user.getPassword().equals(SecurityUtils.md5Digest(rawPassword))) {
 			return new LoginResponse(user.getName(), user.getBalance(), user.getType());
 		}
 
 		return null;
+	}
+
+	@POST
+	@Path("/register")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String register(RegistrationRequest request) {
+		String userName = request.getUserName();
+		String password = SecurityUtils.md5Digest(request.getPassword());
+
+		User user = new User();
+		user.setName(userName);
+		user.setPassword(password);
+		user.setType(UserType.USER.getValue());
+		userStore.saveUser(user);
+
+		return userName;
 	}
 
 	@GET

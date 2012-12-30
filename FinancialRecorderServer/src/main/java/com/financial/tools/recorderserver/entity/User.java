@@ -34,9 +34,8 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(long id, String name, String password, long balance, UserType type) {
+	public User(String name, String password, long balance, UserType type) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.balance = balance;

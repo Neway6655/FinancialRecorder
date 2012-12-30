@@ -2,19 +2,18 @@ package com.financial.tools.recorderserver.payload;
 
 import java.io.Serializable;
 
-public class LoginRequest implements Serializable {
+public class RegistrationRequest implements Serializable {
 
-	private static final long serialVersionUID = -4334272403529534510L;
+	private static final long serialVersionUID = 93505359143849538L;
 
 	private String userName;
 
 	private String password;
 
-	public LoginRequest() {
+	public RegistrationRequest() {
 	}
 
-	public LoginRequest(String userName, String password) {
-		super();
+	public RegistrationRequest(String userName, String password) {
 		this.userName = userName;
 		this.password = password;
 	}
