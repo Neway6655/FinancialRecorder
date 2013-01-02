@@ -11,7 +11,6 @@ import com.financial.tools.recorderserver.client.UserServiceClient;
 import com.financial.tools.recorderserver.entity.UserType;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
 import com.financial.tools.recorderserver.payload.LoginRequest;
-import com.financial.tools.recorderserver.payload.LoginResponse;
 import com.financial.tools.recorderserver.payload.RegistrationRequest;
 import com.financial.tools.recorderserver.payload.UserListResponse;
 
@@ -28,7 +27,7 @@ public class UserServiceTest extends AbstractComponentTestCase {
 	@Test
 	public void testCreateAndListUser() {
 		// prepare.
-		CreateUserRequest request = new CreateUserRequest("userA", "1234", 100L);
+		CreateUserRequest request = new CreateUserRequest("userA", "1234", 100L, UserType.USER.getValue());
 
 		// replay.
 		userServiceClient.createUser(request);
@@ -53,12 +52,10 @@ public class UserServiceTest extends AbstractComponentTestCase {
 
 		// test Login.
 		LoginRequest loginRequest = new LoginRequest(userName, password);
-		LoginResponse loginResponse = userServiceClient.login(loginRequest);
+		String result = userServiceClient.login(loginRequest);
 
 		// verify.
-		assertNotNull(loginResponse);
-		assertEquals(userName, loginResponse.getUserName());
-		assertEquals(0.0, loginResponse.getUserBalance(), 0.0);
-		assertEquals(UserType.USER.getValue(), loginResponse.getUserType());
+		assertNotNull(result);
+		assertEquals(userName, result);
 	}
 }

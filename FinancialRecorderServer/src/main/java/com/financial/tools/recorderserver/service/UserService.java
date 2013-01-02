@@ -15,7 +15,6 @@ import com.financial.tools.recorderserver.exception.ErrorCode;
 import com.financial.tools.recorderserver.exception.FinancialRecorderException;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
 import com.financial.tools.recorderserver.payload.LoginRequest;
-import com.financial.tools.recorderserver.payload.LoginResponse;
 import com.financial.tools.recorderserver.payload.RegistrationRequest;
 import com.financial.tools.recorderserver.payload.UserListResponse;
 import com.financial.tools.recorderserver.store.UserStore;
@@ -45,6 +44,7 @@ public class UserService {
 		user.setPassword(SecurityUtils.md5Digest(request.getPassword()));
 		long balance = request.getBalance();
 		user.setBalance(balance);
+		user.setType(request.getType());
 
 		long userId = userStore.saveUser(user);
 		entry.setUserNameList(Lists.newArrayList(user.getName()));
@@ -55,7 +55,8 @@ public class UserService {
 
 	@POST
 	@Path("/login")
-	public LoginResponse login(LoginRequest request) {
+	@Produces(MediaType.TEXT_PLAIN)
+	public String login(LoginRequest request) {
 		String userName = request.getUserName();
 		User user = userStore.getUserByName(userName);
 
@@ -65,7 +66,7 @@ public class UserService {
 
 		String rawPassword = request.getPassword();
 		if (user.getPassword().equals(SecurityUtils.md5Digest(rawPassword))) {
-			return new LoginResponse(user.getName(), user.getBalance(), user.getType());
+			return user.getName();
 		} else {
 			throw new FinancialRecorderException(ErrorCode.LOGIN_ERROR, "Password not correct.");
 		}

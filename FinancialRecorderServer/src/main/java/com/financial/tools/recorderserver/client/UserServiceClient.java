@@ -4,7 +4,6 @@ import javax.ws.rs.core.MediaType;
 
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
 import com.financial.tools.recorderserver.payload.LoginRequest;
-import com.financial.tools.recorderserver.payload.LoginResponse;
 import com.financial.tools.recorderserver.payload.RegistrationRequest;
 import com.financial.tools.recorderserver.payload.UserListResponse;
 
@@ -29,8 +28,8 @@ public class UserServiceClient extends AbstractFinancialClient {
 		return post(client, request, String.class);
 	}
 
-	public LoginResponse login(LoginRequest request) {
-		client.path("user/login").type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
-		return post(client, request, LoginResponse.class);
+	public String login(LoginRequest request) {
+		client.path("user/login").type(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN);
+		return post(client, request, String.class);
 	}
 }

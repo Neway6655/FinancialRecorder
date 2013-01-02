@@ -8,13 +8,16 @@ public class CreateUserRequest {
 
 	private long balance;
 
+	private int type;
+
 	public CreateUserRequest() {
 	}
 
-	public CreateUserRequest(String name, String password, long balance) {
+	public CreateUserRequest(String name, String password, long balance, int type) {
 		this.name = name;
 		this.password = password;
 		this.balance = balance;
+		this.type = type;
 	}
 
 	public String getName() {
@@ -39,6 +42,14 @@ public class CreateUserRequest {
 
 	public void setBalance(long balance) {
 		this.balance = balance;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }
