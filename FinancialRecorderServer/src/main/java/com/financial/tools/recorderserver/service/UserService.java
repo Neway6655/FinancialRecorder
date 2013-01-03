@@ -1,14 +1,18 @@
 package com.financial.tools.recorderserver.service;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.entity.UserType;
 import com.financial.tools.recorderserver.exception.ErrorCode;
@@ -17,6 +21,8 @@ import com.financial.tools.recorderserver.payload.CreateUserRequest;
 import com.financial.tools.recorderserver.payload.LoginRequest;
 import com.financial.tools.recorderserver.payload.RegistrationRequest;
 import com.financial.tools.recorderserver.payload.UserListResponse;
+import com.financial.tools.recorderserver.payload.UserRecordsResponse;
+import com.financial.tools.recorderserver.store.UserRecordStore;
 import com.financial.tools.recorderserver.store.UserStore;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLogType;
@@ -31,6 +37,8 @@ import com.google.common.collect.Lists;
 public class UserService {
 
 	private UserStore userStore;
+
+	private UserRecordStore userRecordStore;
 
 	@POST
 	@Path("/create")
@@ -94,9 +102,24 @@ public class UserService {
 		return new UserListResponse(userStore.findAll());
 	}
 
+	@GET
+	@Path("/search")
+	public UserRecordsResponse searchRecords(@QueryParam("userName") String userName) {
+		UserRecordsResponse response = new UserRecordsResponse();
+		List<FinancialRecord> financialRecordList = userRecordStore.findFinancialRecordList(userName);
+		response.setRecords(financialRecordList);
+
+		return response;
+	}
+
 	@Autowired
 	public void setUserStore(UserStore userStore) {
 		this.userStore = userStore;
+	}
+
+	@Autowired
+	public void setUserRecordStore(UserRecordStore userRecordStore) {
+		this.userRecordStore = userRecordStore;
 	}
 
 }

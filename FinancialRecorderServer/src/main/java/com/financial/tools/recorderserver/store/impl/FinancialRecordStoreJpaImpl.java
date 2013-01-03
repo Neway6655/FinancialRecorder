@@ -7,19 +7,28 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.store.FinancialRecordStore;
+import com.financial.tools.recorderserver.store.UserRecordStore;
 
 @Transactional
 public class FinancialRecordStoreJpaImpl implements FinancialRecordStore {
 
+	private static final String SEPARATE = ",";
+
 	private EntityManager entityManager;
+
+	private UserRecordStore userRecordStore;
 
 	@Override
 	public long createFinancialRecord(FinancialRecord financialRecord) {
 		entityManager.persist(financialRecord);
+		for (String userName : financialRecord.getUserNames().split(SEPARATE)) {
+			userRecordStore.addRecord2User(userName, financialRecord);
+		}
 		return financialRecord.getId();
 	}
 
@@ -52,6 +61,11 @@ public class FinancialRecordStoreJpaImpl implements FinancialRecordStore {
 	@PersistenceContext
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
+	}
+
+	@Autowired
+	public void setUserRecordStore(UserRecordStore userRecordStore) {
+		this.userRecordStore = userRecordStore;
 	}
 
 }

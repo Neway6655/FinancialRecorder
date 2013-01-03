@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:cloud="http://schema.cloudfoundry.org/spring" xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
@@ -43,6 +44,10 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<!-- Redis -->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" 
+		p:connection-factory-ref="redisConnectionFactory"/>
 
 	<bean id="groupStore"
 		class="com.financial.tools.recorderserver.store.impl.GroupStoreJpaImpl" />
@@ -52,7 +57,9 @@
 		
 	<bean id="financialRecordStore"
 		class="com.financial.tools.recorderserver.store.impl.FinancialRecordStoreJpaImpl" />
-		
+
+	<bean id="userRecordStore" class="com.financial.tools.recorderserver.store.impl.UserRecordStoreRedisImpl"/>
+			
 	<bean id="financialManager"
 		class="com.financial.tools.recorderserver.business.FinancialManager" />
 
@@ -64,17 +71,14 @@
 	<bean id="transactionLogService" class="com.financial.tools.recorderserver.transactionlog.impl.TransactionLogServiceFileImpl" />
 
 	<beans profile="cloud">
-		<context:property-placeholder
-			ignore-resource-not-found="true"
-			location="classpath*:/application.properties,
-	          			  classpath*:/application.local.properties" />
-	          			  
 	    <cloud:data-source id="dataSource" />
 	    
 		<jdbc:initialize-database data-source="dataSource"
 			ignore-failures="ALL">
 			<jdbc:script location="classpath:sql/mysql/schema.sql" />
 		</jdbc:initialize-database>
+		
+		<cloud:redis-connection-factory id="redisConnectionFactory"/>
 	</beans>
 
 	<beans profile="ct,development">
@@ -94,6 +98,9 @@
 			ignore-failures="ALL">
 			<jdbc:script location="classpath:sql/h2/schema.sql" />
 		</jdbc:initialize-database>
+		
+		<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:host-name="${redis.host}" p:port="${redis.port}"/>
 	</beans>
 	
 	<beans profile="ct">

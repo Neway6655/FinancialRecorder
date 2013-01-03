@@ -29,19 +29,8 @@
 		<jdbc.driver.groupId>com.h2database</jdbc.driver.groupId>
 		<jdbc.driver.artifactId>h2</jdbc.driver.artifactId>
 		<jdbc.driver.version>${h2.version}</jdbc.driver.version>
-		<!--
-			<jdbc.driver.groupId>com.oracle</jdbc.driver.groupId>
-			<jdbc.driver.artifactId>ojdbc14</jdbc.driver.artifactId>
-			<jdbc.driver.version>10.2.0.3</jdbc.driver.version>
-		-->
-		<!--
-			<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
-			<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
-			<jdbc.driver.version>5.1.13</jdbc.driver.version>
-		-->
 	</properties>
 
-	<!-- 依赖项定义 -->
 	<dependencies>
 		<!-- SPRING begin -->
 		<dependency>
@@ -69,6 +58,13 @@
 			<artifactId>spring-web</artifactId>
 		</dependency>
 		<!-- SPRING end -->
+		
+		<!-- spring data redis begin -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+		</dependency>
+		<!-- spring data redis end -->
 		
 		<!-- CLOUD begin -->
 		<dependency>
@@ -180,7 +176,6 @@
 
 	<build>
 		<plugins>
-			<!-- test插件, 设置內存/ClassLoader -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -189,7 +184,6 @@
 				</configuration>
 			</plugin>
 			
-			<!-- eclipse插件, 设定wtp版本并添加springIDE nature -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
