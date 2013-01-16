@@ -85,8 +85,14 @@ public class UserService {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String register(RegistrationRequest request) {
 		String userName = request.getUserName();
-		String password = SecurityUtils.md5Digest(request.getPassword());
 
+		User userResult = userStore.getUserByName(userName);
+		if (userResult != null) {
+			throw new FinancialRecorderException(ErrorCode.LOGIN_ERROR,
+					"User name already used, please try another one.");
+		}
+
+		String password = SecurityUtils.md5Digest(request.getPassword());
 		User user = new User();
 		user.setName(userName);
 		user.setPassword(password);
