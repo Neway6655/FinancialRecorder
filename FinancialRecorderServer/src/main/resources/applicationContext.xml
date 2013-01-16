@@ -81,7 +81,7 @@
 		<cloud:redis-connection-factory id="redisConnectionFactory"/>
 	</beans>
 
-	<beans profile="ct,development">
+	<beans profile="ct,dev">
 		<context:property-placeholder
 			ignore-resource-not-found="true"
 			location="classpath*:/application.properties,

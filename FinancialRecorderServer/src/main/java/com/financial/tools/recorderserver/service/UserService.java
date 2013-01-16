@@ -107,7 +107,7 @@ public class UserService {
 	public UserRecordsResponse searchRecords(@QueryParam("userName") String userName) {
 		UserRecordsResponse response = new UserRecordsResponse();
 		List<FinancialRecord> financialRecordList = userRecordStore.findFinancialRecordList(userName);
-		response.setRecords(financialRecordList);
+		response.setRecordList(financialRecordList);
 
 		return response;
 	}

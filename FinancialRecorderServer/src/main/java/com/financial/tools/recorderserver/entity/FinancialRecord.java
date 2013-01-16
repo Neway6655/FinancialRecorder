@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "FR_FINANCIAL_RECORD")
 public class FinancialRecord implements Serializable {
@@ -29,6 +31,7 @@ public class FinancialRecord implements Serializable {
 	@Column(name = "STATUS")
 	private int status;
 
+	@JsonProperty("userNameList")
 	@Column(name = "USER_NAMES")
 	private String userNames;
 

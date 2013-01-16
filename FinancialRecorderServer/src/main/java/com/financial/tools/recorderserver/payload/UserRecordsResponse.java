@@ -6,17 +6,17 @@ import com.financial.tools.recorderserver.entity.FinancialRecord;
 
 public class UserRecordsResponse {
 
-	private List<FinancialRecord> records;
+	private List<FinancialRecord> recordList;
 
 	public UserRecordsResponse() {
 	}
 
-	public List<FinancialRecord> getRecords() {
-		return records;
+	public List<FinancialRecord> getRecordList() {
+		return recordList;
 	}
 
-	public void setRecords(List<FinancialRecord> records) {
-		this.records = records;
+	public void setRecordList(List<FinancialRecord> recordList) {
+		this.recordList = recordList;
 	}
 
 }

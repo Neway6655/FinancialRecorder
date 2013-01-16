@@ -1,5 +1,6 @@
 package com.financial.tools.recorderserver.payload;
 
+
 public class CashinRequest {
 
 	private String userName;
