@@ -1,19 +1,24 @@
 package com.financial.tools.recorderserver.service;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.business.FinancialManager;
+import com.financial.tools.recorderserver.entity.BudgetTrail;
 import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
+import com.financial.tools.recorderserver.payload.UserBudgetTrailResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLogType;
@@ -34,7 +39,7 @@ public class FinancialService {
 	public String cashin(CashinRequest request) {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
-		float balance = financialManager.updateUserBalance(request.getUserName(), request.getAmount());
+		float balance = financialManager.cashin(request.getUserName(), request.getAmount());
 
 		entry.setAmount(request.getAmount()).setUserNameList(Lists.newArrayList(request.getUserName()));
 
@@ -50,7 +55,7 @@ public class FinancialService {
 
 		long financialRecordId = financialManager.createFinancialRecord(financialRecordRequest);
 
-		financialManager.updateFinance(financialRecordId);
+		financialManager.deductFee(financialRecordId);
 
 		entry.setFinancialRecordId(financialRecordId).setFinancialRecordName(financialRecordRequest.getName())
 				.setFee(financialRecordRequest.getTotalFee()).setUserNameList(financialRecordRequest.getUserNameList());
@@ -72,7 +77,7 @@ public class FinancialService {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
 		long financialRecordIdValue = Long.valueOf(financialRecordId);
-		financialManager.updateFinance(financialRecordIdValue);
+		financialManager.deductFee(financialRecordIdValue);
 
 		entry.setFinancialRecordId(financialRecordIdValue);
 		return "";
@@ -82,6 +87,13 @@ public class FinancialService {
 	@Path("/info/{userId}")
 	public UserFinancialInfoResponse getUserFinancialInfo(@PathParam("userId") String userId) {
 		return financialManager.getUserFinancialInfo(Long.valueOf(userId));
+	}
+
+	@GET
+	@Path("/search")
+	public UserBudgetTrailResponse searchUserBudgetTrail(@QueryParam("userName") String userName) {
+		List<BudgetTrail> userBudgetTrailList = financialManager.searchUserBudgetTrail(userName);
+		return new UserBudgetTrailResponse(userBudgetTrailList);
 	}
 
 	@Autowired

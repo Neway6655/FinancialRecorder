@@ -5,6 +5,7 @@ import javax.ws.rs.core.MediaType;
 import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
+import com.financial.tools.recorderserver.payload.UserBudgetTrailResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 
 public class FinancialServiceClient extends AbstractFinancialClient {
@@ -36,5 +37,10 @@ public class FinancialServiceClient extends AbstractFinancialClient {
 	public UserFinancialInfoResponse getUserFinancialInfo(String userId) {
 		client.path("finance/info/{userId}", userId).accept(MediaType.APPLICATION_JSON);
 		return get(client, UserFinancialInfoResponse.class);
+	}
+
+	public UserBudgetTrailResponse searchUserBudgetTrail(String userName) {
+		client.path("finance/search").query("userName", userName).accept(MediaType.APPLICATION_JSON);
+		return get(client, UserBudgetTrailResponse.class);
 	}
 }
