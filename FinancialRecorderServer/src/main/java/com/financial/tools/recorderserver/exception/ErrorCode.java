@@ -4,7 +4,9 @@ public enum ErrorCode {
 
 	LOGIN_ERROR("login_error"),
 
-	USER_ALREADY_EXIST_ERROR("user_already_exist");
+	USER_ALREADY_EXIST_ERROR("user_already_exist"),
+
+	INTERNAL_ERROR("internal_erro");
 
 	private String errorCode;
 

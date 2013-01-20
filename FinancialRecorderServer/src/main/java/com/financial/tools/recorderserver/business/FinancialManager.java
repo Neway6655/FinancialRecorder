@@ -13,6 +13,8 @@ import com.financial.tools.recorderserver.entity.BudgetTrailType;
 import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.entity.FinancialRecordStatus;
 import com.financial.tools.recorderserver.entity.User;
+import com.financial.tools.recorderserver.exception.ErrorCode;
+import com.financial.tools.recorderserver.exception.FinancialRecorderException;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
@@ -92,6 +94,9 @@ public class FinancialManager {
 			Date budgetTrailCreatedTime = new Date();
 			for (String userName : userNameArray) {
 				User user = userStore.getUserByName(userName);
+				if (user == null) {
+					throw new FinancialRecorderException(ErrorCode.INTERNAL_ERROR, "Server internal error.");
+				}
 				logger.debug("deduct user fee, userId: {}, fee: {}.", user.getId(), feePerUser);
 				userStore.updateBalance(user.getId(), user.getBalance() - feePerUser);
 

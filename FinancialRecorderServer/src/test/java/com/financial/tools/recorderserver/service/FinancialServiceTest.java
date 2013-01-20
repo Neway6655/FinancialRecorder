@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.junit.Before;
@@ -76,7 +77,7 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 	}
 
 	@Test
-	public void testListFinancialRecords() {
+	public void testListFinancialRecords() throws ParseException {
 		// prepare.
 		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ballA", 20, Lists.newArrayList(
 				"Neway", "Fred"), new Date());
