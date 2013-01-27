@@ -3,6 +3,9 @@ package com.financial.tools.recorderserver.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.financial.tools.recorderserver.util.CustomJsonDateSerializer;
+
 public class BudgetTrail implements Serializable {
 
 	private static final long serialVersionUID = -176942430634908634L;
@@ -43,6 +46,7 @@ public class BudgetTrail implements Serializable {
 		this.type = type;
 	}
 
+	@JsonSerialize(using = CustomJsonDateSerializer.class)
 	public Date getCreatedTime() {
 		return createdTime;
 	}
