@@ -18,6 +18,7 @@ import com.financial.tools.recorderserver.entity.UserType;
 import com.financial.tools.recorderserver.exception.ErrorCode;
 import com.financial.tools.recorderserver.exception.FinancialRecorderException;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
+import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.LoginRequest;
 import com.financial.tools.recorderserver.payload.RegistrationRequest;
 import com.financial.tools.recorderserver.payload.UserListResponse;
@@ -112,8 +113,22 @@ public class UserService {
 	@Path("/search")
 	public UserRecordsResponse searchRecords(@QueryParam("userName") String userName) {
 		UserRecordsResponse response = new UserRecordsResponse();
-		List<FinancialRecord> financialRecordList = userRecordStore.findFinancialRecordList(userName);
-		response.setRecordList(financialRecordList);
+		List<FinancialRecordResponse> financialRecordResponseList = Lists.newArrayList();
+		for (FinancialRecord financialRecord : userRecordStore.findFinancialRecordList(userName)) {
+			FinancialRecordResponse financialRecordResponse = new FinancialRecordResponse();
+			financialRecordResponse.setId(financialRecord.getId());
+			financialRecordResponse.setName(financialRecord.getName());
+			financialRecordResponse.setTotalFee(financialRecord.getTotalFee());
+			financialRecordResponse.setRecordDate(financialRecord.getRecordDate());
+
+			List<String> userNameList = Lists.newArrayList();
+			for (String name : financialRecord.getUserNames().split(",")) {
+				userNameList.add(name);
+			}
+			financialRecordResponse.setUserNameList(userNameList);
+			financialRecordResponseList.add(financialRecordResponse);
+		}
+		response.setRecordList(financialRecordResponseList);
 
 		return response;
 	}

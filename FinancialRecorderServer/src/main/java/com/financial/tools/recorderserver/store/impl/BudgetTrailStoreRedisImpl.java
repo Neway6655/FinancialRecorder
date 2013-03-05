@@ -10,17 +10,25 @@ import com.financial.tools.recorderserver.store.BudgetTrailStore;
 
 public class BudgetTrailStoreRedisImpl implements BudgetTrailStore {
 
+	private static final String BUDGETTRAIL_KEY = "BT_";
+
 	private RedisTemplate<String, BudgetTrail> redisTemplate;
 
 	@Override
 	public void createBudgetTrail(BudgetTrail budgetTrail) {
-		redisTemplate.opsForList().leftPush(budgetTrail.getUserName(), budgetTrail);
+		String key = getKey(budgetTrail.getUserName());
+		redisTemplate.opsForList().leftPush(key, budgetTrail);
 	}
 
 	@Override
 	public List<BudgetTrail> findBudgetTrailList(String userName) {
-		long size = redisTemplate.boundListOps(userName).size();
-		return redisTemplate.boundListOps(userName).range(0, size);
+		String key = getKey(userName);
+		long size = redisTemplate.boundListOps(key).size();
+		return redisTemplate.boundListOps(key).range(0, size);
+	}
+
+	private String getKey(String key) {
+		return new StringBuilder().append(BUDGETTRAIL_KEY).append(key).toString();
 	}
 
 	@Autowired

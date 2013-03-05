@@ -2,20 +2,18 @@ package com.financial.tools.recorderserver.payload;
 
 import java.util.List;
 
-import com.financial.tools.recorderserver.entity.FinancialRecord;
-
 public class UserRecordsResponse {
 
-	private List<FinancialRecord> recordList;
+	private List<FinancialRecordResponse> recordList;
 
 	public UserRecordsResponse() {
 	}
 
-	public List<FinancialRecord> getRecordList() {
+	public List<FinancialRecordResponse> getRecordList() {
 		return recordList;
 	}
 
-	public void setRecordList(List<FinancialRecord> recordList) {
+	public void setRecordList(List<FinancialRecordResponse> recordList) {
 		this.recordList = recordList;
 	}
 

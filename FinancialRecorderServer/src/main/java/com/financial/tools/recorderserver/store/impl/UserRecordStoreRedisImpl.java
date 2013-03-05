@@ -10,6 +10,8 @@ import com.financial.tools.recorderserver.store.UserRecordStore;
 
 public class UserRecordStoreRedisImpl implements UserRecordStore {
 
+	private static final String USERRECORD_KEY = "UR_";
+
 	private RedisTemplate<String, FinancialRecord> redisTemplate;
 
 	@Override
@@ -19,8 +21,12 @@ public class UserRecordStoreRedisImpl implements UserRecordStore {
 
 	@Override
 	public List<FinancialRecord> findFinancialRecordList(String userName) {
-		long size = redisTemplate.boundListOps(userName).size();
-		return redisTemplate.boundListOps(userName).range(0, size);
+		long size = redisTemplate.boundListOps(getKey(userName)).size();
+		return redisTemplate.boundListOps(getKey(userName)).range(0, size);
+	}
+
+	private String getKey(String key) {
+		return new StringBuilder().append(USERRECORD_KEY).append(key).toString();
 	}
 
 	@Autowired
