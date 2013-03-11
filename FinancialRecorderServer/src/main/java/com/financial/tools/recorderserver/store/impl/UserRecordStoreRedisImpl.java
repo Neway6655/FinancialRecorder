@@ -16,13 +16,15 @@ public class UserRecordStoreRedisImpl implements UserRecordStore {
 
 	@Override
 	public void addRecord2User(String userName, FinancialRecord record) {
-		redisTemplate.opsForList().leftPush(userName, record);
+		String key = getKey(userName);
+		redisTemplate.opsForList().leftPush(key, record);
 	}
 
 	@Override
 	public List<FinancialRecord> findFinancialRecordList(String userName) {
-		long size = redisTemplate.boundListOps(getKey(userName)).size();
-		return redisTemplate.boundListOps(getKey(userName)).range(0, size);
+		String key = getKey(userName);
+		long size = redisTemplate.boundListOps(key).size();
+		return redisTemplate.boundListOps(key).range(0, size);
 	}
 
 	private String getKey(String key) {
