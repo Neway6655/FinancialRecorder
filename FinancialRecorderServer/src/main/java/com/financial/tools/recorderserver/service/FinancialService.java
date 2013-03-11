@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.financial.tools.recorderserver.business.DeviceManager;
 import com.financial.tools.recorderserver.business.FinancialManager;
 import com.financial.tools.recorderserver.entity.BudgetTrail;
 import com.financial.tools.recorderserver.payload.CashinRequest;
@@ -32,6 +33,8 @@ public class FinancialService {
 
 	private FinancialManager financialManager;
 
+	private DeviceManager deviceManager;
+
 	@POST
 	@Path("/cashin")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -40,6 +43,7 @@ public class FinancialService {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
 		float balance = financialManager.cashin(request.getUserName(), request.getAmount());
+		deviceManager.sendNotification(request.getUserName());
 
 		entry.setAmount(request.getAmount()).setUserNameList(Lists.newArrayList(request.getUserName()));
 
@@ -99,6 +103,11 @@ public class FinancialService {
 	@Autowired
 	public void setFinancialManager(FinancialManager financialManager) {
 		this.financialManager = financialManager;
+	}
+
+	@Autowired
+	public void setDeviceManager(DeviceManager deviceManager) {
+		this.deviceManager = deviceManager;
 	}
 
 }

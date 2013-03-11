@@ -6,7 +6,9 @@ public enum ErrorCode {
 
 	USER_ALREADY_EXIST_ERROR("user_already_exist"),
 
-	INTERNAL_ERROR("internal_erro");
+	INTERNAL_ERROR("internal_erro"),
+
+	MISSING_PARAMETER_ERROR("missing_parameter_error");
 
 	private String errorCode;
 

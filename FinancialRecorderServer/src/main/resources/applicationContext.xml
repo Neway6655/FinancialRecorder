@@ -49,6 +49,7 @@
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" 
 		p:connection-factory-ref="redisConnectionFactory"/>
 
+	<!-- Store -->
 	<bean id="groupStore"
 		class="com.financial.tools.recorderserver.store.impl.GroupStoreJpaImpl" />
 		
@@ -61,14 +62,21 @@
 	<bean id="userRecordStore" class="com.financial.tools.recorderserver.store.impl.UserRecordStoreRedisImpl"/>
 	
 	<bean id="budgetTrailStore" class="com.financial.tools.recorderserver.store.impl.BudgetTrailStoreRedisImpl"/>
-			
+
+	<bean id="deviceStore" class="com.financial.tools.recorderserver.store.impl.DeviceStoreRedisImpl"/>
+				
+	<!-- Manager -->
 	<bean id="financialManager"
 		class="com.financial.tools.recorderserver.business.FinancialManager" />
+	<bean id="deviceManager" class="com.financial.tools.recorderserver.business.DeviceManager"/>
 
+	<!-- Service -->
 	<bean id="financialService"
 		class="com.financial.tools.recorderserver.service.FinancialService" />
 	
 	<bean id="userService" class="com.financial.tools.recorderserver.service.UserService"/>
+	
+	<bean id="deviceService" class="com.financial.tools.recorderserver.service.DeviceService"/>
 	
 	<bean id="transactionLogService" class="com.financial.tools.recorderserver.transactionlog.impl.TransactionLogServiceFileImpl" />
 
