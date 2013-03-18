@@ -37,7 +37,20 @@ public class UserStoreJpaImpl implements UserStore {
 
 	@Override
 	public long saveUser(User user) {
-		entityManager.persist(user);
+		Long userId = user.getId();
+		if (userId != null) {
+			User userFromDB = getUser(userId);
+			if (userFromDB != null) {
+				userFromDB.setBalance(user.getBalance());
+				userFromDB.setName(user.getName());
+				userFromDB.setPassword(user.getPassword());
+				userFromDB.setType(user.getType());
+
+				entityManager.persist(userFromDB);
+			}
+		} else {
+			entityManager.persist(user);
+		}
 		return user.getId();
 	}
 
