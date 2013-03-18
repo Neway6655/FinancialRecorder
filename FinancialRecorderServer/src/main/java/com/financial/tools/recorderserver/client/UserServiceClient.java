@@ -2,6 +2,7 @@ package com.financial.tools.recorderserver.client;
 
 import javax.ws.rs.core.MediaType;
 
+import com.financial.tools.recorderserver.payload.ChangePasswordRequest;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
 import com.financial.tools.recorderserver.payload.LoginRequest;
 import com.financial.tools.recorderserver.payload.RegistrationRequest;
@@ -25,6 +26,11 @@ public class UserServiceClient extends AbstractFinancialClient {
 
 	public String register(RegistrationRequest request) {
 		client.path("user/register").type(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN);
+		return post(client, request, String.class);
+	}
+
+	public String changePassword(ChangePasswordRequest request) {
+		client.path("user/changePassword").type(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN);
 		return post(client, request, String.class);
 	}
 

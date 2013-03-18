@@ -4,7 +4,11 @@ public enum ErrorCode {
 
 	LOGIN_ERROR("login_error"),
 
-	USER_ALREADY_EXIST_ERROR("user_already_exist"),
+	USER_ALREADY_EXIST_ERROR("user_already_exist_error"),
+
+	USER_NOT_EXIST_ERROR("user_not_exist_error"),
+
+	PASSWORD_INVALID_ERROR("password_invalid_error"),
 
 	INTERNAL_ERROR("internal_erro"),
 

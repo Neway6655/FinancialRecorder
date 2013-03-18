@@ -17,6 +17,7 @@ import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.entity.UserType;
 import com.financial.tools.recorderserver.exception.ErrorCode;
 import com.financial.tools.recorderserver.exception.FinancialRecorderException;
+import com.financial.tools.recorderserver.payload.ChangePasswordRequest;
 import com.financial.tools.recorderserver.payload.CreateUserRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.LoginRequest;
@@ -101,6 +102,26 @@ public class UserService {
 		userStore.saveUser(user);
 
 		return userName;
+	}
+
+	@POST
+	@Path("/changePassword")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String changePassword(ChangePasswordRequest request) {
+		String userName = request.getUserName();
+		User user = userStore.getUserByName(userName);
+		if (user == null) {
+			throw new FinancialRecorderException(ErrorCode.USER_NOT_EXIST_ERROR, "User with name: " + userName
+					+ " does not exist.");
+		}
+		String md5DigestOldPassword = SecurityUtils.md5Digest(request.getOldPassword());
+		if (!user.getPassword().equals(md5DigestOldPassword)) {
+			throw new FinancialRecorderException(ErrorCode.PASSWORD_INVALID_ERROR, "Old password is not valid.");
+		}
+		user.setPassword(SecurityUtils.md5Digest(request.getNewPassword()));
+		long userId = userStore.saveUser(user);
+
+		return String.valueOf(userId);
 	}
 
 	@GET

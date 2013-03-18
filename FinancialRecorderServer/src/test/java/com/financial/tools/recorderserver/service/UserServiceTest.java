@@ -58,4 +58,5 @@ public class UserServiceTest extends AbstractComponentTestCase {
 		assertNotNull(result);
 		assertEquals(userName, result);
 	}
+
 }
