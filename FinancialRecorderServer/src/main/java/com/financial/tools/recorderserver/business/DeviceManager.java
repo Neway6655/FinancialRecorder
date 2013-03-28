@@ -14,6 +14,8 @@ import com.google.android.gcm.server.Sender;
 
 public class DeviceManager {
 
+	private static final String GCM_MESSAGE_KEY = "message";
+
 	private static final String GCM_KEY = "AIzaSyDm5fOxjtm38z6oSxdzlwttQo0clbrKFC4";
 
 	private static final int RETRY_TIMES = 3;
@@ -37,8 +39,8 @@ public class DeviceManager {
 	 * 
 	 * @param userName
 	 */
-	public void sendNotification(String userName) {
-		Message message = new Message.Builder().build();
+	public void sendNotification(String userName, String notificationMessage) {
+		Message message = new Message.Builder().addData(GCM_MESSAGE_KEY, notificationMessage).build();
 		Sender sender = new Sender(GCM_KEY);
 		String registrationId = deviceStore.getDeviceRegId(userName);
 		if (StringUtils.isEmpty(registrationId)) {

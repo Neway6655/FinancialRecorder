@@ -43,7 +43,10 @@ public class FinancialService {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
 		float balance = financialManager.cashin(request.getUserName(), request.getAmount());
-		deviceManager.sendNotification(request.getUserName());
+		StringBuilder notificationMessage = new StringBuilder();
+		notificationMessage.append("Dear ").append(request.getUserName())
+				.append(", your account has been cashed in " + request.getAmount() + " RMB.");
+		deviceManager.sendNotification(request.getUserName(), notificationMessage.toString());
 
 		entry.setAmount(request.getAmount()).setUserNameList(Lists.newArrayList(request.getUserName()));
 
