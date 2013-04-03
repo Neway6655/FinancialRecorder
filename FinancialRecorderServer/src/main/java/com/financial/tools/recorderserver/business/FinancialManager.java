@@ -19,9 +19,11 @@ import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.financial.tools.recorderserver.store.BudgetTrailStore;
+import com.financial.tools.recorderserver.store.DeviceStore;
 import com.financial.tools.recorderserver.store.FinancialRecordStore;
 import com.financial.tools.recorderserver.store.UserStore;
 import com.financial.tools.recorderserver.util.JsonMappingUtils;
+import com.financial.tools.recorderserver.util.NotificationHelper;
 import com.google.common.collect.Lists;
 
 public class FinancialManager {
@@ -30,6 +32,7 @@ public class FinancialManager {
 	private UserStore userStore;
 	private FinancialRecordStore financialRecordStore;
 	private BudgetTrailStore budgetTrailStore;
+	private DeviceStore deviceStore;
 
 	public float cashin(String userName, float amount) {
 		logger.debug("Update user balance, userName: {}, amount: {}.", userName, amount);
@@ -102,6 +105,12 @@ public class FinancialManager {
 
 				budgetTrailStore.createBudgetTrail(new BudgetTrail(userName, BudgetTrailType.PAY_FEE.getValue(),
 						budgetTrailCreatedTime, feePerUser));
+
+				// send notification.
+				String deviceRegId = deviceStore.getDeviceRegId(userName);
+				String notificationMessage = String.format("Hi %1$s, deduct fee %2$.2f RMB.", userName, feePerUser);
+				NotificationHelper.sendNotification(deviceRegId, BudgetTrailType.PAY_FEE.getValue(),
+						notificationMessage);
 			}
 		}
 	}
@@ -133,6 +142,11 @@ public class FinancialManager {
 	@Autowired
 	public void setBudgetTrailStore(BudgetTrailStore budgetTrailStore) {
 		this.budgetTrailStore = budgetTrailStore;
+	}
+
+	@Autowired
+	public void setDeviceStore(DeviceStore deviceStore) {
+		this.deviceStore = deviceStore;
 	}
 
 }

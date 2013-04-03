@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.financial.tools.recorderserver.business.DeviceManager;
 import com.financial.tools.recorderserver.business.FinancialManager;
 import com.financial.tools.recorderserver.entity.BudgetTrail;
+import com.financial.tools.recorderserver.entity.BudgetTrailType;
 import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
@@ -25,6 +26,7 @@ import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLogType;
 import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogEntry;
 import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogThreadLocalContext;
+import com.financial.tools.recorderserver.util.NotificationHelper;
 import com.google.common.collect.Lists;
 
 @Path("/finance")
@@ -43,12 +45,15 @@ public class FinancialService {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
 		float balance = financialManager.cashin(request.getUserName(), request.getAmount());
-		StringBuilder notificationMessage = new StringBuilder();
-		notificationMessage.append("Dear ").append(request.getUserName())
-				.append(", your account has been cashed in " + request.getAmount() + " RMB.");
-		deviceManager.sendNotification(request.getUserName(), notificationMessage.toString());
 
+		// collect transaction log info.
 		entry.setAmount(request.getAmount()).setUserNameList(Lists.newArrayList(request.getUserName()));
+
+		// send notification.
+		String deviceRegId = deviceManager.getRegisteredDeviceId(request.getUserName());
+		String notificationMessage = String.format("Hi %1$s, cashed in %2$.2f RMB for you.", request.getUserName(),
+				request.getAmount());
+		NotificationHelper.sendNotification(deviceRegId, BudgetTrailType.CASH_IN.getValue(), notificationMessage);
 
 		return String.valueOf(balance);
 	}
