@@ -38,7 +38,7 @@ public class UserStoreJpaImpl implements UserStore {
 	@Override
 	public long saveUser(User user) {
 		Long userId = user.getId();
-		if (userId != null) {
+		if (userId != null && userId != 0) {
 			User userFromDB = getUser(userId);
 			if (userFromDB != null) {
 				userFromDB.setBalance(user.getBalance());
