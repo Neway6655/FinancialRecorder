@@ -12,7 +12,9 @@ public enum ErrorCode {
 
 	INTERNAL_ERROR("internal_erro"),
 
-	MISSING_PARAMETER_ERROR("missing_parameter_error");
+	MISSING_PARAMETER_ERROR("missing_parameter_error"),
+
+	FINANCIAL_RECORD_NOT_EXIST_ERROR("financial_record_not_exist_error");
 
 	private String errorCode;
 

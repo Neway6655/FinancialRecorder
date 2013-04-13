@@ -3,7 +3,9 @@ package com.financial.tools.recorderserver.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.financial.tools.recorderserver.util.CustomJsonDateDeserializer;
 import com.financial.tools.recorderserver.util.CustomJsonDateSerializer;
 
 public class BudgetTrail implements Serializable {
@@ -51,6 +53,7 @@ public class BudgetTrail implements Serializable {
 		return createdTime;
 	}
 
+	@JsonDeserialize(using = CustomJsonDateDeserializer.class)
 	public void setCreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}

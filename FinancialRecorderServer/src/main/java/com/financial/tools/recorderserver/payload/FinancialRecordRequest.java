@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.financial.tools.recorderserver.util.CustomJsonDateDeserializer;
+import com.financial.tools.recorderserver.util.CustomJsonDateSerializer;
 
 public class FinancialRecordRequest {
 
@@ -47,6 +49,7 @@ public class FinancialRecordRequest {
 		this.userNameList = userNameList;
 	}
 
+	@JsonSerialize(using = CustomJsonDateSerializer.class)
 	public Date getRecordDate() {
 		return recordDate;
 	}

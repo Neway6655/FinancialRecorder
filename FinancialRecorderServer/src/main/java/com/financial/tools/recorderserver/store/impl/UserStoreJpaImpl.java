@@ -64,6 +64,14 @@ public class UserStoreJpaImpl implements UserStore {
 	}
 
 	@Override
+	public List<User> findUserByType(int userType) {
+		Query query = entityManager.createQuery("select U from User U where U.type=:type");
+		query.setParameter("type", userType);
+
+		return query.getResultList();
+	}
+
+	@Override
 	public List<User> findAll() {
 		Query query = entityManager.createQuery("SELECT u FROM User u", User.class);
 		return query.getResultList();

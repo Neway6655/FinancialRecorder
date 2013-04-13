@@ -7,6 +7,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import com.financial.tools.recorderserver.store.DeviceStore;
 
+/**
+ * DeviceStore is response for relationship between user and device, currently
+ * we only keep one device for one user.
+ * 
+ * @author eortwyz
+ * 
+ */
 public class DeviceStoreRedisImpl implements DeviceStore {
 
 	private static final String DEVICEREG_KEY = "DR_";
@@ -25,6 +32,12 @@ public class DeviceStoreRedisImpl implements DeviceStore {
 		return redisTemplate.boundValueOps(key).get();
 	}
 
+	@Override
+	public void unRegisterDevice(String userName, String deviceRegId) {
+		String key = getKey(userName);
+		redisTemplate.boundValueOps(key).set(null);
+	}
+
 	private String getKey(String userName) {
 		return new StringBuilder().append(DEVICEREG_KEY).append(userName).toString();
 	}
@@ -33,4 +46,5 @@ public class DeviceStoreRedisImpl implements DeviceStore {
 	public void setRedisTemplate(RedisTemplate<String, String> redisTemplate) {
 		this.redisTemplate = redisTemplate;
 	}
+
 }

@@ -11,21 +11,32 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.business.DeviceManager;
 import com.financial.tools.recorderserver.business.FinancialManager;
+import com.financial.tools.recorderserver.business.UserManager;
 import com.financial.tools.recorderserver.entity.BudgetTrail;
 import com.financial.tools.recorderserver.entity.BudgetTrailType;
+import com.financial.tools.recorderserver.entity.FinancialRecord;
+import com.financial.tools.recorderserver.exception.ErrorCode;
+import com.financial.tools.recorderserver.exception.FinancialRecorderException;
+import com.financial.tools.recorderserver.payload.AddFinancialRecordUsersRequest;
 import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
+import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.UserBudgetTrailResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLogType;
 import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogEntry;
 import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogThreadLocalContext;
+import com.financial.tools.recorderserver.util.CopyUtils;
+import com.financial.tools.recorderserver.util.FinancialRecorderConstants;
 import com.financial.tools.recorderserver.util.NotificationHelper;
 import com.google.common.collect.Lists;
 
@@ -33,9 +44,13 @@ import com.google.common.collect.Lists;
 @Produces(MediaType.APPLICATION_JSON)
 public class FinancialService {
 
+	private static final Logger logger = LoggerFactory.getLogger(FinancialService.class);
+
 	private FinancialManager financialManager;
 
 	private DeviceManager deviceManager;
+
+	private UserManager userManager;
 
 	@POST
 	@Path("/cashin")
@@ -53,7 +68,11 @@ public class FinancialService {
 		String deviceRegId = deviceManager.getRegisteredDeviceId(request.getUserName());
 		String notificationMessage = String.format("Hi %1$s, cashed in %2$.2f RMB for you.", request.getUserName(),
 				request.getAmount());
-		NotificationHelper.sendNotification(deviceRegId, BudgetTrailType.CASH_IN.getValue(), notificationMessage);
+		boolean result = NotificationHelper.sendNotification(deviceRegId, BudgetTrailType.CASH_IN.getValue(),
+				notificationMessage, -1);
+		if (!result) {
+			deviceManager.unRegister(request.getUserName(), deviceRegId);
+		}
 
 		return String.valueOf(balance);
 	}
@@ -67,12 +86,45 @@ public class FinancialService {
 
 		long financialRecordId = financialManager.createFinancialRecord(financialRecordRequest);
 
-		financialManager.deductFee(financialRecordId);
-
 		entry.setFinancialRecordId(financialRecordId).setFinancialRecordName(financialRecordRequest.getName())
 				.setFee(financialRecordRequest.getTotalFee()).setUserNameList(financialRecordRequest.getUserNameList());
 
 		return Response.ok(financialRecordId).build();
+	}
+
+	@POST
+	@Path("/addUsers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public FinancialRecordResponse addFinancialRecordUsers(AddFinancialRecordUsersRequest request) {
+		FinancialRecord financialRecord = financialManager.getFinancialRecord(request.getFinancialRecordId());
+		if (financialRecord == null) {
+			throw new FinancialRecorderException(ErrorCode.FINANCIAL_RECORD_NOT_EXIST_ERROR,
+					"No financial record found by id: " + request.getFinancialRecordId());
+		}
+
+		List<String> existUserList = Lists.newArrayList(financialRecord.getUserNames().split(
+				FinancialRecorderConstants.USER_NAME_SEPARATE));
+		List<String> joinedUserNameList = Lists.newArrayList();
+		for (String userName : request.getUserNameList()) {
+			if (!existUserList.contains(userName)) {
+				joinedUserNameList.add(userName);
+			}
+		}
+
+		if (joinedUserNameList.isEmpty()) {
+			logger.info("No new user joined into financial record, id: {}", request.getFinancialRecordId());
+			return CopyUtils.convertFinancialRecord2Response(financialRecord);
+		}
+
+		String userNames = financialRecord.getUserNames() + FinancialRecorderConstants.USER_NAME_SEPARATE
+				+ StringUtils.join(joinedUserNameList, FinancialRecorderConstants.USER_NAME_SEPARATE);
+		financialRecord.setUserNames(userNames);
+		FinancialRecord updateFinancialRecord = financialManager.updateFinancialRecord(financialRecord);
+		for (String joinedUserName : joinedUserNameList) {
+			userManager.addUserRecord(joinedUserName, request.getFinancialRecordId());
+		}
+
+		return CopyUtils.convertFinancialRecord2Response(updateFinancialRecord);
 	}
 
 	@GET
@@ -116,6 +168,11 @@ public class FinancialService {
 	@Autowired
 	public void setDeviceManager(DeviceManager deviceManager) {
 		this.deviceManager = deviceManager;
+	}
+
+	@Autowired
+	public void setUserManager(UserManager userManager) {
+		this.userManager = userManager;
 	}
 
 }

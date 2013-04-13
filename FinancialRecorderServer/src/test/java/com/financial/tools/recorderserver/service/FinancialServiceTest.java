@@ -14,9 +14,11 @@ import com.financial.tools.recorderserver.AbstractComponentTestCase;
 import com.financial.tools.recorderserver.client.FinancialServiceClient;
 import com.financial.tools.recorderserver.entity.BudgetTrail;
 import com.financial.tools.recorderserver.entity.BudgetTrailType;
+import com.financial.tools.recorderserver.payload.AddFinancialRecordUsersRequest;
 import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
+import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.UserBudgetTrailResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.google.common.collect.Lists;
@@ -77,6 +79,23 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 	}
 
 	@Test
+	public void testDeductFinancialRecordFee() {
+		// prepare.
+		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ballA", 20, Lists.newArrayList(
+				"Neway", "Fred"), new Date());
+		String financialRecordId = financialServiceClient.createFinancialRecord(financialRecordRequest);
+
+		// replay.
+		financialServiceClient.updateFinance(financialRecordId);
+
+		// verify.
+		UserFinancialInfoResponse newayInfo = financialServiceClient.getUserFinancialInfo("1");
+		UserFinancialInfoResponse fredInfo = financialServiceClient.getUserFinancialInfo("2");
+		assertEquals(90, newayInfo.getBalance(), 0.0);
+		assertEquals(90, fredInfo.getBalance(), 0.0);
+	}
+
+	@Test
 	public void testListFinancialRecords() throws ParseException {
 		// prepare.
 		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ballA", 20, Lists.newArrayList(
@@ -94,8 +113,35 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 		UserFinancialInfoResponse userAInfo = financialServiceClient.getUserFinancialInfo("1");
 		UserFinancialInfoResponse userBInfo = financialServiceClient.getUserFinancialInfo("2");
 
-		assertEquals(75, userAInfo.getBalance());
-		assertEquals(75, userBInfo.getBalance());
+		assertEquals(100, userAInfo.getBalance(), 0.0);
+		assertEquals(100, userBInfo.getBalance(), 0.0);
 	}
 
+	@Test
+	public void testAddUsers2FinancialRecord() {
+		// prepare, create a financial record first.
+		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ballA", 20,
+				Lists.newArrayList("Fred"), new Date());
+		String financialRecordId = financialServiceClient.createFinancialRecord(financialRecordRequest);
+
+		// replay, add Neway to this financial record.
+		AddFinancialRecordUsersRequest addFinancialRecordUsersRequest = new AddFinancialRecordUsersRequest();
+		addFinancialRecordUsersRequest.setFinancialRecordId(Long.valueOf(financialRecordId));
+		addFinancialRecordUsersRequest.setUserNameList(Lists.newArrayList("Neway"));
+
+		financialServiceClient.addFinancialRecordUsers(addFinancialRecordUsersRequest);
+
+		// verify.
+		FinancialRecordResponse financialRecord = null;
+		FinancialRecordListResponse financialRecordList = financialServiceClient.listFinancialRecord();
+		for (FinancialRecordResponse response : financialRecordList.getRecordList()) {
+			if (response.getId() == Long.valueOf(financialRecordId)) {
+				financialRecord = response;
+				break;
+			}
+		}
+
+		assertNotNull(financialRecord);
+		assertEquals(2, financialRecord.getUserNameList().size());
+	}
 }

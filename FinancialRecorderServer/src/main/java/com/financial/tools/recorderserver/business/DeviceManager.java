@@ -22,6 +22,10 @@ public class DeviceManager {
 		return deviceStore.getDeviceRegId(userName);
 	}
 
+	public void unRegister(String userName, String deviceRegId) {
+		deviceStore.unRegisterDevice(userName, deviceRegId);
+	}
+
 	@Autowired
 	public void setDeviceStore(DeviceStore deviceStore) {
 		this.deviceStore = deviceStore;

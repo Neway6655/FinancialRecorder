@@ -12,5 +12,5 @@ public interface FinancialRecordStore {
 
 	public List<FinancialRecord> listFinancialRecords();
 
-	void updateFinancialRecord(FinancialRecord financialRecord);
+	FinancialRecord updateFinancialRecord(FinancialRecord financialRecord);
 }

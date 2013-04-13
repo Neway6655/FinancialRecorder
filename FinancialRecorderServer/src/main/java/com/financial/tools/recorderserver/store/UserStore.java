@@ -14,5 +14,8 @@ public interface UserStore {
 
 	public long saveUser(User user);
 
+	public List<User> findUserByType(int userType);
+
 	public List<User> findAll();
+
 }

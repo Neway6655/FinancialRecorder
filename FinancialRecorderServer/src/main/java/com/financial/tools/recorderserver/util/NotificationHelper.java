@@ -7,10 +7,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.Message.Builder;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 
+/**
+ * Helper class used to push notification to device via GCM(Google Cloud
+ * Message) service. Only available for Android.
+ * 
+ * @author eortwyz
+ * 
+ */
 public class NotificationHelper {
+
+	private static final String ERROR_CODE_NOT_REGISTERED = "NotRegistered";
 
 	private static final String GCM_MESSAGE_TITLE_KEY = "title";
 
@@ -22,21 +32,31 @@ public class NotificationHelper {
 
 	private static Logger logger = LoggerFactory.getLogger(NotificationHelper.class);
 
-	public static void sendNotification(String deviceRegId, String notificationTitle, String notificationMessage) {
-		Message message = new Message.Builder().addData(GCM_MESSAGE_TITLE_KEY, notificationTitle)
-				.addData(GCM_MESSAGE_BODY_KEY, notificationMessage).build();
-		Sender sender = new Sender(GCM_KEY);
+	public static boolean sendNotification(String deviceRegId, String notificationTitle, String notificationMessage,
+			int timeToLive) {
 		if (StringUtils.isEmpty(deviceRegId)) {
 			logger.debug("deviceRegId:{} doesn't exist.", deviceRegId);
-			return;
+			return false;
 		}
-
+		Builder messageBuilder = new Message.Builder();
+		if (timeToLive > 0) {
+			messageBuilder.timeToLive(timeToLive);
+		}
+		Message message = messageBuilder.delayWhileIdle(true).addData(GCM_MESSAGE_TITLE_KEY, notificationTitle)
+				.addData(GCM_MESSAGE_BODY_KEY, notificationMessage).build();
+		Sender sender = new Sender(GCM_KEY);
 		try {
 			Result result = sender.send(message, deviceRegId, RETRY_TIMES);
 			logger.debug("notification send to deviceRegId: {}, result: {}.", deviceRegId, result);
+
+			if (result.getErrorCodeName() != null && result.getErrorCodeName().equals(ERROR_CODE_NOT_REGISTERED)) {
+				return false;
+			}
 		} catch (IOException e) {
 			logger.error("Can't send notification to deviceRegId: {}", deviceRegId);
+			return false;
 		}
-	}
 
+		return true;
+	}
 }

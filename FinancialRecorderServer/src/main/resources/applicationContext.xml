@@ -69,6 +69,7 @@
 	<bean id="financialManager"
 		class="com.financial.tools.recorderserver.business.FinancialManager" />
 	<bean id="deviceManager" class="com.financial.tools.recorderserver.business.DeviceManager"/>
+	<bean id="userManager" class="com.financial.tools.recorderserver.business.UserManager" />
 
 	<!-- Service -->
 	<bean id="financialService"

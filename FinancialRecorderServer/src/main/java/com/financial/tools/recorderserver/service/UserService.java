@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.financial.tools.recorderserver.business.FinancialManager;
 import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.entity.UserType;
@@ -30,6 +31,7 @@ import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLogType;
 import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogEntry;
 import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogThreadLocalContext;
+import com.financial.tools.recorderserver.util.CopyUtils;
 import com.financial.tools.recorderserver.util.SecurityUtils;
 import com.google.common.collect.Lists;
 
@@ -41,6 +43,8 @@ public class UserService {
 	private UserStore userStore;
 
 	private UserRecordStore userRecordStore;
+
+	private FinancialManager financialManager;
 
 	@POST
 	@Path("/create")
@@ -135,18 +139,12 @@ public class UserService {
 	public UserRecordsResponse searchRecords(@QueryParam("userName") String userName) {
 		UserRecordsResponse response = new UserRecordsResponse();
 		List<FinancialRecordResponse> financialRecordResponseList = Lists.newArrayList();
-		for (FinancialRecord financialRecord : userRecordStore.findFinancialRecordList(userName)) {
-			FinancialRecordResponse financialRecordResponse = new FinancialRecordResponse();
-			financialRecordResponse.setId(financialRecord.getId());
-			financialRecordResponse.setName(financialRecord.getName());
-			financialRecordResponse.setTotalFee(financialRecord.getTotalFee());
-			financialRecordResponse.setRecordDate(financialRecord.getRecordDate());
-
-			List<String> userNameList = Lists.newArrayList();
-			for (String name : financialRecord.getUserNames().split(",")) {
-				userNameList.add(name);
-			}
-			financialRecordResponse.setUserNameList(userNameList);
+		List<Long> financialRecordIdList = userRecordStore.findFinancialRecordIdList(userName);
+		// TODO: Neway, need to add cache for this method.
+		for (Long financialRecordId : financialRecordIdList) {
+			FinancialRecord financialRecord = financialManager.getFinancialRecord(financialRecordId);
+			FinancialRecordResponse financialRecordResponse = CopyUtils
+					.convertFinancialRecord2Response(financialRecord);
 			financialRecordResponseList.add(financialRecordResponse);
 		}
 		response.setRecordList(financialRecordResponseList);

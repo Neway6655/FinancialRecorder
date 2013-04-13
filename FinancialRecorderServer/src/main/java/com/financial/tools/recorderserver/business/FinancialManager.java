@@ -22,6 +22,7 @@ import com.financial.tools.recorderserver.store.BudgetTrailStore;
 import com.financial.tools.recorderserver.store.DeviceStore;
 import com.financial.tools.recorderserver.store.FinancialRecordStore;
 import com.financial.tools.recorderserver.store.UserStore;
+import com.financial.tools.recorderserver.util.CopyUtils;
 import com.financial.tools.recorderserver.util.JsonMappingUtils;
 import com.financial.tools.recorderserver.util.NotificationHelper;
 import com.google.common.collect.Lists;
@@ -67,21 +68,24 @@ public class FinancialManager {
 		List<FinancialRecordResponse> recordList = Lists.newArrayList();
 		List<FinancialRecord> financialRecordList = financialRecordStore.listFinancialRecords();
 		for (FinancialRecord financialRecord : financialRecordList) {
-			FinancialRecordResponse record = new FinancialRecordResponse();
-			record.setId(financialRecord.getId());
-			record.setName(financialRecord.getName());
-			record.setTotalFee(financialRecord.getTotalFee());
-			record.setRecordDate(financialRecord.getRecordDate());
-
-			List<String> userNameList = Lists.newArrayList();
-			for (String userName : financialRecord.getUserNames().split(",")) {
-				userNameList.add(userName);
-			}
-
-			record.setUserNameList(userNameList);
-			recordList.add(record);
+			FinancialRecordResponse recordResponse = CopyUtils.convertFinancialRecord2Response(financialRecord);
+			recordList.add(recordResponse);
 		}
 		return recordList;
+	}
+
+	public FinancialRecord getFinancialRecord(long financialRecordId) {
+		if (financialRecordId != 0) {
+			return financialRecordStore.getFinancialRecord(financialRecordId);
+		}
+		return null;
+	}
+
+	public FinancialRecord updateFinancialRecord(FinancialRecord financialRecord) {
+		if (financialRecord != null) {
+			return financialRecordStore.updateFinancialRecord(financialRecord);
+		}
+		return null;
 	}
 
 	public void deductFee(long financialRecordId) {
@@ -110,7 +114,7 @@ public class FinancialManager {
 				String deviceRegId = deviceStore.getDeviceRegId(userName);
 				String notificationMessage = String.format("Hi %1$s, deduct fee %2$.2f RMB.", userName, feePerUser);
 				NotificationHelper.sendNotification(deviceRegId, BudgetTrailType.PAY_FEE.getValue(),
-						notificationMessage);
+						notificationMessage, -1);
 			}
 		}
 	}

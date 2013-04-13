@@ -5,23 +5,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.store.UserRecordStore;
 
 public class UserRecordStoreRedisImpl implements UserRecordStore {
 
 	private static final String USERRECORD_KEY = "UR_";
 
-	private RedisTemplate<String, FinancialRecord> redisTemplate;
+	private RedisTemplate<String, Long> redisTemplate;
 
 	@Override
-	public void addRecord2User(String userName, FinancialRecord record) {
+	public void addRecord2User(String userName, long financialRecordId) {
 		String key = getKey(userName);
-		redisTemplate.opsForList().leftPush(key, record);
+		redisTemplate.opsForList().leftPush(key, financialRecordId);
 	}
 
 	@Override
-	public List<FinancialRecord> findFinancialRecordList(String userName) {
+	public List<Long> findFinancialRecordIdList(String userName) {
 		String key = getKey(userName);
 		long size = redisTemplate.boundListOps(key).size();
 		return redisTemplate.boundListOps(key).range(0, size);
@@ -32,7 +31,7 @@ public class UserRecordStoreRedisImpl implements UserRecordStore {
 	}
 
 	@Autowired
-	public void setRedisTemplate(RedisTemplate<String, FinancialRecord> redisTemplate) {
+	public void setRedisTemplate(RedisTemplate<String, Long> redisTemplate) {
 		this.redisTemplate = redisTemplate;
 	}
 
