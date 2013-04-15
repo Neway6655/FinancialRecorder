@@ -53,8 +53,10 @@ public class FinancialRecordStoreJpaImpl implements FinancialRecordStore {
 	}
 
 	@Override
-	public List<FinancialRecord> listFinancialRecords() {
-		Query query = entityManager.createQuery("SELECT f FROM FinancialRecord f", FinancialRecord.class);
+	public List<FinancialRecord> listFinancialRecordsByStatus(int financialRecordStatus) {
+		Query query = entityManager.createQuery("SELECT f FROM FinancialRecord f where f.status=:status",
+				FinancialRecord.class);
+		query.setParameter("status", financialRecordStatus);
 		query.setMaxResults(10);
 		return query.getResultList();
 	}

@@ -10,7 +10,7 @@ public interface FinancialRecordStore {
 
 	public FinancialRecord getFinancialRecord(long financialRecordId);
 
-	public List<FinancialRecord> listFinancialRecords();
+	public List<FinancialRecord> listFinancialRecordsByStatus(int financialRecordStatus);
 
 	FinancialRecord updateFinancialRecord(FinancialRecord financialRecord);
 }

@@ -26,8 +26,8 @@ public class FinancialServiceClient extends AbstractFinancialClient {
 		return post(client, financialRecordRequest, String.class);
 	}
 
-	public FinancialRecordListResponse listFinancialRecord() {
-		client.path("finance/list").accept(MediaType.APPLICATION_JSON);
+	public FinancialRecordListResponse listFinancialRecord(int financialRecordStatus) {
+		client.path("finance/list/{financialRecordStatus}", financialRecordStatus).accept(MediaType.APPLICATION_JSON);
 		return get(client, FinancialRecordListResponse.class);
 	}
 

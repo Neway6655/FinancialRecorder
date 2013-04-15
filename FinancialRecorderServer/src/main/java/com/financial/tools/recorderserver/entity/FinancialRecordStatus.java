@@ -17,4 +17,12 @@ public enum FinancialRecordStatus {
 		this.value = value;
 	}
 
+	public static FinancialRecordStatus getStatusByValue(int value) {
+		for (FinancialRecordStatus financialRecordStatus : FinancialRecordStatus.values()) {
+			if (financialRecordStatus.getValue() == value) {
+				return financialRecordStatus;
+			}
+		}
+		return null;
+	}
 }

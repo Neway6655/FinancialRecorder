@@ -14,6 +14,7 @@ import com.financial.tools.recorderserver.AbstractComponentTestCase;
 import com.financial.tools.recorderserver.client.FinancialServiceClient;
 import com.financial.tools.recorderserver.entity.BudgetTrail;
 import com.financial.tools.recorderserver.entity.BudgetTrailType;
+import com.financial.tools.recorderserver.entity.FinancialRecordStatus;
 import com.financial.tools.recorderserver.payload.AddFinancialRecordUsersRequest;
 import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
@@ -107,7 +108,8 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 		financialServiceClient.createFinancialRecord(financialRecordRequest);
 
 		// replay.
-		FinancialRecordListResponse response = financialServiceClient.listFinancialRecord();
+		FinancialRecordListResponse response = financialServiceClient.listFinancialRecord(FinancialRecordStatus.NEW
+				.getValue());
 		assertEquals(2, response.getRecordList().size());
 
 		UserFinancialInfoResponse userAInfo = financialServiceClient.getUserFinancialInfo("1");
@@ -133,7 +135,8 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 
 		// verify.
 		FinancialRecordResponse financialRecord = null;
-		FinancialRecordListResponse financialRecordList = financialServiceClient.listFinancialRecord();
+		FinancialRecordListResponse financialRecordList = financialServiceClient
+				.listFinancialRecord(FinancialRecordStatus.NEW.getValue());
 		for (FinancialRecordResponse response : financialRecordList.getRecordList()) {
 			if (response.getId() == Long.valueOf(financialRecordId)) {
 				financialRecord = response;

@@ -14,7 +14,9 @@ public enum ErrorCode {
 
 	MISSING_PARAMETER_ERROR("missing_parameter_error"),
 
-	FINANCIAL_RECORD_NOT_EXIST_ERROR("financial_record_not_exist_error");
+	FINANCIAL_RECORD_NOT_EXIST_ERROR("financial_record_not_exist_error"),
+
+	FINANCIALRECORD_STATUS_INVALID_ERROR("financial_record_status_invalid");
 
 	private String errorCode;
 

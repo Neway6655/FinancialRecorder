@@ -22,6 +22,7 @@ import com.financial.tools.recorderserver.business.UserManager;
 import com.financial.tools.recorderserver.entity.BudgetTrail;
 import com.financial.tools.recorderserver.entity.BudgetTrailType;
 import com.financial.tools.recorderserver.entity.FinancialRecord;
+import com.financial.tools.recorderserver.entity.FinancialRecordStatus;
 import com.financial.tools.recorderserver.exception.ErrorCode;
 import com.financial.tools.recorderserver.exception.FinancialRecorderException;
 import com.financial.tools.recorderserver.payload.AddFinancialRecordUsersRequest;
@@ -102,25 +103,25 @@ public class FinancialService {
 					"No financial record found by id: " + request.getFinancialRecordId());
 		}
 
-		List<String> existUserList = Lists.newArrayList(financialRecord.getUserNames().split(
+		List<String> userNameList = Lists.newArrayList(financialRecord.getUserNames().split(
 				FinancialRecorderConstants.USER_NAME_SEPARATE));
-		List<String> joinedUserNameList = Lists.newArrayList();
+		List<String> newJoinedUserNameList = Lists.newArrayList();
 		for (String userName : request.getUserNameList()) {
-			if (!existUserList.contains(userName)) {
-				joinedUserNameList.add(userName);
+			if (!userNameList.contains(userName)) {
+				newJoinedUserNameList.add(userName);
+				userNameList.add(userName);
 			}
 		}
 
-		if (joinedUserNameList.isEmpty()) {
+		if (newJoinedUserNameList.isEmpty()) {
 			logger.info("No new user joined into financial record, id: {}", request.getFinancialRecordId());
 			return CopyUtils.convertFinancialRecord2Response(financialRecord);
 		}
 
-		String userNames = financialRecord.getUserNames() + FinancialRecorderConstants.USER_NAME_SEPARATE
-				+ StringUtils.join(joinedUserNameList, FinancialRecorderConstants.USER_NAME_SEPARATE);
+		String userNames = StringUtils.join(userNameList, FinancialRecorderConstants.USER_NAME_SEPARATE);
 		financialRecord.setUserNames(userNames);
 		FinancialRecord updateFinancialRecord = financialManager.updateFinancialRecord(financialRecord);
-		for (String joinedUserName : joinedUserNameList) {
+		for (String joinedUserName : newJoinedUserNameList) {
 			userManager.addUserRecord(joinedUserName, request.getFinancialRecordId());
 		}
 
@@ -128,9 +129,15 @@ public class FinancialService {
 	}
 
 	@GET
-	@Path("/list")
-	public FinancialRecordListResponse listFinancialRecords() {
-		return new FinancialRecordListResponse(financialManager.listFinancialRecords());
+	@Path("/list/{financialRecordStatus}")
+	public FinancialRecordListResponse listFinancialRecords(
+			@PathParam("financialRecordStatus") int financialRecordStatus) {
+		FinancialRecordStatus status = FinancialRecordStatus.getStatusByValue(financialRecordStatus);
+		if (status == null) {
+			throw new FinancialRecorderException(ErrorCode.FINANCIALRECORD_STATUS_INVALID_ERROR,
+					"Invalid status for financial record.");
+		}
+		return new FinancialRecordListResponse(financialManager.listFinancialRecordsByStatus(status));
 	}
 
 	@GET

@@ -64,9 +64,10 @@ public class FinancialManager {
 		return financialRecordStore.createFinancialRecord(financialRecord);
 	}
 
-	public List<FinancialRecordResponse> listFinancialRecords() {
+	public List<FinancialRecordResponse> listFinancialRecordsByStatus(FinancialRecordStatus status) {
 		List<FinancialRecordResponse> recordList = Lists.newArrayList();
-		List<FinancialRecord> financialRecordList = financialRecordStore.listFinancialRecords();
+		List<FinancialRecord> financialRecordList = financialRecordStore
+				.listFinancialRecordsByStatus(status.getValue());
 		for (FinancialRecord financialRecord : financialRecordList) {
 			FinancialRecordResponse recordResponse = CopyUtils.convertFinancialRecord2Response(financialRecord);
 			recordList.add(recordResponse);
