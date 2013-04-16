@@ -102,9 +102,11 @@ public class FinancialService {
 			throw new FinancialRecorderException(ErrorCode.FINANCIAL_RECORD_NOT_EXIST_ERROR,
 					"No financial record found by id: " + request.getFinancialRecordId());
 		}
-
-		List<String> userNameList = Lists.newArrayList(financialRecord.getUserNames().split(
-				FinancialRecorderConstants.USER_NAME_SEPARATE));
+		List<String> userNameList = Lists.newArrayList();
+		if (!StringUtils.isBlank(financialRecord.getUserNames())) {
+			userNameList = Lists.newArrayList(financialRecord.getUserNames().split(
+					FinancialRecorderConstants.USER_NAME_SEPARATE));
+		}
 		List<String> newJoinedUserNameList = Lists.newArrayList();
 		for (String userName : request.getUserNameList()) {
 			if (!userNameList.contains(userName)) {
