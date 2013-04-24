@@ -2,6 +2,8 @@ package com.financial.tools.recorderserver.business;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.entity.User;
@@ -16,6 +18,8 @@ import com.financial.tools.recorderserver.util.NotificationHelper;
 //TODO: Neway, to be full fill later.
 public class UserManager {
 
+	private static Logger logger = LoggerFactory.getLogger(UserManager.class);
+
 	private UserRecordStore userRecordStore;
 
 	private UserStore userStore;
@@ -23,6 +27,7 @@ public class UserManager {
 	private DeviceStore deviceStore;
 
 	public void addUserRecord(String userName, long financialRecordId) {
+		logger.debug("Add user:{} to financial record:{}.", new Object[] { userName, financialRecordId });
 		userRecordStore.addRecord2User(userName, financialRecordId);
 
 		// send notification to admin.
@@ -30,7 +35,10 @@ public class UserManager {
 		if (adminUserList.isEmpty()) {
 			throw new FinancialRecorderException(ErrorCode.USER_NOT_EXIST_ERROR, "Admin user not existed.");
 		}
-		String deviceRegId = deviceStore.getDeviceRegId(adminUserList.get(0).getName());
+		String adminUserName = adminUserList.get(0).getName();
+		String deviceRegId = deviceStore.getDeviceRegId(adminUserName);
+		logger.debug("Get deviceRegId: {} of admin user: {}.", deviceRegId, adminUserName);
+
 		String notificationMessage = String.format("User: %1$s has joined.", userName);
 		NotificationHelper.sendNotification(deviceRegId, "Join Activity", notificationMessage, 600);
 	}

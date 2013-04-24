@@ -35,9 +35,10 @@ public class NotificationHelper {
 	public static boolean sendNotification(String deviceRegId, String notificationTitle, String notificationMessage,
 			int timeToLive) {
 		if (StringUtils.isEmpty(deviceRegId)) {
-			logger.debug("deviceRegId:{} doesn't exist.", deviceRegId);
+			logger.warn("deviceRegId:{} doesn't exist.", deviceRegId);
 			return false;
 		}
+		logger.debug("send notification message: {} to deviceRegId: {}.", notificationMessage, deviceRegId);
 		Builder messageBuilder = new Message.Builder();
 		if (timeToLive > 0) {
 			messageBuilder.timeToLive(timeToLive);

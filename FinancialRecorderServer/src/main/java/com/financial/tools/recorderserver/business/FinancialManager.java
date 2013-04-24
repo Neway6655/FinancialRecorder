@@ -84,6 +84,7 @@ public class FinancialManager {
 
 	public FinancialRecord updateFinancialRecord(FinancialRecord financialRecord) {
 		if (financialRecord != null) {
+			logger.debug("Update financial record with ID: {}.", financialRecord.getId());
 			return financialRecordStore.updateFinancialRecord(financialRecord);
 		}
 		return null;
@@ -105,7 +106,7 @@ public class FinancialManager {
 				if (user == null) {
 					throw new FinancialRecorderException(ErrorCode.INTERNAL_ERROR, "Server internal error.");
 				}
-				logger.debug("deduct user fee, userId: {}, fee: {}.", user.getId(), feePerUser);
+				logger.debug("deduct user fee, userName: {}, fee: {}.", userName, feePerUser);
 				userStore.updateBalance(user.getId(), user.getBalance() - feePerUser);
 
 				budgetTrailStore.createBudgetTrail(new BudgetTrail(userName, BudgetTrailType.PAY_FEE.getValue(),
