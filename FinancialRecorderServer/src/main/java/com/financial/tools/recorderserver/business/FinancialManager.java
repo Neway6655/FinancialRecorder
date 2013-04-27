@@ -90,14 +90,14 @@ public class FinancialManager {
 		return null;
 	}
 
-	public void deductFee(long financialRecordId) {
+	public void deductFee(long financialRecordId, float totalFee) {
 		logger.debug("Update financial record with id: {}.", financialRecordId);
 		FinancialRecord financialRecord = financialRecordStore.getFinancialRecord(financialRecordId);
 		if (financialRecord != null) {
 			financialRecord.setStatus(FinancialRecordStatus.UPDATED.getValue());
+			financialRecord.setTotalFee(totalFee);
 			financialRecordStore.updateFinancialRecord(financialRecord);
 
-			float totalFee = financialRecord.getTotalFee();
 			String[] userNameArray = financialRecord.getUserNames().split(",");
 			float feePerUser = totalFee / userNameArray.length;
 			Date budgetTrailCreatedTime = new Date();

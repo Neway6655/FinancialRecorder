@@ -7,6 +7,7 @@ import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
+import com.financial.tools.recorderserver.payload.UpdateFinanceRequest;
 import com.financial.tools.recorderserver.payload.UserBudgetTrailResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 
@@ -31,9 +32,9 @@ public class FinancialServiceClient extends AbstractFinancialClient {
 		return get(client, FinancialRecordListResponse.class);
 	}
 
-	public String updateFinance(String financialRecordId) {
-		client.path("finance/update/{financialRecordId}", financialRecordId).accept(MediaType.TEXT_PLAIN);
-		return get(client, String.class);
+	public String updateFinance(UpdateFinanceRequest updateFinanceRequest) {
+		client.path("finance/update").type(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN);
+		return post(client, updateFinanceRequest, String.class);
 	}
 
 	public FinancialRecordResponse addFinancialRecordUsers(AddFinancialRecordUsersRequest request) {

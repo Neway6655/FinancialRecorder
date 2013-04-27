@@ -2,6 +2,7 @@ package com.financial.tools.recorderserver.service;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -30,6 +31,7 @@ import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
+import com.financial.tools.recorderserver.payload.UpdateFinanceRequest;
 import com.financial.tools.recorderserver.payload.UserBudgetTrailResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.financial.tools.recorderserver.transactionlog.aop.TransactionLog;
@@ -43,6 +45,7 @@ import com.google.common.collect.Lists;
 
 @Path("/finance")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class FinancialService {
 
 	private static final Logger logger = LoggerFactory.getLogger(FinancialService.class);
@@ -142,16 +145,18 @@ public class FinancialService {
 		return new FinancialRecordListResponse(financialManager.listFinancialRecordsByStatus(status));
 	}
 
-	@GET
-	@Path("/update/{financialRecord}")
+	@POST
+	@Path("/update")
 	@Produces(MediaType.TEXT_PLAIN)
 	@TransactionLog(type = TransactionLogType.UPDATE_FINANCIAL_RECORD)
-	public String updateFinance(@PathParam("financialRecord") String financialRecordId) {
+	public String updateFinance(UpdateFinanceRequest request) {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
-		long financialRecordIdValue = Long.valueOf(financialRecordId);
-		financialManager.deductFee(financialRecordIdValue);
+		long financialRecordIdValue = Long.valueOf(request.getFinancialRecordId());
+		float totalFee = request.getTotalFee();
+		financialManager.deductFee(financialRecordIdValue, totalFee);
 
+		entry.setFee(totalFee);
 		entry.setFinancialRecordId(financialRecordIdValue);
 		return "";
 	}

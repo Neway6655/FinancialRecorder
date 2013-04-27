@@ -20,6 +20,7 @@ import com.financial.tools.recorderserver.payload.CashinRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordListResponse;
 import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
+import com.financial.tools.recorderserver.payload.UpdateFinanceRequest;
 import com.financial.tools.recorderserver.payload.UserBudgetTrailResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.google.common.collect.Lists;
@@ -60,10 +61,10 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 
 	@Test
 	public void testFinancialCalculateForUser() throws Exception {
-		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ball", 20, Lists.newArrayList(
+		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ball", 0, Lists.newArrayList(
 				"Neway", "Fred"), new Date());
 		String financialRecordId = financialServiceClient.createFinancialRecord(financialRecordRequest);
-		financialServiceClient.updateFinance(financialRecordId);
+		financialServiceClient.updateFinance(new UpdateFinanceRequest(financialRecordId, 20));
 
 		// verify
 		UserFinancialInfoResponse userFinancialInfo = financialServiceClient.getUserFinancialInfo("2");
@@ -82,12 +83,12 @@ public class FinancialServiceTest extends AbstractComponentTestCase {
 	@Test
 	public void testDeductFinancialRecordFee() {
 		// prepare.
-		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ballA", 20, Lists.newArrayList(
+		FinancialRecordRequest financialRecordRequest = new FinancialRecordRequest("ballA", 0, Lists.newArrayList(
 				"Neway", "Fred"), new Date());
 		String financialRecordId = financialServiceClient.createFinancialRecord(financialRecordRequest);
 
 		// replay.
-		financialServiceClient.updateFinance(financialRecordId);
+		financialServiceClient.updateFinance(new UpdateFinanceRequest(financialRecordId, 20));
 
 		// verify.
 		UserFinancialInfoResponse newayInfo = financialServiceClient.getUserFinancialInfo("1");
