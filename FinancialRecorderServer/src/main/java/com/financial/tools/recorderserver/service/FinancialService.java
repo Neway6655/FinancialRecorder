@@ -1,5 +1,6 @@
 package com.financial.tools.recorderserver.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -24,6 +25,7 @@ import com.financial.tools.recorderserver.entity.BudgetTrail;
 import com.financial.tools.recorderserver.entity.BudgetTrailType;
 import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.entity.FinancialRecordStatus;
+import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.exception.ErrorCode;
 import com.financial.tools.recorderserver.exception.FinancialRecorderException;
 import com.financial.tools.recorderserver.payload.AddFinancialRecordUsersRequest;
@@ -88,10 +90,28 @@ public class FinancialService {
 	public Response createFinancialRecord(FinancialRecordRequest financialRecordRequest) {
 		TransactionLogEntry entry = TransactionLogThreadLocalContext.getEntry();
 
-		long financialRecordId = financialManager.createFinancialRecord(financialRecordRequest);
+		FinancialRecord financialRecord = new FinancialRecord();
 
+		financialRecord.setName(financialRecordRequest.getName());
+		financialRecord.setTotalFee(financialRecordRequest.getTotalFee());
+		financialRecord.setStatus(FinancialRecordStatus.NEW.getValue());
+		financialRecord.setRecordDate(financialRecordRequest.getRecordDate() == null ? new Date()
+				: financialRecordRequest.getRecordDate());
+		String userNames = StringUtils.join(financialRecordRequest.getUserNameList(), ",");
+		financialRecord.setUserNames(userNames);
+		long financialRecordId = financialManager.createFinancialRecord(financialRecord);
+
+		// collect transaction info.
 		entry.setFinancialRecordId(financialRecordId).setFinancialRecordName(financialRecordRequest.getName())
 				.setFee(financialRecordRequest.getTotalFee()).setUserNameList(financialRecordRequest.getUserNameList());
+
+		// send notification to group users.
+		List<User> userList = userManager.listUsers();
+		for (User user : userList) {
+			String deviceRegId = deviceManager.getRegisteredDeviceId(user.getName());
+			String notificationMessage = String.format("Hi %1$s, new activity created, join us?", user.getName());
+			NotificationHelper.sendNotification(deviceRegId, "Join Activity", notificationMessage, 86400);
+		}
 
 		return Response.ok(financialRecordId).build();
 	}

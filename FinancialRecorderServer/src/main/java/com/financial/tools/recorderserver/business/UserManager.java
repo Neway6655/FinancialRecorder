@@ -43,6 +43,15 @@ public class UserManager {
 		NotificationHelper.sendNotification(deviceRegId, "Join Activity", notificationMessage, 600);
 	}
 
+	/**
+	 * List all users.
+	 * 
+	 * @return user list.
+	 */
+	public List<User> listUsers() {
+		return userStore.findAll();
+	}
+
 	@Autowired
 	public void setUserStore(UserStore userStore) {
 		this.userStore = userStore;

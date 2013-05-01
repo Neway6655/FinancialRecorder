@@ -3,7 +3,6 @@ package com.financial.tools.recorderserver.business;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import com.financial.tools.recorderserver.entity.FinancialRecordStatus;
 import com.financial.tools.recorderserver.entity.User;
 import com.financial.tools.recorderserver.exception.ErrorCode;
 import com.financial.tools.recorderserver.exception.FinancialRecorderException;
-import com.financial.tools.recorderserver.payload.FinancialRecordRequest;
 import com.financial.tools.recorderserver.payload.FinancialRecordResponse;
 import com.financial.tools.recorderserver.payload.UserFinancialInfoResponse;
 import com.financial.tools.recorderserver.store.BudgetTrailStore;
@@ -47,21 +45,11 @@ public class FinancialManager {
 		return balance;
 	}
 
-	public long createFinancialRecord(FinancialRecordRequest financialRecordRequest) {
-		logger.debug("Create financial record, request: {}.",
-				JsonMappingUtils.getJsonStringWithoutExceptionOut(financialRecordRequest));
-		FinancialRecord financialRecord = new FinancialRecord();
+	public long createFinancialRecord(FinancialRecord financialRecord) {
+		logger.debug("Create financial record: {}.", JsonMappingUtils.getJsonStringWithoutExceptionOut(financialRecord));
+		long financialRecordId = financialRecordStore.createFinancialRecord(financialRecord);
 
-		financialRecord.setName(financialRecordRequest.getName());
-		financialRecord.setTotalFee(financialRecordRequest.getTotalFee());
-		financialRecord.setStatus(FinancialRecordStatus.NEW.getValue());
-		financialRecord.setRecordDate(financialRecordRequest.getRecordDate() == null ? new Date()
-				: financialRecordRequest.getRecordDate());
-
-		String userNames = StringUtils.join(financialRecordRequest.getUserNameList(), ",");
-		financialRecord.setUserNames(userNames);
-
-		return financialRecordStore.createFinancialRecord(financialRecord);
+		return financialRecordId;
 	}
 
 	public List<FinancialRecordResponse> listFinancialRecordsByStatus(FinancialRecordStatus status) {

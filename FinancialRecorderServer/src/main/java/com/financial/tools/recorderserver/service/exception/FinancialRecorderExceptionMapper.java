@@ -1,4 +1,4 @@
-package com.financial.tools.recorderserver.service;
+package com.financial.tools.recorderserver.service.exception;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
