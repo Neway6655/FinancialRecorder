@@ -23,6 +23,7 @@ import com.financial.tools.recorderserver.store.UserStore;
 import com.financial.tools.recorderserver.util.CopyUtils;
 import com.financial.tools.recorderserver.util.JsonMappingUtils;
 import com.financial.tools.recorderserver.util.NotificationHelper;
+import com.financial.tools.recorderserver.util.NotificationType;
 import com.google.common.collect.Lists;
 
 public class FinancialManager {
@@ -103,8 +104,7 @@ public class FinancialManager {
 				// send notification.
 				String deviceRegId = deviceStore.getDeviceRegId(userName);
 				String notificationMessage = String.format("Hi %1$s, deduct fee %2$.2f RMB.", userName, feePerUser);
-				NotificationHelper.sendNotification(deviceRegId, BudgetTrailType.PAY_FEE.getValue(),
-						notificationMessage, -1);
+				NotificationHelper.sendNotification(deviceRegId, NotificationType.DEDUCT_FEE, notificationMessage, -1);
 			}
 		}
 	}

@@ -32,8 +32,8 @@ public class NotificationHelper {
 
 	private static Logger logger = LoggerFactory.getLogger(NotificationHelper.class);
 
-	public static boolean sendNotification(String deviceRegId, String notificationTitle, String notificationMessage,
-			int timeToLive) {
+	public static boolean sendNotification(String deviceRegId, NotificationType notificationType,
+			String notificationMessage, int timeToLive) {
 		if (StringUtils.isEmpty(deviceRegId)) {
 			logger.warn("deviceRegId:{} doesn't exist.", deviceRegId);
 			return false;
@@ -43,7 +43,8 @@ public class NotificationHelper {
 		if (timeToLive > 0) {
 			messageBuilder.timeToLive(timeToLive);
 		}
-		Message message = messageBuilder.delayWhileIdle(true).addData(GCM_MESSAGE_TITLE_KEY, notificationTitle)
+		Message message = messageBuilder.delayWhileIdle(true)
+				.addData(GCM_MESSAGE_TITLE_KEY, notificationType.getTitle())
 				.addData(GCM_MESSAGE_BODY_KEY, notificationMessage).build();
 		Sender sender = new Sender(GCM_KEY);
 		try {

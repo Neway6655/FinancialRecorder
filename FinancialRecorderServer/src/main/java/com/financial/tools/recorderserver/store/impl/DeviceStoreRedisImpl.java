@@ -23,7 +23,7 @@ public class DeviceStoreRedisImpl implements DeviceStore {
 	@Override
 	public void registerDevice(String userName, String deviceRegId) {
 		String key = getKey(userName);
-		redisTemplate.boundValueOps(key).set(deviceRegId, 7, TimeUnit.DAYS);
+		redisTemplate.boundValueOps(key).set(deviceRegId, 15, TimeUnit.DAYS);
 	}
 
 	@Override

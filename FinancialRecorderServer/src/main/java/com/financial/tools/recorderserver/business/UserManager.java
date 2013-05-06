@@ -14,6 +14,7 @@ import com.financial.tools.recorderserver.store.DeviceStore;
 import com.financial.tools.recorderserver.store.UserRecordStore;
 import com.financial.tools.recorderserver.store.UserStore;
 import com.financial.tools.recorderserver.util.NotificationHelper;
+import com.financial.tools.recorderserver.util.NotificationType;
 
 //TODO: Neway, to be full fill later.
 public class UserManager {
@@ -40,7 +41,7 @@ public class UserManager {
 		logger.debug("Get deviceRegId: {} of admin user: {}.", deviceRegId, adminUserName);
 
 		String notificationMessage = String.format("User: %1$s has joined.", userName);
-		NotificationHelper.sendNotification(deviceRegId, "Join Activity", notificationMessage, 600);
+		NotificationHelper.sendNotification(deviceRegId, NotificationType.JOIN_ACTIVITY, notificationMessage, 600);
 	}
 
 	/**

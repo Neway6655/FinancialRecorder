@@ -22,7 +22,6 @@ import com.financial.tools.recorderserver.business.DeviceManager;
 import com.financial.tools.recorderserver.business.FinancialManager;
 import com.financial.tools.recorderserver.business.UserManager;
 import com.financial.tools.recorderserver.entity.BudgetTrail;
-import com.financial.tools.recorderserver.entity.BudgetTrailType;
 import com.financial.tools.recorderserver.entity.FinancialRecord;
 import com.financial.tools.recorderserver.entity.FinancialRecordStatus;
 import com.financial.tools.recorderserver.entity.User;
@@ -43,6 +42,7 @@ import com.financial.tools.recorderserver.transactionlog.entry.TransactionLogThr
 import com.financial.tools.recorderserver.util.CopyUtils;
 import com.financial.tools.recorderserver.util.FinancialRecorderConstants;
 import com.financial.tools.recorderserver.util.NotificationHelper;
+import com.financial.tools.recorderserver.util.NotificationType;
 import com.google.common.collect.Lists;
 
 @Path("/finance")
@@ -74,7 +74,7 @@ public class FinancialService {
 		String deviceRegId = deviceManager.getRegisteredDeviceId(request.getUserName());
 		String notificationMessage = String.format("Hi %1$s, cashed in %2$.2f RMB for you.", request.getUserName(),
 				request.getAmount());
-		boolean result = NotificationHelper.sendNotification(deviceRegId, BudgetTrailType.CASH_IN.getValue(),
+		boolean result = NotificationHelper.sendNotification(deviceRegId, NotificationType.CASH_IN,
 				notificationMessage, -1);
 		if (!result) {
 			deviceManager.unRegister(request.getUserName(), deviceRegId);
@@ -110,7 +110,8 @@ public class FinancialService {
 		for (User user : userList) {
 			String deviceRegId = deviceManager.getRegisteredDeviceId(user.getName());
 			String notificationMessage = String.format("Hi %1$s, new activity created, join us?", user.getName());
-			NotificationHelper.sendNotification(deviceRegId, "Join Activity", notificationMessage, 86400);
+			NotificationHelper
+					.sendNotification(deviceRegId, NotificationType.JOIN_ACTIVITY, notificationMessage, 86400);
 		}
 
 		return Response.ok(financialRecordId).build();
