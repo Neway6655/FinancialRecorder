@@ -10,6 +10,7 @@
 		<param-value>
 			classpath*:/applicationContext.xml
 			classpath*:/applicationContext-rest.xml
+			classpath*:/applicationContext-scheduler.xml
 		</param-value>
 	</context-param>
 	

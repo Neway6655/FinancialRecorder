@@ -3,7 +3,7 @@ package com.financial.tools.recorderserver.util;
 public enum NotificationType {
 
 	JOIN_ACTIVITY("Join Activity", "join_activity"), CASH_IN("Cash In", "cash_in"), DEDUCT_FEE("Deduct Fee",
-			"deduct_fee");
+			"deduct_fee"), REMINDER("Reminder", "reminder");
 
 	private String title;
 
