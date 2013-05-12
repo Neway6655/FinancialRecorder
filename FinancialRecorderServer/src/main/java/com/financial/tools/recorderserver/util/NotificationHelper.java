@@ -43,7 +43,7 @@ public class NotificationHelper {
 		if (timeToLive > 0) {
 			messageBuilder.timeToLive(timeToLive);
 		}
-		Message message = messageBuilder.delayWhileIdle(true)
+		Message message = messageBuilder.delayWhileIdle(false)
 				.addData(GCM_MESSAGE_TITLE_KEY, notificationType.getTitle())
 				.addData(GCM_MESSAGE_BODY_KEY, notificationMessage).build();
 		Sender sender = new Sender(GCM_KEY);
