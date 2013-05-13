@@ -45,7 +45,7 @@ public class NotificationHelper {
 		}
 		Message message = messageBuilder.delayWhileIdle(false)
 				.addData(GCM_MESSAGE_TITLE_KEY, notificationType.getTitle())
-				.addData(GCM_MESSAGE_BODY_KEY, notificationMessage).build();
+				.addData(GCM_MESSAGE_BODY_KEY, notificationMessage).collapseKey(notificationType.getType()).build();
 		Sender sender = new Sender(GCM_KEY);
 		try {
 			Result result = sender.send(message, deviceRegId, RETRY_TIMES);
