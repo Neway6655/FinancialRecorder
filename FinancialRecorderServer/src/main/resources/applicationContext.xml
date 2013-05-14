@@ -24,10 +24,6 @@
 	<tx:annotation-driven transaction-manager="transactionManager"
 		proxy-target-class="true" />
 	
-	<context:property-placeholder
-			ignore-resource-not-found="true"
-			location="classpath*:/application.product.properties" />
-		
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
@@ -86,6 +82,10 @@
 	<bean id="transactionLogService" class="com.financial.tools.recorderserver.transactionlog.impl.TransactionLogServiceFileImpl" />
 
 	<beans profile="cloud">
+	    <context:property-placeholder
+			ignore-resource-not-found="true"
+			location="classpath*:/application.product.properties" />
+	    
 	    <cloud:data-source id="dataSource" />
 	    
 		<jdbc:initialize-database data-source="dataSource"

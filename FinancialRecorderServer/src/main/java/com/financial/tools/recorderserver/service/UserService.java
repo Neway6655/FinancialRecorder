@@ -10,6 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.financial.tools.recorderserver.business.FinancialManager;
@@ -46,6 +48,8 @@ public class UserService {
 
 	private FinancialManager financialManager;
 
+	private static Logger logger = LoggerFactory.getLogger(UserService.class);
+
 	@POST
 	@Path("/create")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -72,6 +76,8 @@ public class UserService {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String login(LoginRequest request) {
 		String userName = request.getUserName();
+		logger.debug("user login request: {}", userName);
+
 		User user = userStore.getUserByName(userName);
 
 		if (user == null) {
