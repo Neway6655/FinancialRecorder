@@ -36,12 +36,15 @@ public class UserManager {
 		if (adminUserList.isEmpty()) {
 			throw new FinancialRecorderException(ErrorCode.USER_NOT_EXIST_ERROR, "Admin user not existed.");
 		}
-		String adminUserName = adminUserList.get(0).getName();
-		String deviceRegId = deviceStore.getDeviceRegId(adminUserName);
-		logger.debug("Get deviceRegId: {} of admin user: {}.", deviceRegId, adminUserName);
 
-		String notificationMessage = String.format("User: %1$s has joined.", userName);
-		NotificationHelper.sendNotification(deviceRegId, NotificationType.JOIN_ACTIVITY, notificationMessage, 600);
+		for (User admin : adminUserList) {
+			String adminUserName = admin.getName();
+			String deviceRegId = deviceStore.getDeviceRegId(adminUserName);
+			logger.debug("Get deviceRegId: {} of admin user: {}.", deviceRegId, adminUserName);
+
+			String notificationMessage = String.format("User: %1$s has joined.", userName);
+			NotificationHelper.sendNotification(deviceRegId, NotificationType.JOIN_ACTIVITY, notificationMessage, 600);
+		}
 	}
 
 	/**
