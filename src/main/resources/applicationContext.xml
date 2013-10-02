@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cloud="http://schema.cloudfoundry.org/spring" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://schema.cloudfoundry.org/spring
+        http://schema.cloudfoundry.org/spring/cloudfoundry-spring.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd"
+	default-lazy-init="true">
+
+	<description>Spring Configuration</description>
+
+	<context:annotation-config />
+	
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<bean class="com.financial.tools.recorderserver.transactionlog.aop.TransactionLogAspect" />
+
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<!-- Jpa Entity Manager -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="defaultPU" />
+		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
+	</bean>
+
+	<bean id="hibernateJpaVendorAdapter"
+		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="databasePlatform">
+			<bean factory-method="getDialect"
+				class="com.financial.tools.recorderserver.util.HibernateUtils">
+				<constructor-arg ref="dataSource" />
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- Redis -->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" 
+		p:connection-factory-ref="redisConnectionFactory"/>
+	
+	<!-- Store -->
+	<bean id="groupStore"
+		class="com.financial.tools.recorderserver.store.impl.GroupStoreJpaImpl" />
+		
+	<bean id="userStore"
+		class="com.financial.tools.recorderserver.store.impl.UserStoreJpaImpl" />
+		
+	<bean id="financialRecordStore"
+		class="com.financial.tools.recorderserver.store.impl.FinancialRecordStoreJpaImpl" />
+
+	<bean id="userRecordStore" class="com.financial.tools.recorderserver.store.impl.UserRecordStoreRedisImpl"/>
+	
+	<bean id="budgetTrailStore" class="com.financial.tools.recorderserver.store.impl.BudgetTrailStoreRedisImpl"/>
+
+	<bean id="deviceStore" class="com.financial.tools.recorderserver.store.impl.DeviceStoreRedisImpl"/>
+				
+	<!-- Manager -->
+	<bean id="financialManager"
+		class="com.financial.tools.recorderserver.business.FinancialManager" />
+	<bean id="deviceManager" class="com.financial.tools.recorderserver.business.DeviceManager"/>
+	<bean id="userManager" class="com.financial.tools.recorderserver.business.UserManager" />
+
+	<!-- Service -->
+	<bean id="financialService"
+		class="com.financial.tools.recorderserver.service.FinancialService" />
+	
+	<bean id="userService" class="com.financial.tools.recorderserver.service.UserService"/>
+	
+	<bean id="deviceService" class="com.financial.tools.recorderserver.service.DeviceService"/>
+	
+	<bean id="transactionLogService" class="com.financial.tools.recorderserver.transactionlog.impl.TransactionLogServiceFileImpl" />
+
+	<beans profile="cloud">
+	    <context:property-placeholder
+			ignore-resource-not-found="true"
+			location="classpath*:/application.product.properties" />
+	    
+	    <bean class="java.net.URI" id="dbUrl">
+		    <constructor-arg value="#{systemEnvironment['CLEARDB_DATABASE_URL']}"/>
+		</bean>
+		
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		    <property name="url" value="#{ 'jdbc:mysql://' + @dbUrl.getHost() + @dbUrl.getPath() }"/>
+		    <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
+		    <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
+		</bean>
+	    
+		<bean id="jedisURI" class="java.net.URI">
+	    	<constructor-arg value="${REDISTOGO_URL}"/>
+		</bean>
+		
+		<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+			p:host-name="#{ @jedisURI.getHost() }" p:port="#{ @jedisURI.getPort() }"/>
+	</beans>
+
+	<beans profile="ct,dev">
+		<context:property-placeholder
+			ignore-resource-not-found="true"
+			location="classpath*:/application.properties,
+          			  classpath*:/application.test.properties" />
+
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+			<property name="driverClass" value="${jdbc.driver}" />
+			<property name="url" value="${jdbc.url}" />
+			<property name="username" value="${jdbc.username}" />
+			<property name="password" value="${jdbc.password}" />
+		</bean>
+		
+		<jdbc:initialize-database data-source="dataSource"
+			ignore-failures="ALL">
+			<jdbc:script location="classpath:sql/h2/schema.sql" />
+		</jdbc:initialize-database>
+		
+		<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+			p:host-name="${redis.host}" p:port="${redis.port}"/>
+		
+	</beans>
+	
+	<beans profile="ct">
+		<bean class="com.financial.tools.recorderserver.tools.util.DataInitializer"
+			lazy-init="false">
+			<property name="dataSource" ref="dataSource" />
+			<property name="dataFile" value="/data/sample-data.xml" />
+		</bean>
+	</beans>
+</beans>
